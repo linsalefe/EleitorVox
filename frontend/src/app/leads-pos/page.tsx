@@ -43,7 +43,7 @@ interface LeadDetails {
 
 const stageColors: Record<string, string> = {
   'Entrada': 'bg-blue-50 text-blue-700',
-  'Pré Qualificado': 'bg-purple-50 text-purple-700',
+  'Pré Apoiador': 'bg-purple-50 text-purple-700',
   'Follow 2': 'bg-amber-50 text-amber-700',
   'Follow 3': 'bg-amber-50 text-amber-700',
   'Follow 4': 'bg-amber-50 text-amber-700',
@@ -54,7 +54,7 @@ const stageColors: Record<string, string> = {
   ' Follows 9': 'bg-red-50 text-red-700',
   'Agendados': 'bg-cyan-50 text-cyan-700',
   'Reagendamento': 'bg-cyan-50 text-cyan-700',
-  'Em Negociação': 'bg-indigo-50 text-indigo-700',
+  'Engajados': 'bg-indigo-50 text-indigo-700',
   'Contratos Gerados': 'bg-emerald-50 text-emerald-700',
   'Vendidos': 'bg-green-50 text-green-700',
   'Descartado': 'bg-red-50 text-red-700',

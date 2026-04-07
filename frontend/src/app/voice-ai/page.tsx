@@ -135,11 +135,11 @@ interface AgentTool {
 // ============================================================
 
 const OUTCOME_LABELS: Record<string, string> = {
-  qualified: 'Qualificado',
+  qualified: 'Apoiador',
   scheduled: 'Agendado',
   transferred: 'Transferido',
   follow_up: 'Follow-up',
-  not_qualified: 'Não Qualificado',
+  not_qualified: 'Não Apoiador',
   no_answer: 'Não Atendeu',
   busy: 'Ocupado',
   error: 'Erro',
@@ -477,11 +477,11 @@ function CallsListView({ calls, total, filterOutcome, setFilterOutcome, onSelect
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos os resultados</SelectItem>
-            <SelectItem value="qualified">Qualificado</SelectItem>
+            <SelectItem value="qualified">Apoiador</SelectItem>
             <SelectItem value="scheduled">Agendado</SelectItem>
             <SelectItem value="transferred">Transferido</SelectItem>
             <SelectItem value="follow_up">Follow-up</SelectItem>
-            <SelectItem value="not_qualified">Não Qualificado</SelectItem>
+            <SelectItem value="not_qualified">Não Apoiador</SelectItem>
             <SelectItem value="no_answer">Não Atendeu</SelectItem>
           </SelectContent>
         </Select>

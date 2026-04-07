@@ -67,7 +67,7 @@ Interprete sempre no contexto de CRM educacional:
 - "matrícula" pode vir como "matrícola" ou "matricola"
 - "agendamento" pode vir como "agenda mento"
 - "faturamento" pode vir como "fatura mento"
-- "qualificado" pode vir como "qualifica do"
+- "apoiador" pode vir como "apoiador"
 - Se a palavra não fizer sentido literal, interprete pelo som mais próximo no contexto de CRM.
 
 AÇÕES DISPONÍVEIS:

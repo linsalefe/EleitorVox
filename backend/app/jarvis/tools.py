@@ -32,7 +32,7 @@ JARVIS_TOOLS = [
                 "properties": {
                     "stage_name": {
                         "type": "string",
-                        "description": "Nome da coluna do pipeline (ex: novo, em_contato, qualificado, em_matricula, matriculado, perdido). Se não informado, retorna todas."
+                        "description": "Nome da coluna do pipeline (ex: novo, em_contato, apoiador, voluntario, eleitor, perdido). Se não informado, retorna todas."
                     }
                 }
             }
@@ -209,7 +209,7 @@ JARVIS_TOOLS = [
                     },
                     "target_stage": {
                         "type": "string",
-                        "description": "Coluna de destino (ex: novo, em_contato, qualificado, em_matricula, matriculado, perdido)"
+                        "description": "Coluna de destino (ex: novo, em_contato, apoiador, voluntario, eleitor, perdido)"
                     }
                 },
                 "required": ["lead_name", "target_stage"]

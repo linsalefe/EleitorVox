@@ -37,11 +37,11 @@ async def update_lead_after_call(call: AICall, db: AsyncSession):
         if contact:
             # Atualizar status baseado no outcome
             status_map = {
-                "qualified": "qualificado",
+                "qualified": "apoiador",
                 "scheduled": "agendado",
                 "transferred": "em_atendimento",
                 "follow_up": "follow_up",
-                "not_qualified": "nao_qualificado",
+                "not_qualified": "nao_apoiador",
                 "no_answer": "nao_atendeu",
                 "busy": "ocupado",
             }
@@ -159,10 +159,10 @@ async def move_lead_in_funnel(exact_lead_id: int, stage: str):
         return
 
     stage_map = {
-        "qualified": "Qualificado pela IA",
+        "qualified": "Apoiador pela IA",
         "scheduled": "Reunião Agendada",
         "transferred": "Em Atendimento",
-        "not_qualified": "Não Qualificado",
+        "not_qualified": "Não Apoiador",
     }
 
     target_stage = stage_map.get(stage)
@@ -191,11 +191,11 @@ async def move_lead_in_funnel(exact_lead_id: int, stage: str):
 def _outcome_to_kanban_status(outcome: str) -> str:
     """Converte outcome da IA para status do kanban."""
     mapping = {
-        "qualified": "qualificado_ia",
+        "qualified": "apoiador_ia",
         "scheduled": "agendado",
         "transferred": "em_atendimento",
         "follow_up": "follow_up",
-        "not_qualified": "nao_qualificado",
+        "not_qualified": "nao_apoiador",
         "no_answer": "nao_atendeu",
         "busy": "tentar_novamente",
     }

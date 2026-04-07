@@ -41,7 +41,7 @@ class Contact(Base):
     __tablename__ = "contacts"
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False)
-    wa_id = Column(String(20), nullable=False, index=True)
+    wa_id = Column(String(20), nullable=False, unique=True, index=True)
     name = Column(String(255), nullable=True)
     profile_picture_url = Column(String, nullable=True)
     lead_status = Column(String(30), default="novo")
@@ -265,7 +265,7 @@ class Schedule(Base):
     scheduled_time = Column(String(5), nullable=False)
     scheduled_at = Column(DateTime, nullable=False)
     status = Column(String(20), default="pending")
-    call_id = Column(Integer, ForeignKey("ai_calls.id"), nullable=True)
+    call_id = Column(Integer, nullable=True)
     channel_id = Column(Integer, ForeignKey("channels.id"), nullable=True)
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
@@ -403,22 +403,31 @@ class Tenant(Base):
         }
     })
     kanban_columns = Column(JSON, default=[
-    {"key": "novo", "label": "Novos Leads", "color": "#6366f1", "order": 0},
+    {"key": "novo", "label": "Novos Contatos", "color": "#6366f1", "order": 0},
     {"key": "em_contato", "label": "Em Contato", "color": "#f59e0b", "order": 1},
-    {"key": "qualificado", "label": "Qualificados", "color": "#8b5cf6", "order": 2},
-    {"key": "em_matricula", "label": "Em Matrícula", "color": "#06b6d4", "order": 3},
-    {"key": "matriculado", "label": "Matriculados", "color": "#10b981", "order": 4},
-    {"key": "perdido", "label": "Perdidos", "color": "#ef4444", "order": 5},
+    {"key": "apoiador", "label": "Apoiadores", "color": "#8b5cf6", "order": 2},
+    {"key": "engajado", "label": "Engajados", "color": "#06b6d4", "order": 3},
+    {"key": "voluntario", "label": "Voluntários", "color": "#0ea5e9", "order": 4},
+    {"key": "eleitor", "label": "Eleitores", "color": "#10b981", "order": 5},
+    {"key": "perdido", "label": "Perdidos", "color": "#ef4444", "order": 6},
     ])
+
+
+
+
+
+
+
+
 
     agent_pipeline_moves = Column(JSON, default={
         "on_first_contact": "em_contato",
-        "on_schedule_call": "qualificado",
+        "on_schedule_call": "apoiador",
     })
 
     qualification_fields = Column(JSON, default=[])
-    ai_off_statuses = Column(JSON, default=["qualificado", "desqualificado", "matriculado", "perdido"])
-    ai_off_statuses = Column(JSON, default=["qualificado", "desqualificado", "matriculado", "perdido"])
+    ai_off_statuses = Column(JSON, default=["apoiador", "desapoiador", "eleitor", "perdido"])
+    ai_off_statuses = Column(JSON, default=["apoiador", "desapoiador", "eleitor", "perdido"])
     reengagement_config = Column(JSON, default={})
     monthly_goal = Column(Float, default=0)
     monthly_lead_goal = Column(Integer, default=0)

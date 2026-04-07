@@ -184,20 +184,20 @@ export default function DashboardPage() {
                     index={0}
                   />
                   <KPICard
-                    label="Convertidos"
-                    value={stats.status_counts['convertido'] || 0}
+                    label="Voluntários"
+                    value={stats.status_counts['voluntario'] || 0}
                     icon={Users}
                     index={1}
                   />
                   <KPICard
-                    label="Em Negociação"
-                    value={stats.status_counts['negociando'] || 0}
+                    label="Engajados"
+                    value={stats.status_counts['engajado'] || 0}
                     icon={TrendingUp}
                     index={2}
                   />
                   <KPICard
-                    label="Qualificados"
-                    value={stats.status_counts['qualificado'] || 0}
+                    label="Apoiadores"
+                    value={stats.status_counts['apoiador'] || 0}
                     icon={Activity}
                     index={3}
                   />

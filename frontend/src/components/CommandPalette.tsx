@@ -39,9 +39,10 @@ const iconMap: Record<string, React.ElementType> = {
 const statusColors: Record<string, string> = {
   novo: 'bg-blue-500',
   em_contato: 'bg-amber-500',
-  qualificado: 'bg-purple-500',
-  negociando: 'bg-cyan-500',
-  convertido: 'bg-emerald-500',
+  apoiador: 'bg-purple-500',
+  engajado: 'bg-cyan-500',
+  voluntario: 'bg-emerald-500',
+  eleitor: 'bg-green-500',
   perdido: 'bg-red-500',
 };
 

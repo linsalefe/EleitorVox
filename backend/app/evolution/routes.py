@@ -585,7 +585,7 @@ async def webhook(instance_name: str, request: Request, db: AsyncSession = Depen
                                     event_type="call_completed",
                                     payload={
                                         "outcome": "qualified",
-                                        "summary": f"Lead qualificado via WhatsApp. Reunião agendada para {scheduled_dt}",
+                                        "summary": f"Lead apoiador via WhatsApp. Reunião agendada para {scheduled_dt}",
                                         "collected_fields": {
                                             "data_agendamento": scheduled_dt.strftime("%d/%m/%Y"),
                                             "hora_agendamento": scheduled_dt.strftime("%H:%M"),

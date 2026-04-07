@@ -148,7 +148,7 @@ async def get_stale_leads(args: dict, tenant_id: int, db: AsyncSession) -> dict:
         select(Contact.name, Contact.wa_id, last_msg_sub.c.last_message)
         .join(last_msg_sub, Contact.wa_id == last_msg_sub.c.contact_wa_id)
         .where(Contact.tenant_id == tenant_id)
-        .where(Contact.lead_status.notin_(["matriculado", "perdido"]))
+        .where(Contact.lead_status.notin_(["eleitor", "perdido"]))
         .where(last_msg_sub.c.last_message < cutoff)
         .order_by(last_msg_sub.c.last_message.asc())
         .limit(10)

@@ -24,13 +24,13 @@ const sourceIcons: Record<string, string> = {
 };
 
 const statusLabels: Record<string, string> = {
-  novo: 'Novos', em_contato: 'Em contato', qualificado: 'Qualificados',
-  negociando: 'Negociando', convertido: 'Convertidos', perdido: 'Perdidos',
+  novo: 'Novos', em_contato: 'Em contato', apoiador: 'Apoiadores',
+  engajado: 'Engajado', voluntario: 'Voluntários', perdido: 'Perdidos',
 };
 
 const statusColors: Record<string, string> = {
-  novo: '#1D4ED8', em_contato: '#f59e0b', qualificado: '#8b5cf6',
-  negociando: '#06b6d4', convertido: '#10b981', perdido: '#ef4444',
+  novo: '#1D4ED8', em_contato: '#f59e0b', apoiador: '#8b5cf6',
+  engajado: '#06b6d4', voluntario: '#10b981', perdido: '#ef4444',
 };
 
 export default function DashboardROIPage() {

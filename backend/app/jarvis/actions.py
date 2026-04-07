@@ -135,7 +135,7 @@ async def prepare_action(tool_name: str, args: dict, tenant_id: int, db: AsyncSe
 
     elif tool_name == "action_move_pipeline":
         target = args.get("target_stage", "")
-        valid_stages = ["novo", "em_contato", "qualificado", "em_matricula", "matriculado", "perdido"]
+        valid_stages = ["novo", "em_contato", "apoiador", "voluntario", "eleitor", "perdido"]
         if target not in valid_stages:
             return {
                 "action": "move_pipeline",

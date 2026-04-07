@@ -667,7 +667,7 @@ async def update_contact(wa_id: str, req: UpdateContactRequest, db: AsyncSession
             from app.models import Tenant as TenantModel
             t_result = await db.execute(select(TenantModel).where(TenantModel.id == tenant_id))
             t_obj = t_result.scalar_one_or_none()
-            off_statuses = (t_obj.ai_off_statuses if t_obj and t_obj.ai_off_statuses else ["qualificado", "desqualificado", "matriculado", "perdido"])
+            off_statuses = (t_obj.ai_off_statuses if t_obj and t_obj.ai_off_statuses else ["apoiador", "desapoiador", "eleitor", "perdido"])
             if req.lead_status in off_statuses and contact.ai_active:
                 contact.ai_active = False
                 print(f"🤖 IA desligada para {wa_id} (movido para {req.lead_status})")
@@ -1146,7 +1146,7 @@ async def dashboard_advanced(channel_id: Optional[int] = None, db: AsyncSession 
     total_q = await db.execute(select(func.count(Contact.id)).where(*contact_filter))
     total = total_q.scalar() or 0
     converted_q = await db.execute(
-        select(func.count(Contact.id)).where(Contact.lead_status == "convertido", *contact_filter)
+        select(func.count(Contact.id)).where(Contact.lead_status == "voluntario", *contact_filter)
     )
     converted = converted_q.scalar() or 0
     conversion_rate = round((converted / total * 100), 1) if total > 0 else 0

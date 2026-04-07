@@ -386,9 +386,9 @@ async def get_kanban_columns(
     return tenant.kanban_columns or [
         {"key": "novo", "label": "Novos Leads", "color": "#6366f1", "order": 0},
         {"key": "em_contato", "label": "Em Contato", "color": "#f59e0b", "order": 1},
-        {"key": "qualificado", "label": "Qualificados", "color": "#8b5cf6", "order": 2},
-        {"key": "em_matricula", "label": "Em Matrícula", "color": "#06b6d4", "order": 3},
-        {"key": "matriculado", "label": "Matriculados", "color": "#10b981", "order": 4},
+        {"key": "apoiador", "label": "Apoiadores", "color": "#8b5cf6", "order": 2},
+        {"key": "voluntario", "label": "Voluntários", "color": "#06b6d4", "order": 3},
+        {"key": "eleitor", "label": "Eleitores", "color": "#10b981", "order": 4},
         {"key": "perdido", "label": "Perdidos", "color": "#ef4444", "order": 5},
     ]
 
@@ -500,7 +500,7 @@ async def get_agent_pipeline_moves(
     tenant = result.scalar_one_or_none()
     if not tenant:
         raise HTTPException(status_code=404, detail="Tenant não encontrado")
-    return tenant.agent_pipeline_moves or {"on_first_contact": "em_contato", "on_schedule_call": "qualificado"}
+    return tenant.agent_pipeline_moves or {"on_first_contact": "em_contato", "on_schedule_call": "apoiador"}
 
 
 @tenant_router.put("/agent-pipeline-moves")

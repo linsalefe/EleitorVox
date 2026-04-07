@@ -26,24 +26,24 @@ interface Submission {
 const STATUS_COLORS: Record<string, string> = {
   novo: 'bg-indigo-50 text-indigo-700',
   ia_atendendo: 'bg-amber-50 text-amber-700',
-  qualificado: 'bg-purple-50 text-purple-700',
+  apoiador: 'bg-purple-50 text-purple-700',
   agendamento: 'bg-cyan-50 text-cyan-700',
   reuniao_realizada: 'bg-emerald-50 text-emerald-700',
-  desqualificado: 'bg-red-50 text-red-700',
+  desapoiador: 'bg-red-50 text-red-700',
   em_contato: 'bg-amber-50 text-amber-700',
-  convertido: 'bg-emerald-50 text-emerald-700',
+  voluntario: 'bg-emerald-50 text-emerald-700',
   perdido: 'bg-red-50 text-red-700',
 };
 
 const STATUS_LABELS: Record<string, string> = {
   novo: 'Novo',
   ia_atendendo: 'IA Atendendo',
-  qualificado: 'Qualificado',
+  apoiador: 'Apoiador',
   agendamento: 'Agendamento',
   reuniao_realizada: 'Reunião Realizada',
-  desqualificado: 'Desqualificado',
+  desapoiador: 'Desapoiador',
   em_contato: 'Em Contato',
-  convertido: 'Convertido',
+  voluntario: 'Voluntário',
   perdido: 'Perdido',
 };
 

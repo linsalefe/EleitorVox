@@ -116,9 +116,9 @@ const ITEM_STATUS: Record<string, { label: string; color: string }> = {
 };
 
 const OUTCOME_LABELS: Record<string, string> = {
-  qualified: 'Qualificado',
+  qualified: 'Apoiador',
   scheduled: 'Agendado',
-  not_qualified: 'Não Qualificado',
+  not_qualified: 'Não Apoiador',
   no_answer: 'Não Atendeu',
   completed: 'Completada',
 };

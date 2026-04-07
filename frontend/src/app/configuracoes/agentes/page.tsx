@@ -63,7 +63,7 @@ export default function AgentesPage() {
   const [kanbanColumns, setKanbanColumns] = useState<KanbanColumn[]>([]);
   const [kanbanTriggers, setKanbanTriggers] = useState<Record<string, KanbanTrigger>>({});
   const [agentMessages, setAgentMessages] = useState<AgentMessages>(DEFAULT_MESSAGES);
-  const [pipelineMoves, setPipelineMoves] = useState<Record<string, string>>({ on_first_contact: 'em_contato', on_schedule_call: 'qualificado' });
+  const [pipelineMoves, setPipelineMoves] = useState<Record<string, string>>({ on_first_contact: 'em_contato', on_schedule_call: 'apoiador' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -92,7 +92,7 @@ export default function AgentesPage() {
           briefing: { ...DEFAULT_MESSAGES.briefing, ...(msgs.briefing || {}) },
         });
 
-        setPipelineMoves(movesRes.data || { on_first_contact: 'em_contato', on_schedule_call: 'qualificado' });
+        setPipelineMoves(movesRes.data || { on_first_contact: 'em_contato', on_schedule_call: 'apoiador' });
       } catch (err) {
         console.error('Erro ao carregar configurações de agentes', err);
       } finally {

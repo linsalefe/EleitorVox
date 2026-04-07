@@ -60,9 +60,9 @@ def style_data_row(ws, row_idx, num_cols):
 STATUS_LABELS = {
     "novo": "Novo Lead",
     "em_contato": "Em Contato",
-    "qualificado": "Qualificado",
-    "negociando": "Em Matrícula",
-    "convertido": "Matriculado",
+    "apoiador": "Apoiador",
+    "engajado": "Voluntários",
+    "voluntario": "Eleitor",
     "perdido": "Perdido",
 }
 

@@ -97,9 +97,9 @@ interface Message {
 const leadStatuses = [
   { value: 'novo', label: 'Novo', color: 'bg-blue-500', bg: 'bg-blue-500/20', text: 'text-blue-400', border: 'border-blue-500/30' },
   { value: 'em_contato', label: 'Em contato', color: 'bg-amber-500', bg: 'bg-amber-500/20', text: 'text-amber-400', border: 'border-amber-500/30' },
-  { value: 'qualificado', label: 'Qualificado', color: 'bg-purple-500', bg: 'bg-purple-500/20', text: 'text-purple-400', border: 'border-purple-500/30' },
-  { value: 'negociando', label: 'Negociando', color: 'bg-cyan-500', bg: 'bg-cyan-500/20', text: 'text-cyan-400', border: 'border-cyan-500/30' },
-  { value: 'convertido', label: 'Convertido', color: 'bg-emerald-500', bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' },
+  { value: 'apoiador', label: 'Apoiador', color: 'bg-purple-500', bg: 'bg-purple-500/20', text: 'text-purple-400', border: 'border-purple-500/30' },
+  { value: 'engajado', label: 'Engajado', color: 'bg-cyan-500', bg: 'bg-cyan-500/20', text: 'text-cyan-400', border: 'border-cyan-500/30' },
+  { value: 'voluntario', label: 'Voluntário', color: 'bg-emerald-500', bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' },
   { value: 'perdido', label: 'Perdido', color: 'bg-red-500', bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/30' },
 ];
 

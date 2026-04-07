@@ -3,7 +3,7 @@ import httpx
 import base64
 
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "ZxhW0J5Q17DnNxZM6VDC")
+ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "44bkQCuwN0jgxNTwkC7j")
 
 async def text_to_audio_base64(text: str) -> str | None:
     """Converte texto em áudio via ElevenLabs e retorna base64."""

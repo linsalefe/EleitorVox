@@ -37,20 +37,21 @@ interface ColumnConfig {
 const ICON_MAP: Record<string, any> = {
   novo: UserPlus,
   em_contato: MessageCircle,
-  qualificado: Sparkles,
-  em_matricula: FileText,
-  negociando: FileText,
-  convertido: CheckCircle,
+  apoiador: Sparkles,
+  engajado: FileText,
+  voluntario: CheckCircle,
+  eleitor: UserPlus,
   perdido: XCircle,
 };
 
 const DEFAULT_COLUMNS: ColumnConfig[] = [
   { key: 'novo', label: 'Novos Leads', color: '#1D4ED8', order: 0 },
   { key: 'em_contato', label: 'Em Contato', color: '#f59e0b', order: 1 },
-  { key: 'qualificado', label: 'Qualificados', color: '#8b5cf6', order: 2 },
-  { key: 'em_matricula', label: 'Em Negociação', color: '#06b6d4', order: 3 },
-  { key: 'convertido', label: 'Convertidos', color: '#10b981', order: 4 },
-  { key: 'perdido', label: 'Perdidos', color: '#ef4444', order: 5 },
+  { key: 'apoiador', label: 'Apoiadores', color: '#8b5cf6', order: 2 },
+  { key: 'engajado', label: 'Engajados', color: '#06b6d4', order: 3 },
+  { key: 'voluntario', label: 'Voluntários', color: '#0ea5e9', order: 4 },
+  { key: 'eleitor', label: 'Eleitores', color: '#10b981', order: 5 },
+  { key: 'perdido', label: 'Perdidos', color: '#ef4444', order: 6 },
 ];
 
 const PRESET_COLORS = [

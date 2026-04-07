@@ -39,18 +39,18 @@ import ConfirmModal from '@/components/ConfirmModal';
 const STAGES = [
   { key: 'novo', label: 'Novos Leads' },
   { key: 'em_contato', label: 'Em Contato' },
-  { key: 'qualificado', label: 'Qualificados' },
-  { key: 'negociando', label: 'Em Negociação' },
-  { key: 'convertido', label: 'Convertidos' },
+  { key: 'apoiador', label: 'Apoiadores' },
+  { key: 'engajado', label: 'Engajados' },
+  { key: 'voluntario', label: 'Voluntários' },
   { key: 'perdido', label: 'Perdidos' },
 ];
 
 const STAGE_STYLES: Record<string, string> = {
   novo: 'bg-blue-50 text-blue-700 border-blue-200',
   em_contato: 'bg-amber-50 text-amber-700 border-amber-200',
-  qualificado: 'bg-purple-50 text-purple-700 border-purple-200',
-  negociando: 'bg-cyan-50 text-cyan-700 border-cyan-200',
-  convertido: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  apoiador: 'bg-purple-50 text-purple-700 border-purple-200',
+  engajado: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+  voluntario: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   perdido: 'bg-red-50 text-red-700 border-red-200',
 };
 

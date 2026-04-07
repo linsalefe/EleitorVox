@@ -30,7 +30,7 @@ const reports = [
     bg: 'bg-purple-50',
     endpoint: '/export/pipeline',
     filters: [],
-    sheets: ['Resumo do Funil', 'Novo Lead', 'Em Contato', 'Qualificado', 'Em Negociação', 'Convertido', 'Perdido'],
+    sheets: ['Resumo do Funil', 'Novo Lead', 'Em Contato', 'Apoiador', 'Engajados', 'Voluntário', 'Perdido'],
   },
   {
     id: 'messages',
@@ -49,9 +49,9 @@ const statusOptions = [
   { value: '', label: 'Todos os status' },
   { value: 'novo', label: 'Novo Lead' },
   { value: 'em_contato', label: 'Em Contato' },
-  { value: 'qualificado', label: 'Qualificado' },
-  { value: 'negociando', label: 'Em Negociação' },
-  { value: 'convertido', label: 'Convertido' },
+  { value: 'apoiador', label: 'Apoiador' },
+  { value: 'engajado', label: 'Engajados' },
+  { value: 'voluntario', label: 'Voluntário' },
   { value: 'perdido', label: 'Perdido' },
 ];
 

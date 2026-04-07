@@ -363,7 +363,7 @@ Formato:
 📌 Expectativa: [se informou]
 �� Valor aceito: [sim/não/não chegou nessa etapa]
 �� Agendamento: [data/hora se marcou]
-📊 Status: [Qualificado/Não qualificado/Incompleto/Passou para humano]
+📊 Status: [Apoiador/Não apoiador/Incompleto/Passou para humano]
 📝 Observações: [algo relevante]
 
 Seja breve e direto."""},

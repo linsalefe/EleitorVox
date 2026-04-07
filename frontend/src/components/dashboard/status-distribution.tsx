@@ -7,18 +7,20 @@ import { Skeleton } from '@/components/ui/skeleton';
 const statusLabels: Record<string, string> = {
   novo: 'Novos Leads',
   em_contato: 'Em Contato',
-  qualificado: 'Qualificados',
-  negociando: 'Em Negociação',
-  convertido: 'Convertidos',
+  apoiador: 'Apoiadores',
+  engajado: 'Engajados',
+  voluntario: 'Voluntários',
+  eleitor: 'Eleitores',
   perdido: 'Perdidos',
 };
 
 const statusColors: Record<string, { bg: string; text: string; bar: string; dot: string }> = {
   novo: { bg: 'bg-blue-50', text: 'text-blue-700', bar: 'bg-blue-500', dot: 'bg-blue-500' },
   em_contato: { bg: 'bg-amber-50', text: 'text-amber-700', bar: 'bg-amber-500', dot: 'bg-amber-500' },
-  qualificado: { bg: 'bg-purple-50', text: 'text-purple-700', bar: 'bg-purple-500', dot: 'bg-purple-500' },
-  negociando: { bg: 'bg-cyan-50', text: 'text-cyan-700', bar: 'bg-cyan-500', dot: 'bg-cyan-500' },
-  convertido: { bg: 'bg-emerald-50', text: 'text-emerald-700', bar: 'bg-emerald-500', dot: 'bg-emerald-500' },
+  apoiador: { bg: 'bg-purple-50', text: 'text-purple-700', bar: 'bg-purple-500', dot: 'bg-purple-500' },
+  engajado: { bg: 'bg-cyan-50', text: 'text-cyan-700', bar: 'bg-cyan-500', dot: 'bg-cyan-500' },
+  voluntario: { bg: 'bg-emerald-50', text: 'text-emerald-700', bar: 'bg-emerald-500', dot: 'bg-emerald-500' },
+  eleitor: { bg: 'bg-green-50', text: 'text-green-700', bar: 'bg-green-500', dot: 'bg-green-500' },
   perdido: { bg: 'bg-red-50', text: 'text-red-700', bar: 'bg-red-500', dot: 'bg-red-500' },
 };
 

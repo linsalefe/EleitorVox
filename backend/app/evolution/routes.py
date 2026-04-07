@@ -1,4 +1,4 @@
-"""
+﻿"""
 Rotas do módulo Evolution API.
 Gerencia instâncias WhatsApp e recebe webhooks.
 """
@@ -345,7 +345,7 @@ async def webhook(instance_name: str, request: Request, db: AsyncSession = Depen
                         import httpx, uuid, os
                         from app.evolution.config import EVOLUTION_API_URL, EVOLUTION_API_KEY
 
-                        media_dir = "/home/ubuntu/eduflow/backend/media"
+                        media_dir = "/home/ubuntu/voxcandidata/backend/media"
                         os.makedirs(media_dir, exist_ok=True)
 
                         ext_map = {

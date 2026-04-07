@@ -1,8 +1,8 @@
-# EduFlow × ElevenLabs — Documentação de Evolução dos Agentes de IA
+﻿# VoxCandidata × ElevenLabs — Documentação de Evolução dos Agentes de IA
 
 > **Última atualização:** 01 de Abril de 2026  
 > **Responsável técnico:** Álefe Lins  
-> **Plataforma:** EduFlow Hub — portal.eduflowia.com
+> **Plataforma:** VoxCandidata Hub — portal.voxcandidataia.com
 
 ---
 
@@ -27,7 +27,7 @@
 
 ## 1. Visão Geral
 
-O EduFlow utiliza a plataforma **ElevenLabs Conversational AI** para executar agentes de voz em ligações telefônicas automáticas via **Twilio**. Os agentes são responsáveis por qualificar leads, agendar reuniões e registrar informações no CRM — tudo sem intervenção humana.
+O VoxCandidata utiliza a plataforma **ElevenLabs Conversational AI** para executar agentes de voz em ligações telefônicas automáticas via **Twilio**. Os agentes são responsáveis por qualificar leads, agendar reuniões e registrar informações no CRM — tudo sem intervenção humana.
 
 ### Tecnologias envolvidas
 
@@ -48,7 +48,7 @@ O EduFlow utiliza a plataforma **ElevenLabs Conversational AI** para executar ag
 ┌─────────────────────────────────────────────────────────────┐
 │                        FLUXO DE LIGAÇÃO                     │
 │                                                             │
-│  EduFlow Backend                                            │
+│  VoxCandidata Backend                                            │
 │       │                                                     │
 │       ├── make_outbound_call(phone, name, course)           │
 │       │         │                                           │
@@ -82,20 +82,20 @@ O EduFlow utiliza a plataforma **ElevenLabs Conversational AI** para executar ag
 
 ## 3. Agentes Configurados
 
-A conta ElevenLabs do EduFlow possui **4 agentes ativos**:
+A conta ElevenLabs do VoxCandidata possui **4 agentes ativos**:
 
 | Agent ID | Nome | Finalidade | Status |
 |----------|------|-----------|--------|
-| `agent_8201khxrydbcfxqtav8ffy0enqft` | **Rafael - SDR (eduflow)** | Qualificação outbound de leads | ✅ Principal |
-| `agent_2001km0vkxc4f1drr7qd72t3bzxp` | EduFlow Retenção | Retenção de clientes | ✅ Ativo |
-| `agent_7701km0c8c0bf15901qantwmkpgz` | EduFlow Suporte | Atendimento de suporte | ✅ Ativo |
+| `agent_8201khxrydbcfxqtav8ffy0enqft` | **Rafael - SDR (voxcandidata)** | Qualificação outbound de leads | ✅ Principal |
+| `agent_2001km0vkxc4f1drr7qd72t3bzxp` | VoxCandidata Retenção | Retenção de clientes | ✅ Ativo |
+| `agent_7701km0c8c0bf15901qantwmkpgz` | VoxCandidata Suporte | Atendimento de suporte | ✅ Ativo |
 | `agent_7701khxr1myeefcabvej9qsjc0tb` | Support agent | Suporte genérico | ⚪ Reserva |
 
 ### Rafael SDR — Agente Principal
 
 O **Rafael** é o agente responsável pelas ligações outbound de qualificação. Ele:
 
-- Se apresenta como consultor da EduFlow
+- Se apresenta como consultor da VoxCandidata
 - Usa a metodologia **SPIN Selling** (Situação → Problema → Implicação → Necessidade-Solução)
 - Qualifica leads em **quente / morno / frio**
 - Agenda reuniões com consultores
@@ -149,7 +149,7 @@ ELEVENLABS_AGENT_ID=agent_8201khxrydbcfxqtav8ffy0enqft
 
 ## 5. Aba Agente — Configurações pela UI
 
-A partir de **01/04/2026**, o EduFlow possui uma interface dedicada para configurar os agentes ElevenLabs diretamente pela plataforma, sem precisar acessar o dashboard do ElevenLabs.
+A partir de **01/04/2026**, o VoxCandidata possui uma interface dedicada para configurar os agentes ElevenLabs diretamente pela plataforma, sem precisar acessar o dashboard do ElevenLabs.
 
 **Localização:** Voice AI → Aba "Agente"
 
@@ -234,14 +234,14 @@ CREATE TABLE agent_tools (
 
 ### Como funciona
 
-A personalidade do agente é gerenciada **diretamente no ElevenLabs** via API. O EduFlow não armazena o system prompt no banco — ele é buscado em tempo real do ElevenLabs ao selecionar o agente na UI.
+A personalidade do agente é gerenciada **diretamente no ElevenLabs** via API. O VoxCandidata não armazena o system prompt no banco — ele é buscado em tempo real do ElevenLabs ao selecionar o agente na UI.
 
 **Fluxo:**
 1. Usuário seleciona o agente no dropdown
-2. EduFlow faz `GET /v1/convai/agents/{agent_id}` no ElevenLabs
+2. VoxCandidata faz `GET /v1/convai/agents/{agent_id}` no ElevenLabs
 3. Carrega `system_prompt` e `voice_id` nos campos
 4. Usuário edita e clica "Salvar no ElevenLabs"
-5. EduFlow faz `PATCH /v1/convai/agents/{agent_id}` com os novos dados
+5. VoxCandidata faz `PATCH /v1/convai/agents/{agent_id}` com os novos dados
 
 ### Rotas backend
 
@@ -285,24 +285,24 @@ As variáveis dinâmicas são injetadas automaticamente no contexto do agente no
 
 Variáveis prefixadas com `secret__` são usadas apenas em headers HTTP e **nunca enviadas ao LLM**:
 
-- `secret__tenant_api_key` — autenticação entre ElevenLabs e EduFlow
+- `secret__tenant_api_key` — autenticação entre ElevenLabs e VoxCandidata
 - `secret__tenant_id` — isolamento multi-tenant
 
 ---
 
 ## 9. Post-Call Webhook
 
-Após cada ligação, o ElevenLabs envia automaticamente um webhook para o EduFlow com todos os dados da conversa.
+Após cada ligação, o ElevenLabs envia automaticamente um webhook para o VoxCandidata com todos os dados da conversa.
 
 ### URL do webhook
 
 ```
-POST https://portal.eduflowia.com/api/voice-ai-el/post-call-webhook
+POST https://portal.voxcandidataia.com/api/voice-ai-el/post-call-webhook
 ```
 
 ### Dados recebidos e processados
 
-| Campo | Origem no payload | Uso no EduFlow |
+| Campo | Origem no payload | Uso no VoxCandidata |
 |-------|------------------|----------------|
 | Transcrição | `data.transcript` | Salva em `ai_call_turns` |
 | Resumo | `data.analysis.transcript_summary` | Traduzido para PT-BR e salvo em `ai_calls.summary` |
@@ -314,7 +314,7 @@ POST https://portal.eduflowia.com/api/voice-ai-el/post-call-webhook
 
 ### Tradução automática do resumo
 
-O resumo gerado pelo ElevenLabs vem em inglês por padrão. O EduFlow traduz automaticamente para PT-BR usando GPT-4o-mini:
+O resumo gerado pelo ElevenLabs vem em inglês por padrão. O VoxCandidata traduz automaticamente para PT-BR usando GPT-4o-mini:
 
 ```python
 translation = await openai_client.chat.completions.create(
@@ -339,7 +339,7 @@ Após salvar os dados, o webhook automaticamente:
 
 ```
 1. DISPARO
-   └── EduFlow cria registro em ai_calls (status: pending)
+   └── VoxCandidata cria registro em ai_calls (status: pending)
    └── Twilio.calls.create() → liga para o lead
 
 2. ATENDIMENTO
@@ -357,8 +357,8 @@ Após salvar os dados, o webhook automaticamente:
        └── end_call → Ligação encerrada
 
 4. PÓS-CHAMADA
-   └── ElevenLabs envia webhook para EduFlow
-   └── EduFlow salva: transcrição, resumo (PT-BR), dados coletados
+   └── ElevenLabs envia webhook para VoxCandidata
+   └── VoxCandidata salva: transcrição, resumo (PT-BR), dados coletados
    └── Lead movido para estágio correto no pipeline
    └── Orquestrador decide próxima ação
 ```
@@ -424,7 +424,7 @@ _(ver seção 7)_
 ### Webhook URL por instância
 
 ```
-https://portal.eduflowia.com/api/evolution/webhook/{instance_name}
+https://portal.voxcandidataia.com/api/evolution/webhook/{instance_name}
 ```
 
 ### Eventos configurados no webhook
@@ -506,4 +506,4 @@ https://portal.eduflowia.com/api/evolution/webhook/{instance_name}
 
 ---
 
-*Documento gerado em 01/04/2026 — EduFlow Hub*
+*Documento gerado em 01/04/2026 — VoxCandidata Hub*

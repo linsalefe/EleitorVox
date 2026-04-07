@@ -1,4 +1,4 @@
-"""
+﻿"""
 Rotas OAuth para integração com Meta (Instagram Business Login)
 """
 from fastapi import APIRouter, Depends, HTTPException
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/oauth", tags=["OAuth"])
 # Instagram Business Login (API do Instagram)
 IG_APP_ID = os.getenv("INSTAGRAM_APP_ID", "")
 IG_APP_SECRET = os.getenv("INSTAGRAM_APP_SECRET", "")
-FRONTEND_URL = os.getenv("FRONTEND_URL", "https://portal.eduflowia.com")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://portal.voxcandidataia.com")
 
 
 class InstagramCallbackRequest(BaseModel):

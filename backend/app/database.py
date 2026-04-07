@@ -1,11 +1,11 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+﻿from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://localhost:5432/eduflow_db")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://localhost:5432/voxcandidata_db")
 
 engine = create_async_engine(
     DATABASE_URL,

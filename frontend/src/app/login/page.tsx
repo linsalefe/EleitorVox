@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -70,9 +70,9 @@ export default function LoginPage() {
         <div className={`relative z-10 max-w-lg transition-all duration-1000 ease-out ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {/* Logo */}
           <div className="flex items-center gap-3 mb-10">
-            <img src="/logo-icon-white.png" alt="EduFlow" className="w-12 h-12 object-contain" />
+            <img src="/logo-icon-white.png" alt="VoxCandidata" className="w-12 h-12 object-contain" />
             <div>
-              <span className="text-2xl font-bold text-white tracking-tight">EduFlow</span>
+              <span className="text-2xl font-bold text-white tracking-tight">VoxCandidata</span>
               <span className="text-2xl font-light text-[#93c5fd] ml-1.5">Hub</span>
             </div>
           </div>
@@ -139,8 +139,8 @@ export default function LoginPage() {
         >
           {/* Logo mobile */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <img src="/logo-icon-white.png" alt="EduFlow" className="w-10 h-10 object-contain" />
-            <span className="text-2xl font-bold text-white">EduFlow</span>
+            <img src="/logo-icon-white.png" alt="VoxCandidata" className="w-10 h-10 object-contain" />
+            <span className="text-2xl font-bold text-white">VoxCandidata</span>
           </div>
 
           {/* Glassmorphism card com animated gradient border */}
@@ -225,7 +225,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <p className="text-center text-[11px] text-gray-600 mt-6">
-            EduFlow © {new Date().getFullYear()} — Todos os direitos reservados
+            VoxCandidata © {new Date().getFullYear()} — Todos os direitos reservados
           </p>
         </div>
       </div>

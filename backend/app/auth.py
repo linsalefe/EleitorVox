@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+﻿from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -14,7 +14,7 @@ from app.models import User
 
 load_dotenv()
 
-SECRET_KEY = os.getenv("JWT_SECRET", "eduflow-secret-2025")
+SECRET_KEY = os.getenv("JWT_SECRET", "voxcandidata-secret-2025")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 24
 

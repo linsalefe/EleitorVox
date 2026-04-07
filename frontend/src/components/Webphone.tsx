@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Phone, PhoneOff, PhoneIncoming, X, Mic, MicOff } from 'lucide-react';
@@ -43,9 +43,9 @@ export default function Webphone() {
       }
     };
     // Troca 1
-    window.addEventListener('eduflow-call', handler);
+    window.addEventListener('voxcandidata-call', handler);
     // Troca 2
-    return () => window.removeEventListener('eduflow-call', handler);
+    return () => window.removeEventListener('voxcandidata-call', handler);
   }, [deviceReady]);
 
   const initDevice = useCallback(async () => {

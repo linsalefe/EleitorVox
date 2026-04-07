@@ -1,4 +1,4 @@
-export default function PrivacyPage() {
+﻿export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-3xl mx-auto px-6 py-16">
@@ -13,7 +13,7 @@ export default function PrivacyPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Política de Privacidade</h1>
-              <p className="text-sm text-gray-400">EduFlow — Plataforma de Atendimento</p>
+              <p className="text-sm text-gray-400">VoxCandidata — Plataforma de Atendimento</p>
             </div>
           </div>
           <p className="text-sm text-gray-400">Última atualização: 21 de fevereiro de 2026</p>
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-3">1. Introdução</h2>
             <p>
-              A EduFlow (&quot;nós&quot;, &quot;nosso&quot; ou &quot;plataforma&quot;) é uma plataforma de gestão de atendimento 
+              A VoxCandidata (&quot;nós&quot;, &quot;nosso&quot; ou &quot;plataforma&quot;) é uma plataforma de gestão de atendimento 
               e relacionamento com leads voltada para instituições educacionais. Esta Política de Privacidade descreve 
               como coletamos, usamos, armazenamos e protegemos as informações pessoais dos usuários e leads que 
               interagem com nossa plataforma.
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
             </p>
             <p className="mt-3">
               <strong className="text-gray-800">Com a instituição contratante:</strong> os dados dos leads são 
-              acessíveis pela instituição empresarial que utiliza a plataforma EduFlow para gerenciar seu atendimento.
+              acessíveis pela instituição empresarial que utiliza a plataforma VoxCandidata para gerenciar seu atendimento.
             </p>
             <p className="mt-2">
               <strong className="text-gray-800">Provedores de serviço:</strong> utilizamos serviços de terceiros 
@@ -197,9 +197,9 @@ export default function PrivacyPage() {
               Para dúvidas, solicitações ou exercício de direitos relacionados à privacidade, entre em contato:
             </p>
             <div className="mt-4 bg-gray-50 rounded-xl p-5 border border-gray-100">
-              <p className="font-medium text-gray-800">EduFlow</p>
-              <p className="mt-1">E-mail: <a href="mailto:privacidade@eduflowia.com" className="text-primary hover:underline">privacidade@eduflowia.com</a></p>
-              <p className="mt-1">Website: <a href="https://portal.eduflowia.com" className="text-primary hover:underline">portal.eduflowia.com</a></p>
+              <p className="font-medium text-gray-800">VoxCandidata</p>
+              <p className="mt-1">E-mail: <a href="mailto:privacidade@voxcandidataia.com" className="text-primary hover:underline">privacidade@voxcandidataia.com</a></p>
+              <p className="mt-1">Website: <a href="https://portal.voxcandidataia.com" className="text-primary hover:underline">portal.voxcandidataia.com</a></p>
             </div>
           </section>
 
@@ -207,7 +207,7 @@ export default function PrivacyPage() {
 
         {/* Footer */}
         <div className="mt-16 pt-8 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-400">© 2026 EduFlow. Todos os direitos reservados.</p>
+          <p className="text-sm text-gray-400">© 2026 VoxCandidata. Todos os direitos reservados.</p>
         </div>
 
       </div>

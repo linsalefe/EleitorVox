@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import {
@@ -205,7 +205,7 @@ export default function KanbanPage() {
               <div>
                 <h1 className="text-lg lg:text-xl font-bold text-foreground">Kanban — Atendimentos IA</h1>
                 <p className="text-[12px] text-gray-400">
-                  Acompanhe todos os leads atendidos pela Nat
+                  Acompanhe todos os leads atendidos pelo Agente IA
                   {stats && ` · ${stats.total} total`}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-# backend/app/jarvis/prompts.py
+﻿# backend/app/jarvis/prompts.py
 """
 System prompt do Jarvis — assistente executivo de CRM por voz.
 Injeta contexto do tenant + documentos de conhecimento para respostas completas.
@@ -61,7 +61,7 @@ A pergunta vem de reconhecimento de voz e pode conter erros de transcrição.
 Interprete sempre no contexto de CRM educacional:
 - "litros" ou "lítros" = leads
 - "lides" ou "lidis" = leads
-- "edu flor" ou "edu flow" ou "eduflor" = EduFlow
+- "edu flor" ou "edu flow" ou "eduflor" = VoxCandidata
 - "canban" ou "cambar" = kanban
 - "funiu" ou "funíl" = funil
 - "matrícula" pode vir como "matrícola" ou "matricola"

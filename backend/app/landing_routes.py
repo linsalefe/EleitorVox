@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+﻿from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.database import get_db
@@ -26,7 +26,7 @@ async def upload_image(file: UploadFile = File(...), user=Depends(get_current_us
         raise HTTPException(400, "Imagem muito grande. Máximo 5MB.")
     with open(filepath, "wb") as f:
         f.write(content)
-    base_url = os.getenv("BASE_URL", "https://portal.eduflowia.com")
+    base_url = os.getenv("BASE_URL", "https://portal.voxcandidataia.com")
     return {"url": f"{base_url}/api/uploads/lp/{filename}"}
 
 # === CRUD Landing Pages (autenticado) ===

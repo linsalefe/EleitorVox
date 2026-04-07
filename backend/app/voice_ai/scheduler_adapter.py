@@ -1,4 +1,4 @@
-"""
+﻿"""
 Scheduler Adapter - Agendamento de reuniões + confirmação.
 Integra com Google Calendar e WhatsApp/SMS para confirmações.
 """
@@ -65,7 +65,7 @@ async def schedule_meeting(
             f"Lead: {lead_name}\n"
             f"Telefone: {lead_phone}\n"
             f"Curso: {course}\n"
-            f"Agendado pela IA Nat (Voice AI)\n"
+            f"Agendado pela IO Agente IA (Voice AI)\n"
             f"Closer: {closer_name}"
         )
 
@@ -147,7 +147,7 @@ async def send_followup_message(
 
     text = (
         f"Oi, {lead_name}! 👋\n\n"
-        f"Aqui é a Nat, da equipe de atendimento. Acabamos de conversar sobre o curso de *{course}*.\n\n"
+        f"Aqui é o Agente IA, da equipe de atendimento. Acabamos de conversar sobre o curso de *{course}*.\n\n"
         f"Fico à disposição pra qualquer dúvida! Se quiser agendar uma conversa mais detalhada "
         f"com nossa consultora, é só me responder aqui. 😊\n\n"
         f"Bons estudos! 📚"

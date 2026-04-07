@@ -1,4 +1,4 @@
-"""
+﻿"""
 Motor de IA com RAG para atendimento via WhatsApp.
 Usa OpenAI para embeddings + geração de respostas.
 """
@@ -353,9 +353,9 @@ async def save_annotation_to_exact(contact_wa_id: str, channel_id: int, db: Asyn
         response = await client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": """Gere um resumo objetivo do atendimento via WhatsApp feito pela IA Nat.
+                {"role": "system", "content": """Gere um resumo objetivo do atendimento via WhatsApp feito pela IO Agente IA.
 Formato:
-📋 RESUMO DO ATENDIMENTO (IA Nat)
+📋 RESUMO DO ATENDIMENTO (IO Agente IA)
 📅 Data: [data atual]
 🎓 Curso de interesse: [curso]
 👤 Graduação: [se informou]
@@ -373,7 +373,7 @@ Seja breve e direto."""},
         )
         summary = response.choices[0].message.content
     except Exception as e:
-        summary = f"�� Atendimento realizado pela IA Nat em {datetime.now().strftime('%d/%m/%Y %H:%M')}. Erro ao gerar resumo: {e}"
+        summary = f"�� Atendimento realizado pela IO Agente IA em {datetime.now().strftime('%d/%m/%Y %H:%M')}. Erro ao gerar resumo: {e}"
     
     # 5. Enviar para timeline da Exact Spotter
     success = await add_timeline_comment(exact_lead.exact_id, summary)

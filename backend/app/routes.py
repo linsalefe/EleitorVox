@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
+﻿from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, delete, text
 from pydantic import BaseModel
@@ -408,7 +408,7 @@ async def send_media(
         result = await evo_send_audio(channel.instance_name, wa_id, b64_data)
         message_type = "audio"
         import uuid as _uuid, os as _os
-        _media_dir = "/home/ubuntu/eduflow/backend/media"
+        _media_dir = "/home/ubuntu/voxcandidata/backend/media"
         _os.makedirs(_media_dir, exist_ok=True)
         _audio_filename = f"{_uuid.uuid4().hex}.ogg"
         _audio_path = f"{_media_dir}/{_audio_filename}"
@@ -839,7 +839,7 @@ async def get_local_media(filename: str):
     import os
     from fastapi.responses import FileResponse
 
-    filepath = os.path.join("/home/ubuntu/eduflow/backend/media", filename)
+    filepath = os.path.join("/home/ubuntu/voxcandidata/backend/media", filename)
     if not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail="Mídia não encontrada")
 

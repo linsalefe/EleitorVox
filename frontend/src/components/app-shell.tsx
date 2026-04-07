@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
@@ -203,14 +203,14 @@ function SidebarNavContent({
         <div className="flex items-center gap-3">
           <Image
             src="/logo-icon-color.png"
-            alt="EduFlow"
+            alt="VoxCandidata"
             width={32}
             height={32}
             className="object-contain flex-shrink-0"
           />
           <div className="flex flex-col group-data-[collapsible=icon]:hidden">
             <span className="font-semibold text-[15px] tracking-widest uppercase leading-tight text-foreground">
-              EduFlow
+              VoxCandidata
             </span>
             <span className="text-[10px] text-muted-foreground font-medium tracking-wide">
               Hub
@@ -375,7 +375,7 @@ function AppShellInner({ children, fullWidth = false }: AppShellProps) {
   const [unreadCount, setUnreadCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
-  const pageTitle = pageTitles[pathname] || 'EduFlow';
+  const pageTitle = pageTitles[pathname] || 'VoxCandidata';
   const { theme, toggleTheme } = useTheme();
 
   /* --- Fetch badges --- */

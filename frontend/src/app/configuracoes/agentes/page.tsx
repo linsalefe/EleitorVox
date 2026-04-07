@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Bot, Save, Info, Zap, ChevronDown, MessageSquare, RotateCcw, ArrowRight } from 'lucide-react';
@@ -6,8 +6,8 @@ import AppShell from "@/components/app-shell";;
 import api from '@/lib/api';
 
 const AGENTS = [
-  { key: 'whatsapp', label: 'Nat WhatsApp', description: 'Qualificação automática via WhatsApp' },
-  { key: 'voice', label: 'Nat Voice', description: 'Ligação automática de qualificação' },
+  { key: 'whatsapp', label: 'Agente IA WhatsApp', description: 'Qualificação automática via WhatsApp' },
+  { key: 'voice', label: 'Agente IA Voice', description: 'Ligação automática de qualificação' },
   { key: 'followup', label: 'Follow-up', description: 'Confirmação e lembretes de reunião' },
   { key: 'reactivation', label: 'Reativação', description: 'Recupera leads frios e no-shows' },
   { key: 'briefing', label: 'Briefing', description: 'Resumo do lead antes da reunião' },
@@ -16,8 +16,8 @@ const AGENTS = [
 const TRIGGER_AGENTS = [
   { key: 'followup', label: 'Follow-up' },
   { key: 'reactivation', label: 'Reativação' },
-  { key: 'whatsapp', label: 'Nat WhatsApp' },
-  { key: 'voice', label: 'Nat Voice' },
+  { key: 'whatsapp', label: 'Agente IA WhatsApp' },
+  { key: 'voice', label: 'Agente IA Voice' },
 ];
 
 const VARIABLES_INFO = 'Variáveis disponíveis: {nome}, {data}, {hora}, {interesse}, {empresa}';

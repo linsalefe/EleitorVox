@@ -1,4 +1,4 @@
-"""
+﻿"""
 Webhook de entrada para LP externas.
 Gerencia webhooks por canal com mensagem de boas-vindas configurável.
 """
@@ -33,7 +33,7 @@ async def list_webhooks(
     )
     webhooks = result.scalars().all()
 
-    base_url = os.getenv("BASE_URL", "https://portal.eduflowia.com")
+    base_url = os.getenv("BASE_URL", "https://portal.voxcandidataia.com")
     output = []
     for w in webhooks:
         channel_result = await db.execute(select(Channel).where(Channel.id == w.channel_id))
@@ -85,7 +85,7 @@ async def create_webhook(
     await db.commit()
     await db.refresh(webhook)
 
-    base_url = os.getenv("BASE_URL", "https://portal.eduflowia.com")
+    base_url = os.getenv("BASE_URL", "https://portal.voxcandidataia.com")
     return {
         "id": webhook.id,
         "url": f"{base_url}/api/webhook/lead/{token}",

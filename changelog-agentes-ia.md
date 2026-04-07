@@ -1,4 +1,4 @@
-# Changelog — Sistema de Agentes IA EduFlow
+﻿# Changelog — Sistema de Agentes IA VoxCandidata
 
 **Data:** 13/03/2026
 **Sessão:** Testes completos + Correções + Novas funcionalidades
@@ -15,7 +15,7 @@ Sessão completa de testes do sistema de agentes IA seguindo o `guia-teste-agent
 
 | # | Teste | Resultado |
 |---|-------|-----------|
-| 1 | Configuração da IA (Nat WhatsApp) | ✅ Passou |
+| 1 | Configuração da IA (Agente IA WhatsApp) | ✅ Passou |
 | 2 | Qualificação completa + FollowupAgent | ✅ Passou |
 | 3 | Trigger por coluna do Kanban → FollowupAgent | ✅ Passou |
 | 4 | Trigger por coluna do Kanban → ReactivationAgent | ✅ Passou |
@@ -143,7 +143,7 @@ async with async_session() as db:
 ### 9. Confirmação duplicada do FollowupAgent
 
 **Arquivo:** `backend/app/agents/followup/agent.py`
-**Problema:** A Nat já confirmava a reunião na conversa do WhatsApp ("Perfeito — confirmado: amanhã às 18h ✅"), e logo depois o FollowupAgent enviava outra mensagem de confirmação — ficava duplicado.
+**Problema:** O Agente IA já confirmava a reunião na conversa do WhatsApp ("Perfeito — confirmado: amanhã às 18h ✅"), e logo depois o FollowupAgent enviava outra mensagem de confirmação — ficava duplicado.
 **Correção:** Removido o envio da mensagem de confirmação do FollowupAgent, mantendo apenas o agendamento de lembretes D-1, D-0 e briefing.
 
 ---
@@ -182,7 +182,7 @@ elif any(kw in msg_lower for kw in ["agendado", "agendada", "confirmado", "confi
 
 | Evento | Movimentação padrão |
 |--------|-------------------|
-| Primeiro contato da Nat | `novo` → `em_contato` |
+| Primeiro contato do Agente IA | `novo` → `em_contato` |
 | Reunião agendada (schedule_call) | `em_contato` → `qualificado` |
 
 **Configuração por tenant:** Cada cliente configura as colunas de destino no painel Agentes IA → seção "Movimentação Automática". A opção "Não mover" desativa a automação para aquela etapa.
@@ -194,7 +194,7 @@ ALTER TABLE tenants ADD COLUMN agent_pipeline_moves JSON DEFAULT '{"on_first_con
 
 ---
 
-### 2. Prompt SDR Profissional para a Nat
+### 2. Prompt SDR Profissional para o Agente IA
 
 **Configuração aplicada em `/ai-config`:**
 Prompt completo com fluxo de qualificação em 5 etapas, tratamento de objeções, regras de comunicação e instruções de encerramento. Substituiu o prompt genérico anterior.

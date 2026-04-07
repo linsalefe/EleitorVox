@@ -1,4 +1,4 @@
-"""
+﻿"""
 Teste rápido para verificar se o TTS da OpenAI está funcionando.
 Rode com: python test_tts.py
 
@@ -27,7 +27,7 @@ async def test_tts():
         response = await client.audio.speech.create(
             model="tts-1",
             voice="nova",
-            input="Olá, aqui é a Nat! Tudo bem com você?",
+            input="Olá, aqui é o Agente IA! Tudo bem com você?",
             response_format="pcm",
             speed=1.0,
         )

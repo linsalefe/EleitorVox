@@ -1,9 +1,9 @@
-"""
+﻿"""
 Client para Evolution API v2.x
 Gerencia instâncias, QR code, status e envio de mensagens.
 """
 import httpx
-from app.evolution.config import EVOLUTION_API_URL, EVOLUTION_API_KEY, EDUFLOW_WEBHOOK_URL
+from app.evolution.config import EVOLUTION_API_URL, EVOLUTION_API_KEY, VOXCANDIDATA_WEBHOOK_URL
 
 
 HEADERS = {
@@ -40,7 +40,7 @@ async def create_instance(instance_name: str) -> dict:
             json={
                 "webhook": {
                     "enabled": True,
-                    "url": f"{EDUFLOW_WEBHOOK_URL}/{instance_name}",
+                    "url": f"{VOXCANDIDATA_WEBHOOK_URL}/{instance_name}",
                     "webhookByEvents": False,
                     "webhookBase64": False,
                     "events": [

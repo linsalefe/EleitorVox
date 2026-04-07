@@ -1,4 +1,4 @@
-# Guia de Teste — Sistema de Agentes IA EduFlow
+﻿# Guia de Teste — Sistema de Agentes IA VoxCandidata
 
 **Atualizado em:** 13/03/2026
 
@@ -11,17 +11,17 @@
 - Agentes ativados na página **Agentes IA** do tenant (`agent_flags`)
 - Mensagens configuradas em **Agentes IA → Mensagens dos Agentes**
 - Movimentação automática configurada em **Agentes IA → Movimentação Automática**
-- Prompt configurado em **Config. IA** com a personalidade da Nat
+- Prompt configurado em **Config. IA** com a personalidade do Agente IA
 - Modelo recomendado: **GPT-4o** (GPT-5 tem instabilidade com JSON e temperature)
 
 ### Verificação rápida das flags
 
 ```bash
 # Ver flags do tenant
-sudo -u postgres psql -d eduflow_db -c "SELECT id, name, agent_plan_flags, agent_flags, agent_pipeline_moves FROM tenants LIMIT 5;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, name, agent_plan_flags, agent_flags, agent_pipeline_moves FROM tenants LIMIT 5;"
 
 # Ver canais e instâncias
-sudo -u postgres psql -d eduflow_db -c "SELECT id, name, instance_name, tenant_id, is_active FROM channels ORDER BY id;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, name, instance_name, tenant_id, is_active FROM channels ORDER BY id;"
 ```
 
 ### Verificar conexão da instância Evolution API
@@ -39,17 +39,17 @@ for d in data:
 
 ---
 
-## Teste 1 — Configuração da IA (Nat WhatsApp)
+## Teste 1 — Configuração da IA (Agente IA WhatsApp)
 
 **Objetivo:** Verificar se o prompt e o RAG estão sendo usados corretamente.
 
 1. Acesse `/ai-config`
 2. Selecione o canal WhatsApp
-3. Ative o **Agente Nat**
+3. Ative o **Agente IA**
 4. Selecione o modelo **GPT-4o**
-5. Escreva um prompt no campo **Personalidade da Nat** (exemplo SDR completo):
+5. Escreva um prompt no campo **Personalidade do Agente IA** (exemplo SDR completo):
    ```
-   Você é a Nat, consultora virtual especializada em pós-graduação.
+   Você é o Agente IA, consultora virtual especializada em pós-graduação.
    Você trabalha como SDR e seu objetivo é qualificar leads e agendar uma reunião com a consultora acadêmica.
 
    ## REGRAS DE COMUNICAÇÃO
@@ -83,11 +83,11 @@ for d in data:
 8. Envie uma mensagem de um número real para o WhatsApp do canal: "Olá, tenho interesse no curso"
 9. Verifique nos logs:
    ```bash
-   sudo journalctl -u eduflow-backend -f
+   sudo journalctl -u voxcandidata-backend -f
    ```
 
 ✅ **Esperado:**
-- A Nat responde com o nome e tom configurados no prompt
+- O Agente IA responde com o nome e tom configurados no prompt
 - O log mostra `[action=continue]`
 - Sem erros de `max_tokens`, `temperature` ou resposta vazia
 
@@ -97,23 +97,23 @@ for d in data:
 
 ## Teste 2 — Qualificação completa + Agendamento + Pipeline
 
-**Objetivo:** Simular um lead sendo qualificado pela Nat até agendar uma reunião, verificando movimentação automática no pipeline e acionamento do FollowupAgent.
+**Objetivo:** Simular um lead sendo qualificado pelo Agente IA até agendar uma reunião, verificando movimentação automática no pipeline e acionamento do FollowupAgent.
 
 ### Preparação
 
 ```bash
 # Resetar status do lead de teste para "novo"
-sudo -u postgres psql -d eduflow_db -c "UPDATE contacts SET lead_status = 'novo' WHERE wa_id = '<NUMERO_TESTE>';"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE contacts SET lead_status = 'novo' WHERE wa_id = '<NUMERO_TESTE>';"
 ```
 
 ### Execução
 
 1. Envie "Olá" para o WhatsApp do canal
-2. Responda as perguntas da Nat (formação, atuação, motivação)
+2. Responda as perguntas do Agente IA (formação, atuação, motivação)
 3. Quando perguntar sobre reunião, responda: "Amanhã às 18h"
 4. Monitore os logs:
    ```bash
-   sudo journalctl -u eduflow-backend -f | grep -i "pipeline\|action=\|orquestrador\|FollowupAgent"
+   sudo journalctl -u voxcandidata-backend -f | grep -i "pipeline\|action=\|orquestrador\|FollowupAgent"
    ```
 
 ✅ **Esperado — Movimentação automática:**
@@ -140,14 +140,14 @@ sudo -u postgres psql -d eduflow_db -c "UPDATE contacts SET lead_status = 'novo'
 
 ```bash
 # Ver schedules criados
-sudo -u postgres psql -d eduflow_db -c "SELECT id, contact_wa_id, type, scheduled_date, scheduled_time, status FROM schedules ORDER BY id DESC LIMIT 5;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, contact_wa_id, type, scheduled_date, scheduled_time, status FROM schedules ORDER BY id DESC LIMIT 5;"
 ```
 
 ✅ **Esperado:** 2 registros novos — `followup_reminder` (D-0) e `briefing_agent`
 
 > **Nota:** O lembrete D-1 só é criado se a reunião for em 2+ dias. Se for "amanhã", o D-1 seria "hoje às 9h" que já passou, então não é criado.
 
-> **Nota:** A mensagem de confirmação NÃO é enviada pelo FollowupAgent — a própria Nat já confirma na conversa. O FollowupAgent apenas agenda os lembretes.
+> **Nota:** A mensagem de confirmação NÃO é enviada pelo FollowupAgent — a próprio Agente IA já confirma na conversa. O FollowupAgent apenas agenda os lembretes.
 
 ---
 
@@ -162,7 +162,7 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, contact_wa_id, type, schedule
 5. Mova um lead para a coluna **Qualificados**
 6. Verifique nos logs:
    ```bash
-   sudo journalctl -u eduflow-backend -f | grep -i "kanban\|followup\|orchestrator"
+   sudo journalctl -u voxcandidata-backend -f | grep -i "kanban\|followup\|orchestrator"
    ```
 
 ✅ **Esperado:**
@@ -185,7 +185,7 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, contact_wa_id, type, schedule
 
 ```bash
 # Adicionar trigger de reativação na coluna "perdido"
-sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET kanban_triggers = (kanban_triggers::jsonb || '{\"perdido\": {\"agent\": \"reactivation\", \"delay\": 0, \"active\": true}}'::jsonb)::json WHERE id = <TENANT_ID>;"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE tenants SET kanban_triggers = (kanban_triggers::jsonb || '{\"perdido\": {\"agent\": \"reactivation\", \"delay\": 0, \"active\": true}}'::jsonb)::json WHERE id = <TENANT_ID>;"
 ```
 
 ### Execução
@@ -194,7 +194,7 @@ sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET kanban_triggers = (ka
 2. Mova um lead para a coluna **Perdidos**
 3. Verifique nos logs:
    ```bash
-   sudo journalctl -u eduflow-backend -f | grep -i "reactivation\|reativação"
+   sudo journalctl -u voxcandidata-backend -f | grep -i "reactivation\|reativação"
    ```
 
 ✅ **Esperado:**
@@ -219,7 +219,7 @@ O briefing é automaticamente agendado pelo FollowupAgent (15 min antes da reuni
 
 ```bash
 # Forçar execução do briefing (usar horário no fuso SP, não UTC!)
-sudo -u postgres psql -d eduflow_db -c "UPDATE schedules SET scheduled_at = NOW() - interval '4 hours' WHERE type = 'briefing_agent' AND status = 'pending' ORDER BY id DESC LIMIT 1;"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE schedules SET scheduled_at = NOW() - interval '4 hours' WHERE type = 'briefing_agent' AND status = 'pending' ORDER BY id DESC LIMIT 1;"
 ```
 
 > ⚠️ **Importante:** O scheduler usa fuso SP (UTC-3). O `NOW()` do PostgreSQL retorna UTC. Use `interval '4 hours'` para garantir que o horário fique no passado no fuso SP.
@@ -229,7 +229,7 @@ sudo -u postgres psql -d eduflow_db -c "UPDATE schedules SET scheduled_at = NOW(
 1. Aguarde até 1 minuto (o scheduler roda a cada minuto)
 2. Verifique nos logs:
    ```bash
-   sudo journalctl -u eduflow-backend -f | grep -i "briefing"
+   sudo journalctl -u voxcandidata-backend -f | grep -i "briefing"
    ```
 
 ✅ **Esperado:**
@@ -242,10 +242,10 @@ sudo -u postgres psql -d eduflow_db -c "UPDATE schedules SET scheduled_at = NOW(
 
 ```bash
 # Ver se o briefing foi salvo nas notas do contato
-sudo -u postgres psql -d eduflow_db -c "SELECT wa_id, LEFT(notes, 300) FROM contacts WHERE notes LIKE '%briefing%' OR notes LIKE '%Briefing%' LIMIT 3;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT wa_id, LEFT(notes, 300) FROM contacts WHERE notes LIKE '%briefing%' OR notes LIKE '%Briefing%' LIMIT 3;"
 
 # Ver status do schedule
-sudo -u postgres psql -d eduflow_db -c "SELECT id, type, scheduled_at, status FROM schedules WHERE type = 'briefing_agent' ORDER BY id DESC LIMIT 3;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, type, scheduled_at, status FROM schedules WHERE type = 'briefing_agent' ORDER BY id DESC LIMIT 3;"
 ```
 
 ✅ **Esperado:** Status `completed` e briefing gerado pelo GPT nas notas do lead.
@@ -267,7 +267,7 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, type, scheduled_at, status FR
 4. Repita o **Teste 2** para criar um novo agendamento
 5. Verifique no banco se o lembrete usa o texto editado:
    ```bash
-   sudo -u postgres psql -d eduflow_db -c "SELECT id, type, notes FROM schedules WHERE type = 'followup_reminder' ORDER BY id DESC LIMIT 3;"
+   sudo -u postgres psql -d voxcandidata_db -c "SELECT id, type, notes FROM schedules WHERE type = 'followup_reminder' ORDER BY id DESC LIMIT 3;"
    ```
 
 ✅ **Esperado:** O campo `notes` do schedule contém exatamente o texto configurado, com as variáveis `{nome}`, `{hora}` substituídas.
@@ -287,7 +287,7 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, type, scheduled_at, status FR
 3. Salve
 4. Resete o lead de teste:
    ```bash
-   sudo -u postgres psql -d eduflow_db -c "UPDATE contacts SET lead_status = 'novo' WHERE wa_id = '<NUMERO_TESTE>';"
+   sudo -u postgres psql -d voxcandidata_db -c "UPDATE contacts SET lead_status = 'novo' WHERE wa_id = '<NUMERO_TESTE>';"
    ```
 
 ### Execução
@@ -295,7 +295,7 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, type, scheduled_at, status FR
 1. Envie "Olá" do celular
 2. Monitore:
    ```bash
-   sudo journalctl -u eduflow-backend -f | grep -i "pipeline"
+   sudo journalctl -u voxcandidata-backend -f | grep -i "pipeline"
    ```
 
 ✅ **Esperado no primeiro contato:**
@@ -325,13 +325,13 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, type, scheduled_at, status FR
 ### Cenário A: Tenant sem voice
 
 ```bash
-sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET agent_flags = '{\"voice\": false, \"followup\": true, \"reactivation\": true, \"briefing\": true, \"whatsapp\": true}' WHERE id = <TENANT_ID>;"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE tenants SET agent_flags = '{\"voice\": false, \"followup\": true, \"reactivation\": true, \"briefing\": true, \"whatsapp\": true}' WHERE id = <TENANT_ID>;"
 ```
 
 1. Faça o fluxo de qualificação completo
 2. Verifique nos logs:
    ```bash
-   sudo journalctl -u eduflow-backend --since "2 min ago" --no-pager | grep -i "voice\|Tenant\|closer"
+   sudo journalctl -u voxcandidata-backend --since "2 min ago" --no-pager | grep -i "voice\|Tenant\|closer"
    ```
 
 ✅ **Esperado:** `👤 Tenant sem voice ativo — reunião com closer humana`
@@ -339,7 +339,7 @@ sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET agent_flags = '{\"voi
 ### Cenário B: Tenant com voice
 
 ```bash
-sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET agent_flags = '{\"voice\": true, \"followup\": true, \"reactivation\": true, \"briefing\": true, \"whatsapp\": true}' WHERE id = <TENANT_ID>;"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE tenants SET agent_flags = '{\"voice\": true, \"followup\": true, \"reactivation\": true, \"briefing\": true, \"whatsapp\": true}' WHERE id = <TENANT_ID>;"
 ```
 
 1. Faça o fluxo de qualificação completo
@@ -352,19 +352,19 @@ sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET agent_flags = '{\"voi
 
 ```bash
 # Ver últimas mensagens enviadas pela IA
-sudo -u postgres psql -d eduflow_db -c "SELECT content, timestamp FROM messages WHERE sent_by_ai = true ORDER BY timestamp DESC LIMIT 5;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT content, timestamp FROM messages WHERE sent_by_ai = true ORDER BY timestamp DESC LIMIT 5;"
 
 # Ver contexto dos leads
-sudo -u postgres psql -d eduflow_db -c "SELECT lead_id, call_outcome, meeting_date, last_event FROM lead_agent_context ORDER BY id DESC LIMIT 5;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT lead_id, call_outcome, meeting_date, last_event FROM lead_agent_context ORDER BY id DESC LIMIT 5;"
 
 # Ver schedules pendentes
-sudo -u postgres psql -d eduflow_db -c "SELECT type, scheduled_date, scheduled_time, status FROM schedules WHERE status = 'pending' ORDER BY scheduled_at ASC LIMIT 10;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT type, scheduled_date, scheduled_time, status FROM schedules WHERE status = 'pending' ORDER BY scheduled_at ASC LIMIT 10;"
 
 # Ver flags e movimentação do tenant
-sudo -u postgres psql -d eduflow_db -c "SELECT id, name, agent_flags, agent_pipeline_moves FROM tenants LIMIT 5;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, name, agent_flags, agent_pipeline_moves FROM tenants LIMIT 5;"
 
 # Ver kanban triggers
-sudo -u postgres psql -d eduflow_db -c "SELECT id, name, kanban_triggers FROM tenants LIMIT 5;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, name, kanban_triggers FROM tenants LIMIT 5;"
 ```
 
 ---
@@ -373,25 +373,25 @@ sudo -u postgres psql -d eduflow_db -c "SELECT id, name, kanban_triggers FROM te
 
 ```bash
 # Logs em tempo real
-sudo journalctl -u eduflow-backend -f
+sudo journalctl -u voxcandidata-backend -f
 
 # Últimos 50 logs
-sudo journalctl -u eduflow-backend -n 50 --no-pager
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager
 
 # Filtrar só erros
-sudo journalctl -u eduflow-backend -n 50 --no-pager | grep "❌\|ERROR\|Error"
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager | grep "❌\|ERROR\|Error"
 
 # Filtrar agentes
-sudo journalctl -u eduflow-backend -n 50 --no-pager | grep "Agent\|Orchestrator\|followup\|reactivation\|briefing"
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager | grep "Agent\|Orchestrator\|followup\|reactivation\|briefing"
 
 # Filtrar pipeline
-sudo journalctl -u eduflow-backend -n 50 --no-pager | grep "Pipeline\|pipeline\|movido"
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager | grep "Pipeline\|pipeline\|movido"
 
 # Filtrar scheduler
-sudo journalctl -u eduflow-backend -n 50 --no-pager | grep "⏰\|Scheduler\|scheduler"
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager | grep "⏰\|Scheduler\|scheduler"
 
 # Filtrar actions da IA
-sudo journalctl -u eduflow-backend -n 50 --no-pager | grep "action="
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager | grep "action="
 ```
 
 ---
@@ -403,7 +403,7 @@ sudo journalctl -u eduflow-backend -n 50 --no-pager | grep "action="
 1. Verificar se a instância Evolution está `open`
 2. Verificar se o webhook está configurado: `curl -s -X GET "http://<EVOLUTION_IP>:8080/webhook/find/<INSTANCE_NAME>" -H "apikey: <KEY>"`
 3. Verificar se `ai_active = true` no contato
-4. Verificar logs: `sudo journalctl -u eduflow-backend -f`
+4. Verificar logs: `sudo journalctl -u voxcandidata-backend -f`
 
 ### Action sempre vem como `continue`
 

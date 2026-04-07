@@ -1,4 +1,4 @@
-"""
+﻿"""
 Rotas do módulo Voice AI Inbound.
 Endpoints: IVR (menu de voz), gather (captura dígito), post-call webhook.
 Usa ElevenLabs Agents via Register Call — ElevenLabs gerencia toda a conversa.
@@ -232,7 +232,7 @@ async def inbound_post_call(request: Request):
                 outcome=outcome,
                 source=f"inbound_{agent_type}",
                 lead_name=caller,
-                campaign=f"EduFlow {agent_type.title()}",
+                campaign=f"VoxCandidata {agent_type.title()}",
                 summary=summary_text or transcript_text[:2000],
                 duration_seconds=int(duration),
                 total_turns=len([t for t in transcript_list if t.get("message")]),

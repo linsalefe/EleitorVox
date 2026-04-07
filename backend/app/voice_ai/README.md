@@ -1,6 +1,6 @@
-# 📞 EduFlow Voice AI — Módulo de Ligações com IA
+﻿# 📞 VoxCandidata Voice AI — Módulo de Ligações com IA
 
-Sistema de ligações automáticas com IA para qualificação de leads, integrado ao EduFlow Hub.
+Sistema de ligações automáticas com IA para qualificação de leads, integrado ao VoxCandidata Hub.
 
 ---
 
@@ -12,7 +12,7 @@ Sistema de ligações automáticas com IA para qualificação de leads, integrad
 | PostgreSQL + Migrations | ✅ Operacional | 5 tabelas do Voice AI criadas |
 | Backend FastAPI | ✅ Operacional | Uvicorn na porta 8001 |
 | Frontend Next.js | ✅ Operacional | Build de produção na porta 3000 |
-| Nginx + SSL | ✅ Operacional | portal.eduflowia.com |
+| Nginx + SSL | ✅ Operacional | portal.voxcandidataia.com |
 | Login/Auth | ✅ Operacional | JWT funcionando |
 | Dashboard `/api/voice-ai/dashboard` | ✅ Operacional | Métricas e KPIs |
 | Twilio (disparo de chamadas) | ✅ Operacional | Número +553122980172 |
@@ -29,8 +29,8 @@ Sistema de ligações automáticas com IA para qualificação de leads, integrad
 | Score de qualificação | ✅ Funciona | Score 0-100 calculado automaticamente |
 | Resumo automático | ✅ Funciona | Gerado ao final da chamada |
 | Atualização CRM | ✅ Funciona | Status e resumo atualizados no banco |
-| RAG (Base de Conhecimento) | ✅ Funciona | 10 pós-graduações CENAT com embeddings |
-| Prompt SDR (Nat/CENAT) | ✅ Funciona | Baseado no pitch real da Vitória |
+| RAG (Base de Conhecimento) | ✅ Funciona | 10 pós-graduações VoxCandidata com embeddings |
+| Prompt SDR (Nat/VoxCandidata) | ✅ Funciona | Baseado no pitch real da Vitória |
 | Agendamento inteligente | ✅ Funciona | Turno → Dia → Horário específico |
 | Encerramento suave | ✅ Funciona | Voucher + ementa + recapitulação |
 | Gravação de chamadas | ✅ Funciona | Salvas no Twilio + URL no banco |
@@ -52,7 +52,7 @@ Sistema de ligações automáticas com IA para qualificação de leads, integrad
 - **create_response: true** (resposta automática após detecção de turno)
 
 ### Prompt SDR Humanizado
-- **Identidade:** Nat, consultora do CENAT
+- **Identidade:** Nat, consultora do VoxCandidata
 - **Adaptive Listening:** Usa palavras do lead, conecta com o curso
 - **Turn Pattern:** Ack curto → Espelho → Pergunta (nunca formulário)
 - **Conversation Flow Rules:** Nunca para em frase informativa, sempre emenda com próximo passo
@@ -61,7 +61,7 @@ Sistema de ligações automáticas com IA para qualificação de leads, integrad
 - **Variedade:** Alterna acks, nunca repete mesma frase
 
 ### RAG — Base de Conhecimento
-10 pós-graduações do CENAT com embeddings (text-embedding-3-small):
+10 pós-graduações do VoxCandidata com embeddings (text-embedding-3-small):
 1. Psicologia Hospitalar e da Saúde
 2. Supervisão Clínica-Institucional (2026)
 3. Novas Abordagens em Saúde Mental (Luta Antimanicomial)
@@ -192,7 +192,7 @@ backend/app/voice_ai/
 | Item | Valor |
 |------|-------|
 | **IP** | 44.211.127.84 |
-| **Domínio** | portal.eduflowia.com |
+| **Domínio** | portal.voxcandidataia.com |
 | **SSL** | Let's Encrypt |
 | **SO** | Ubuntu 22.04 |
 | **RAM** | 2GB (Lightsail $12/mês) |
@@ -203,19 +203,19 @@ backend/app/voice_ai/
 ### Serviços Systemd
 
 ```bash
-sudo systemctl status eduflow-backend   # FastAPI (porta 8001)
-sudo systemctl status eduflow-frontend  # Next.js (porta 3000)
+sudo systemctl status voxcandidata-backend   # FastAPI (porta 8001)
+sudo systemctl status voxcandidata-frontend  # Next.js (porta 3000)
 ```
 
 ### Variáveis de Ambiente (.env)
 
 ```env
-DATABASE_URL=postgresql+asyncpg://eduflow:SENHA@localhost:5432/eduflow_db
+DATABASE_URL=postgresql+asyncpg://voxcandidata:SENHA@localhost:5432/voxcandidata_db
 OPENAI_API_KEY=SUA_OPENAI_KEY
 TWILIO_ACCOUNT_SID=SEU_TWILIO_SID
 TWILIO_AUTH_TOKEN=SEU_TWILIO_TOKEN
 TWILIO_PHONE_NUMBER=+553122980172
-BASE_URL=https://portal.eduflowia.com
+BASE_URL=https://portal.voxcandidataia.com
 VOICE_AI_ENABLED=true
 ```
 
@@ -223,8 +223,8 @@ VOICE_AI_ENABLED=true
 
 | Evento | URL | Método |
 |--------|-----|--------|
-| A call comes in | `https://portal.eduflowia.com/api/voice-ai/twilio/answer` | POST |
-| Call status changes | `https://portal.eduflowia.com/api/voice-ai/twilio/status` | POST |
+| A call comes in | `https://portal.voxcandidataia.com/api/voice-ai/twilio/answer` | POST |
+| Call status changes | `https://portal.voxcandidataia.com/api/voice-ai/twilio/status` | POST |
 
 ---
 
@@ -301,7 +301,7 @@ OPENING → CONTEXT → QUALIFY → HANDLE_OBJECTION
 
 ### Logs do Backend
 ```bash
-sudo journalctl -u eduflow-backend -f | grep -E "📞|✅|❌|🎙️|🤖|📡|RAG|TIMING|greeting|error"
+sudo journalctl -u voxcandidata-backend -f | grep -E "📞|✅|❌|🎙️|🤖|📡|RAG|TIMING|greeting|error"
 ```
 
 ### Disparar Chamada de Teste
@@ -316,14 +316,14 @@ curl -s -X POST http://localhost:8001/api/voice-ai/leads/new \
 
 ### Baixar Gravação
 ```bash
-source ~/eduflow/backend/.env
-sudo -u postgres psql eduflow_db -c "SELECT recording_url FROM ai_calls WHERE recording_url IS NOT NULL ORDER BY id DESC LIMIT 1;"
+source ~/voxcandidata/backend/.env
+sudo -u postgres psql voxcandidata_db -c "SELECT recording_url FROM ai_calls WHERE recording_url IS NOT NULL ORDER BY id DESC LIMIT 1;"
 curl -u "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN" -o /tmp/gravacao.mp3 "URL_AQUI"
 ```
 
 ### Gerar Embeddings para novos documentos
 ```bash
-cd ~/eduflow/backend && source venv/bin/activate && python3 /tmp/gen_embeddings.py
+cd ~/voxcandidata/backend && source venv/bin/activate && python3 /tmp/gen_embeddings.py
 ```
 
 ---

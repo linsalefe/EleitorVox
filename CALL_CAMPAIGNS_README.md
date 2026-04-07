@@ -1,4 +1,4 @@
-# 📞 Call Campaigns — Disparo de Ligações em Lista
+﻿# 📞 Call Campaigns — Disparo de Ligações em Lista
 
 ## Visão Geral
 
@@ -77,7 +77,7 @@ O módulo **Call Campaigns** permite disparar ligações automáticas via IA (El
 
 ```sql
 -- Executar no servidor via SSH:
-sudo -u postgres psql eduflow_db << 'EOF'
+sudo -u postgres psql voxcandidata_db << 'EOF'
 
 CREATE TABLE IF NOT EXISTS call_campaigns (
     id SERIAL PRIMARY KEY,
@@ -118,10 +118,10 @@ CREATE INDEX IF NOT EXISTS idx_campaign_status ON call_campaigns(status);
 CREATE INDEX IF NOT EXISTS idx_campaign_items_campaign ON call_campaign_items(campaign_id);
 CREATE INDEX IF NOT EXISTS idx_campaign_items_status ON call_campaign_items(status);
 
-GRANT ALL PRIVILEGES ON TABLE call_campaigns TO eduflow;
-GRANT ALL PRIVILEGES ON TABLE call_campaign_items TO eduflow;
-GRANT USAGE, SELECT ON SEQUENCE call_campaigns_id_seq TO eduflow;
-GRANT USAGE, SELECT ON SEQUENCE call_campaign_items_id_seq TO eduflow;
+GRANT ALL PRIVILEGES ON TABLE call_campaigns TO voxcandidata;
+GRANT ALL PRIVILEGES ON TABLE call_campaign_items TO voxcandidata;
+GRANT USAGE, SELECT ON SEQUENCE call_campaigns_id_seq TO voxcandidata;
+GRANT USAGE, SELECT ON SEQUENCE call_campaign_items_id_seq TO voxcandidata;
 
 EOF
 ```
@@ -278,7 +278,7 @@ O webhook do ElevenLabs (`/api/voice-ai-el/post-call-webhook`) é chamado automa
 ### Primeira vez (após criar os arquivos)
 ```bash
 # 1. Migração SQL (no servidor)
-sudo -u postgres psql eduflow_db < migration_campaigns.sql
+sudo -u postgres psql voxcandidata_db < migration_campaigns.sql
 
 # 2. Deploy do código
 git add .
@@ -286,16 +286,16 @@ git commit -m "feat: call campaigns"
 git push
 
 # 3. No servidor
-cd ~/eduflow
+cd ~/voxcandidata
 git pull
-sudo systemctl restart eduflow-backend
-cd frontend && npm run build && sudo systemctl restart eduflow-frontend
+sudo systemctl restart voxcandidata-backend
+cd frontend && npm run build && sudo systemctl restart voxcandidata-frontend
 ```
 
 ### Verificação
 ```bash
 # Backend iniciou com worker
-sudo journalctl -u eduflow-backend --no-pager -n 20 | grep "Campaign Worker"
+sudo journalctl -u voxcandidata-backend --no-pager -n 20 | grep "Campaign Worker"
 # Deve mostrar: 📞 Campaign Worker iniciado
 
 # Rotas respondendo
@@ -303,7 +303,7 @@ curl -s http://localhost:8001/api/voice-ai-el/campaigns
 # Deve retornar: {"detail":"Not authenticated"}
 
 # Tabelas criadas
-sudo -u postgres psql eduflow_db -c "\dt call_*"
+sudo -u postgres psql voxcandidata_db -c "\dt call_*"
 # Deve listar call_campaigns e call_campaign_items
 ```
 
@@ -313,9 +313,9 @@ sudo -u postgres psql eduflow_db -c "\dt call_*"
 
 | Problema | Causa | Solução |
 |----------|-------|---------|
-| Worker não inicia | Import falha ou não registrado no main.py | Verificar logs: `sudo journalctl -u eduflow-backend` |
+| Worker não inicia | Import falha ou não registrado no main.py | Verificar logs: `sudo journalctl -u voxcandidata-backend` |
 | Ligação não toca | Número sem 9° dígito | Verificar `format_phone()` em `campaign_routes.py` |
 | 422 ao criar campanha | `contact_ids` com null | Verificar se `/api/contacts` retorna campo `id` |
-| Campanha fica "Em execução" sem avançar | Worker não processando | Reiniciar backend: `sudo systemctl restart eduflow-backend` |
+| Campanha fica "Em execução" sem avançar | Worker não processando | Reiniciar backend: `sudo systemctl restart voxcandidata-backend` |
 | Webhook não atualiza campanha | Múltiplos contatos com mesmo telefone | Usar `.limit(1)` na busca do webhook |
 | Item fica "Ligando" indefinidamente | Webhook do ElevenLabs não configurado | Configurar webhook URL no painel ElevenLabs |

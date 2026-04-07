@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+﻿from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import Response
 from pydantic import BaseModel
 from twilio.jwt.access_token import AccessToken
@@ -307,7 +307,7 @@ async def post_call_to_exact_spotter(call_log):
 
     text = (
         # Troca 6
-        f"📞 LIGAÇÃO VIA EduFlow\n"
+        f"📞 LIGAÇÃO VIA VoxCandidata\n"
         f"📅 Data: {call_log.created_at.strftime('%d/%m/%Y %H:%M') if call_log.created_at else 'N/A'}\n"
         f"📱 Direção: {'Saída' if call_log.direction == 'outbound' else 'Entrada'}\n"
         f"👤 Atendente: {call_log.user_name or 'N/A'}\n"

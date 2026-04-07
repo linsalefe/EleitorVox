@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+﻿from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timedelta
 from app.auth import get_current_user, get_tenant_id
@@ -62,7 +62,7 @@ async def book_appointment(
     end_dt = start_dt + timedelta(minutes=duration)
     
     summary = f"📞 Ligação - {lead_name} ({course})"
-    description = f"Lead: {lead_name}\nTelefone: {lead_phone}\nCurso: {course}\nAgendado pela IA Nat"
+    description = f"Lead: {lead_name}\nTelefone: {lead_phone}\nCurso: {course}\nAgendado pela IO Agente IA"
     
     event = await create_event(cal_id, summary, description, start_dt, end_dt)
     

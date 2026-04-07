@@ -1,4 +1,4 @@
-import os
+﻿import os
 from datetime import datetime, timedelta
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -147,7 +147,7 @@ ou
             end_dt = start_dt + timedelta(minutes=30)
             
             summary = f"📞 Ligação - {lead_name} ({lead_course})"
-            description = f"Lead: {lead_name}\nTelefone: {lead_phone}\nCurso: {lead_course}\nAgendado pela IA Nat"
+            description = f"Lead: {lead_name}\nTelefone: {lead_phone}\nCurso: {lead_course}\nAgendado pela IO Agente IA"
             
             event = await create_event(cal_id, summary, description, start_dt, end_dt)
             print(f"�� Evento criado automaticamente: {result['data']} {result['hora']}")

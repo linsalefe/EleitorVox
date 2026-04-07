@@ -33,7 +33,7 @@ export async function generateMetadata({
   const description = heroSection?.data?.subtitle || config.heroSubtitle || `Saiba mais sobre ${data.title}`;
   const ogImage = config.heroImageUrl || config.logoUrl || '';
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://portal.eduflowia.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://portal.voxcandidataia.com';
   const pageUrl = `${baseUrl}/lp/${slug}`;
 
   return {

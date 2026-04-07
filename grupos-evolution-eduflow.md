@@ -1,8 +1,8 @@
-# EduFlow × Evolution API — Suporte a Grupos WhatsApp
+﻿# VoxCandidata × Evolution API — Suporte a Grupos WhatsApp
 
 > **Última atualização:** 01 de Abril de 2026  
 > **Responsável técnico:** Álefe Lins  
-> **Plataforma:** EduFlow Hub — portal.eduflowia.com
+> **Plataforma:** VoxCandidata Hub — portal.voxcandidataia.com
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## 1. Visão Geral
 
-O EduFlow suporta recebimento e exibição de mensagens de **grupos WhatsApp** via Evolution API. Mensagens enviadas em grupos onde a instância conectada é participante aparecem automaticamente na aba **Conversas**, identificadas com ícone de grupo e o nome do grupo correto.
+O VoxCandidata suporta recebimento e exibição de mensagens de **grupos WhatsApp** via Evolution API. Mensagens enviadas em grupos onde a instância conectada é participante aparecem automaticamente na aba **Conversas**, identificadas com ícone de grupo e o nome do grupo correto.
 
 ### O que funciona
 
@@ -55,7 +55,7 @@ No WhatsApp, cada entidade tem um **JID (Jabber ID)** único:
 | Grupo | `{id}@g.us` | `120363407291306248@g.us` |
 | Participante em grupo | `{lid}@lid` | `260970953867397@lid` |
 
-O EduFlow usa o JID do **grupo** como identificador do contato (`wa_id`), não o número individual de quem enviou.
+O VoxCandidata usa o JID do **grupo** como identificador do contato (`wa_id`), não o número individual de quem enviou.
 
 ### Estrutura de uma mensagem de grupo
 
@@ -126,7 +126,7 @@ curl -s "http://13.221.209.242:8080/settings/find/{instance_name}" \
 ### URL do webhook por instância
 
 ```
-https://portal.eduflowia.com/api/evolution/webhook/{instance_name}
+https://portal.voxcandidataia.com/api/evolution/webhook/{instance_name}
 ```
 
 **Importante:** A URL inclui o nome da instância no path. O endpoint na Evolution API estava configurado com URL genérica (`/api/evolution/webhook`) que retornava 404. A correção foi incluir `/{instance_name}` na URL.
@@ -137,7 +137,7 @@ https://portal.eduflowia.com/api/evolution/webhook/{instance_name}
 {
   "webhook": {
     "enabled": true,
-    "url": "https://portal.eduflowia.com/api/evolution/webhook/{instance_name}",
+    "url": "https://portal.voxcandidataia.com/api/evolution/webhook/{instance_name}",
     "webhook_by_events": false,
     "webhook_base64": false,
     "events": [
@@ -171,7 +171,7 @@ curl -s -X POST "http://13.221.209.242:8080/webhook/set/{instance_name}" \
   -d '{
     "webhook": {
       "enabled": true,
-      "url": "https://portal.eduflowia.com/api/evolution/webhook/{instance_name}",
+      "url": "https://portal.voxcandidataia.com/api/evolution/webhook/{instance_name}",
       "webhook_by_events": false,
       "webhook_base64": false,
       "events": [
@@ -208,7 +208,7 @@ curl -s "http://13.221.209.242:8080/webhook/find/{instance_name}" \
         │
         ▼
 3. Evolution envia webhook para:
-   POST https://portal.eduflowia.com/api/evolution/webhook/ia
+   POST https://portal.voxcandidataia.com/api/evolution/webhook/ia
         │
         ▼
 4. Backend identifica remoteJid com @g.us
@@ -231,7 +231,7 @@ curl -s "http://13.221.209.242:8080/webhook/find/{instance_name}" \
    → content = texto da mensagem
         │
         ▼
-7. Grupo aparece na lista de conversas do EduFlow
+7. Grupo aparece na lista de conversas do VoxCandidata
 ```
 
 ---
@@ -369,14 +369,14 @@ Durante a implementação, os seguintes problemas foram identificados e corrigid
 
 ### Problema 1 — URL do webhook incorreta
 
-**Sintoma:** Evolution enviava webhooks mas EduFlow retornava 404.
+**Sintoma:** Evolution enviava webhooks mas VoxCandidata retornava 404.
 
 **Causa:** URL configurada como `/api/evolution/webhook` (sem instância). O endpoint real exige `/api/evolution/webhook/{instance_name}`.
 
 **Correção:** Atualizar URL nas instâncias para incluir o nome:
 ```
-https://portal.eduflowia.com/api/evolution/webhook/ia
-https://portal.eduflowia.com/api/evolution/webhook/gv_sports_comercial
+https://portal.voxcandidataia.com/api/evolution/webhook/ia
+https://portal.voxcandidataia.com/api/evolution/webhook/gv_sports_comercial
 ```
 
 ### Problema 2 — `groupsIgnore: true` nas instâncias
@@ -490,7 +490,7 @@ for g in data:
 ### Verificar grupos salvos no banco
 
 ```bash
-sudo -u postgres psql eduflow_db -c "
+sudo -u postgres psql voxcandidata_db -c "
 SELECT wa_id, name, tenant_id, created_at
 FROM contacts
 WHERE is_group = true
@@ -501,7 +501,7 @@ ORDER BY created_at DESC;
 ### Verificar mensagens de um grupo
 
 ```bash
-sudo -u postgres psql eduflow_db -c "
+sudo -u postgres psql voxcandidata_db -c "
 SELECT sender_name, content, timestamp
 FROM messages
 WHERE contact_wa_id = '{group_jid}'
@@ -545,4 +545,4 @@ LIMIT 20;
 
 ---
 
-*Documento gerado em 01/04/2026 — EduFlow Hub*
+*Documento gerado em 01/04/2026 — VoxCandidata Hub*

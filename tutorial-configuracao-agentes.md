@@ -1,10 +1,10 @@
-# Tutorial: Configurando os Agentes IA para um Cliente Real
+﻿# Tutorial: Configurando os Agentes IA para um Cliente Real
 
 ---
 
 ## Visão Geral
 
-O sistema de agentes do EduFlow funciona em 3 camadas:
+O sistema de agentes do VoxCandidata funciona em 3 camadas:
 
 1. **Superadmin** — define quais agentes o cliente pode usar (plano)
 2. **Cliente (admin)** — ativa os agentes e configura os triggers
@@ -14,13 +14,13 @@ O sistema de agentes do EduFlow funciona em 3 camadas:
 
 ## PASSO 1 — Superadmin: Liberar agentes no plano do cliente
 
-Acesse: `https://portal.eduflowia.com` logado como superadmin.
+Acesse: `https://portal.voxcandidataia.com` logado como superadmin.
 
 1. Vá em **Painel Admin**
 2. Encontre o tenant do cliente e clique para expandir
 3. Na seção **Agentes IA**, clique nos agentes que deseja liberar para o cliente:
-   - **Nat WhatsApp** — qualificação automática via WhatsApp
-   - **Nat Voice** — ligação automática de qualificação
+   - **Agente IA WhatsApp** — qualificação automática via WhatsApp
+   - **Agente IA Voice** — ligação automática de qualificação
    - **Follow-up** — confirmação e lembretes de reunião
    - **Reativação** — recupera leads frios e no-shows
    - **Briefing** — resumo do lead antes da reunião
@@ -70,15 +70,15 @@ Na seção **Agentes ativos**, ligue o toggle de cada agente que o cliente quer 
 ### Cenários comuns:
 
 **Cliente com Voice AI completo:**
-- ✅ Nat WhatsApp — ON
-- ✅ Nat Voice — ON
+- ✅ Agente IA WhatsApp — ON
+- ✅ Agente IA Voice — ON
 - ✅ Follow-up — ON
 - ✅ Reativação — ON
 - ✅ Briefing — ON
 
 **Cliente só com WhatsApp (sem ligações):**
-- ✅ Nat WhatsApp — ON
-- ❌ Nat Voice — OFF
+- ✅ Agente IA WhatsApp — ON
+- ❌ Agente IA Voice — OFF
 - ✅ Follow-up — ON
 - ✅ Reativação — ON
 - ❌ Briefing — OFF
@@ -99,8 +99,8 @@ Aqui o cliente define: **"quando um lead entrar na coluna X, acionar o agente Y"
 
 | Coluna | Agente | Delay | Ativo |
 |--------|--------|-------|-------|
-| Novos Leads | Nat WhatsApp | 0 min | ✅ |
-| Qualificados | Nat Voice | 5 min | ✅ |
+| Novos Leads | Agente IA WhatsApp | 0 min | ✅ |
+| Qualificados | Agente IA Voice | 5 min | ✅ |
 | Reunião Marcada | Follow-up | 0 min | ✅ |
 | Perdidos | Reativação | 1440 min (24h) | ✅ |
 
@@ -108,7 +108,7 @@ Aqui o cliente define: **"quando um lead entrar na coluna X, acionar o agente Y"
 
 | Coluna | Agente | Delay | Ativo |
 |--------|--------|-------|-------|
-| Novos Leads | Nat WhatsApp | 0 min | ✅ |
+| Novos Leads | Agente IA WhatsApp | 0 min | ✅ |
 | Reunião Marcada | Follow-up | 0 min | ✅ |
 | Perdidos | Reativação | 1440 min (24h) | ✅ |
 
@@ -130,7 +130,7 @@ Aqui o cliente define: **"quando um lead entrar na coluna X, acionar o agente Y"
 
 ### Verificar nos logs (acesso servidor):
 ```bash
-sudo journalctl -u eduflow-backend --since "5 minutes ago" --no-pager | grep -E "🤖|➡️|📋|✅|⚠️"
+sudo journalctl -u voxcandidata-backend --since "5 minutes ago" --no-pager | grep -E "🤖|➡️|📋|✅|⚠️"
 ```
 
 ---
@@ -139,10 +139,10 @@ sudo journalctl -u eduflow-backend --since "5 minutes ago" --no-pager | grep -E 
 
 ```
 Lead entra → Coluna "Novos Leads"
-    └─ Trigger: Nat WhatsApp dispara
+    └─ Trigger: Agente IA WhatsApp dispara
         └─ IA qualifica via WhatsApp
             └─ Se qualificado → Orquestrador
-                └─ Nat Voice agenda ligação
+                └─ Agente IA Voice agenda ligação
                     └─ Ligação realizada
                         └─ Se qualificado → Follow-up
                             ├─ Mensagem de confirmação enviada

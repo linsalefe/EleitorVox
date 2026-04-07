@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import {
@@ -202,7 +202,7 @@ export default function AIConfigPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">Configuração da IA</h1>
-                <p className="text-[13px] text-gray-400">Configure o agente Nat para atendimento automático</p>
+                <p className="text-[13px] text-gray-400">Configure o agente IA para atendimento automático</p>
               </div>
             </div>
 
@@ -248,7 +248,7 @@ export default function AIConfigPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-[15px] text-foreground">
-                        {config.is_enabled ? '🤖 Agente Nat Ativo' : 'Agente Nat Desativado'}
+                        {config.is_enabled ? '🤖 Agente IA Ativo' : 'Agente IA Desativado'}
                       </p>
                       <p className="text-[12px] text-gray-400">
                         {config.is_enabled
@@ -329,10 +329,10 @@ export default function AIConfigPage() {
               <div className="bg-white rounded-2xl border border-gray-200 p-5 space-y-3">
                 <div className="flex items-center gap-2">
                   <Bot className="w-4 h-4 text-gray-400" />
-                  <p className="text-[13px] font-semibold text-gray-400 uppercase tracking-wider">Personalidade da Nat</p>
+                  <p className="text-[13px] font-semibold text-gray-400 uppercase tracking-wider">Personalidade do Agente IA</p>
                 </div>
                 <p className="text-[12px] text-gray-400">
-                  Defina como a Nat deve se comportar, o tom de voz, regras e limites do atendimento.
+                  Defina como o Agente IA deve se comportar, o tom de voz, regras e limites do atendimento.
                 </p>
                 <textarea
                   value={config.system_prompt}
@@ -377,7 +377,7 @@ export default function AIConfigPage() {
                     <div>
                       <h2 className="text-lg font-bold text-foreground">Base de Conhecimento</h2>
                       <p className="text-[12px] text-gray-400">
-                        Documentos que a Nat usa para responder ({documents.length} docs · {totalChunks} chunks · {totalTokens.toLocaleString()} tokens)
+                        Documentos que o Agente IA usa para responder ({documents.length} docs · {totalChunks} chunks · {totalTokens.toLocaleString()} tokens)
                       </p>
                     </div>
                   </div>
@@ -470,7 +470,7 @@ export default function AIConfigPage() {
                   <div className="text-center py-10 text-gray-400">
                     <Database className="w-10 h-10 mx-auto mb-3 opacity-30" />
                     <p className="text-[13px]">Nenhum documento na base de conhecimento</p>
-                    <p className="text-[11px] mt-1">Envie documentos sobre serviços, preços e FAQ para a Nat usar nas respostas</p>
+                    <p className="text-[11px] mt-1">Envie documentos sobre serviços, preços e FAQ para o Agente IA usar nas respostas</p>
                   </div>
                 )}
               </div>

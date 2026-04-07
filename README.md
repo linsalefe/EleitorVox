@@ -1,6 +1,6 @@
-# 🟢 Cenat Hub — Central de Atendimento Integrado
+﻿# 🟢 VoxCandidata — Central de Atendimento Integrado
 
-**Plataforma de multiatendimento via WhatsApp Business API** desenvolvida para o CENAT (Centro Educacional Novas Abordagens em Saúde Mental).
+**Plataforma de multiatendimento via WhatsApp Business API** desenvolvida para o VoxCandidata (Centro Educacional Novas Abordagens em Saúde Mental).
 
 Permite que a equipe comercial gerencie leads, responda conversas em tempo real, envie templates personalizados, qualifique leads automaticamente com IA e acompanhe métricas — tudo em um único painel web acessível de qualquer navegador.
 
@@ -43,7 +43,7 @@ Permite que a equipe comercial gerencie leads, responda conversas em tempo real,
 
 ## 🔍 Visão Geral
 
-O **Cenat Hub** é uma plataforma web completa de CRM e atendimento via WhatsApp Business API Cloud. A equipe comercial utiliza o painel para:
+O **VoxCandidata** é uma plataforma web completa de CRM e atendimento via WhatsApp Business API Cloud. A equipe comercial utiliza o painel para:
 
 - Receber e responder mensagens de leads em tempo real
 - Iniciar novas conversas enviando templates aprovados pelo Meta
@@ -70,7 +70,7 @@ O **Cenat Hub** é uma plataforma web completa de CRM e atendimento via WhatsApp
 - **Notificações toast** em toda a plataforma (sucesso, erro, warning)
 - **Interface responsiva** otimizada para mobile, tablet e desktop
 
-**URL de Produção:** `https://hub.cenatdata.online`
+**URL de Produção:** `https://hub.voxcandidatadata.online`
 
 ---
 
@@ -79,7 +79,7 @@ O **Cenat Hub** é uma plataforma web completa de CRM e atendimento via WhatsApp
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                       NAVEGADOR                         │
-│                (hub.cenatdata.online)                    │
+│                (hub.voxcandidatadata.online)                    │
 │                   Next.js (React)                       │
 └──────────────────────┬──────────────────────────────────┘
                        │ HTTPS
@@ -174,7 +174,7 @@ O **Cenat Hub** é uma plataforma web completa de CRM e atendimento via WhatsApp
 ### Fluxo de uma mensagem recebida
 
 1. Lead envia mensagem pelo WhatsApp
-2. Meta envia POST para `https://hub.cenatdata.online/webhook`
+2. Meta envia POST para `https://hub.voxcandidatadata.online/webhook`
 3. Nginx encaminha para FastAPI (porta 8001)
 4. Backend salva no PostgreSQL (contato + mensagem)
 5. Frontend faz polling a cada 3 segundos e exibe no chat
@@ -270,7 +270,7 @@ Esta é a etapa mais importante. Sem ela, nada funciona.
 2. Clique em **Criar App**
 3. Selecione **Negócio** como tipo
 4. Preencha:
-   - Nome do App: `Cenat Hub` (ou o nome que preferir)
+   - Nome do App: `VoxCandidata` (ou o nome que preferir)
    - E-mail: seu e-mail de contato
    - Portfólio de negócios: selecione seu negócio verificado
 5. Clique em **Criar App**
@@ -305,7 +305,7 @@ Após configurar, anote as seguintes informações (você vai precisar delas):
 | **Phone Number ID** | API Setup → Número selecionado | `978293125363835` |
 | **WABA ID** | Business Settings → WhatsApp Accounts | `1360246076143727` |
 | **App ID** | Dashboard do App | `1234567890` |
-| **Webhook Verify Token** | Você define (string qualquer) | `cenat_webhook_2024` |
+| **Webhook Verify Token** | Você define (string qualquer) | `voxcandidata_webhook_2024` |
 
 #### Como gerar o Token Permanente
 
@@ -326,8 +326,8 @@ Após configurar, anote as seguintes informações (você vai precisar delas):
 1. Vá em **Meta Developers → Seu App → WhatsApp → Configuração**
 2. Em "Webhook", clique em **Editar**
 3. Preencha:
-   - **URL do Callback:** `https://hub.cenatdata.online/webhook`
-   - **Token de Verificação:** `cenat_webhook_2024`
+   - **URL do Callback:** `https://hub.voxcandidatadata.online/webhook`
+   - **Token de Verificação:** `voxcandidata_webhook_2024`
 4. Clique em **Verificar e Salvar**
 5. Em **Campos do Webhook**, ative:
    - ✅ `messages` — para receber mensagens
@@ -340,14 +340,14 @@ Após configurar, anote as seguintes informações (você vai precisar delas):
 ### 2.1 — Clonar o Repositório
 
 ```bash
-git clone git@github.com:linsalefe/pos-plataform.git
-cd pos-plataform
+git clone git@github.com:linsalefe/voxcandidata.git
+cd voxcandidata
 ```
 
 ### 2.2 — Estrutura do Projeto
 
 ```
-pos-plataform/
+voxcandidata/
 ├── backend/                        # API FastAPI (Python)
 │   ├── app/
 │   │   ├── __init__.py
@@ -463,10 +463,10 @@ Crie o arquivo `backend/.env` com suas credenciais:
 # WhatsApp API
 WHATSAPP_TOKEN=SEU_TOKEN_PERMANENTE_AQUI
 WHATSAPP_PHONE_ID=SEU_PHONE_NUMBER_ID_AQUI
-WEBHOOK_VERIFY_TOKEN=cenat_webhook_2024
+WEBHOOK_VERIFY_TOKEN=voxcandidata_webhook_2024
 
 # Banco de Dados
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/cenat_whatsapp
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/voxcandidata_whatsapp
 
 # Autenticação
 JWT_SECRET=sua-chave-secreta-jwt-aqui
@@ -513,10 +513,10 @@ Teste: `curl http://localhost:8001/health` → deve retornar `{"status": "ok"}`
 
 ```bash
 # No Mac/Linux
-psql -U postgres -c "CREATE DATABASE cenat_whatsapp;"
+psql -U postgres -c "CREATE DATABASE voxcandidata_whatsapp;"
 
 # Ou, se usar sudo:
-sudo -u postgres psql -c "CREATE DATABASE cenat_whatsapp;"
+sudo -u postgres psql -c "CREATE DATABASE voxcandidata_whatsapp;"
 ```
 
 ### 4.2 — Criar Tabelas Automaticamente
@@ -524,7 +524,7 @@ sudo -u postgres psql -c "CREATE DATABASE cenat_whatsapp;"
 Ao rodar o backend pela primeira vez, as tabelas base são criadas automaticamente via SQLAlchemy. Mas algumas colunas extras precisam ser adicionadas manualmente:
 
 ```bash
-psql -U postgres cenat_whatsapp -c "
+psql -U postgres voxcandidata_whatsapp -c "
 -- Colunas extras na tabela contacts
 ALTER TABLE contacts ADD COLUMN IF NOT EXISTS lead_status VARCHAR(30) DEFAULT 'novo';
 ALTER TABLE contacts ADD COLUMN IF NOT EXISTS notes TEXT;
@@ -576,7 +576,7 @@ python -m app.create_tables
 Ou manualmente:
 
 ```bash
-psql -U postgres cenat_whatsapp -c "
+psql -U postgres voxcandidata_whatsapp -c "
 CREATE TABLE IF NOT EXISTS exact_leads (
     id SERIAL PRIMARY KEY,
     exact_id INTEGER UNIQUE NOT NULL,
@@ -598,7 +598,7 @@ CREATE TABLE IF NOT EXISTS exact_leads (
 ### 4.4 — Inserir Canal (Número de WhatsApp)
 
 ```bash
-psql -U postgres cenat_whatsapp -c "
+psql -U postgres voxcandidata_whatsapp -c "
 INSERT INTO channels (name, phone_number, phone_number_id, whatsapp_token, waba_id, is_active)
 VALUES (
     'Pós-Graduação (SDR)',
@@ -625,7 +625,7 @@ print(h)
 ")
 
 # Inserir no banco
-psql -U postgres cenat_whatsapp -c "
+psql -U postgres voxcandidata_whatsapp -c "
 INSERT INTO users (name, email, password_hash, role, is_active)
 VALUES ('Seu Nome', 'seu@email.com', '$HASH', 'admin', true);
 "
@@ -654,7 +654,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8001/api
 Crie `frontend/.env.production` para produção:
 
 ```env
-NEXT_PUBLIC_API_URL=https://hub.cenatdata.online/api
+NEXT_PUBLIC_API_URL=https://hub.voxcandidatadata.online/api
 ```
 
 ### 5.3 — Arquivo `src/lib/api.ts`
@@ -730,7 +730,7 @@ O ngrok gera uma URL como `https://abc123.ngrok-free.app`. Use essa URL no Meta:
 
 1. Meta Developers → Seu App → WhatsApp → Configuração
 2. Webhook URL: `https://abc123.ngrok-free.app/webhook`
-3. Verify Token: `cenat_webhook_2024`
+3. Verify Token: `voxcandidata_webhook_2024`
 4. Ative os campos: `messages`, `message_status`
 
 > ⚠️ A URL do ngrok muda toda vez que reinicia. Atualize no Meta.
@@ -739,8 +739,8 @@ O ngrok gera uma URL como `https://abc123.ngrok-free.app`. Use essa URL no Meta:
 
 Em produção, o webhook aponta para o domínio real:
 
-- **URL:** `https://hub.cenatdata.online/webhook`
-- **Verify Token:** `cenat_webhook_2024`
+- **URL:** `https://hub.voxcandidatadata.online/webhook`
+- **Verify Token:** `voxcandidata_webhook_2024`
 
 ---
 
@@ -754,7 +754,7 @@ Em produção, o webhook aponta para o domínio real:
    - **Plataforma:** Linux/Unix
    - **Blueprint:** Ubuntu 22.04
    - **Plano:** $12/mês (2 GB RAM, 2 vCPUs, 60 GB SSD)
-   - **Nome:** `cenat-hub`
+   - **Nome:** `voxcandidata`
 4. Clique em **Create Instance**
 
 ### 7.2 — IP Estático
@@ -783,7 +783,7 @@ No painel do seu provedor de domínio, crie:
 |------|------|-------|
 | A | hub | IP estático da instância |
 
-Após configurar, `hub.cenatdata.online` vai apontar para o servidor.
+Após configurar, `hub.voxcandidatadata.online` vai apontar para o servidor.
 
 ### 7.5 — Acessar o Servidor via SSH
 
@@ -811,15 +811,15 @@ python3 --version # 3.10+
 ### 7.7 — Configurar PostgreSQL
 
 ```bash
-sudo -u postgres psql -c "CREATE USER cenat WITH PASSWORD 'CenatHub2024#';"
-sudo -u postgres psql -c "CREATE DATABASE cenat_whatsapp OWNER cenat;"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cenat_whatsapp TO cenat;"
+sudo -u postgres psql -c "CREATE USER voxcandidata WITH PASSWORD 'VoxCandidata2024#';"
+sudo -u postgres psql -c "CREATE DATABASE voxcandidata_whatsapp OWNER voxcandidata;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE voxcandidata_whatsapp TO voxcandidata;"
 ```
 
 ### 7.8 — Configurar Chave SSH para GitHub
 
 ```bash
-ssh-keygen -t ed25519 -C "cenat-hub" -N "" -f ~/.ssh/id_ed25519
+ssh-keygen -t ed25519 -C "voxcandidata" -N "" -f ~/.ssh/id_ed25519
 cat ~/.ssh/id_ed25519.pub
 ```
 
@@ -829,13 +829,13 @@ Copie a chave pública e adicione no GitHub: **Settings → SSH and GPG Keys →
 
 ```bash
 cd /home/ubuntu
-git clone git@github.com:linsalefe/pos-plataform.git
+git clone git@github.com:linsalefe/voxcandidata.git
 ```
 
 ### 7.10 — Configurar Backend no Servidor
 
 ```bash
-cd /home/ubuntu/pos-plataform/backend
+cd /home/ubuntu/voxcandidata/backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -845,12 +845,12 @@ pip install bcrypt==4.0.1 pyjwt httpx
 Criar `.env` de produção:
 
 ```bash
-cat > /home/ubuntu/pos-plataform/backend/.env << 'EOF'
+cat > /home/ubuntu/voxcandidata/backend/.env << 'EOF'
 WHATSAPP_TOKEN=SEU_TOKEN_AQUI
 WHATSAPP_PHONE_ID=978293125363835
-WEBHOOK_VERIFY_TOKEN=cenat_webhook_2024
-DATABASE_URL=postgresql+asyncpg://cenat:CenatHub2024#@localhost:5432/cenat_whatsapp
-JWT_SECRET=cenat-hub-prod-secret-2024-x7k9m
+WEBHOOK_VERIFY_TOKEN=voxcandidata_webhook_2024
+DATABASE_URL=postgresql+asyncpg://voxcandidata:VoxCandidata2024#@localhost:5432/voxcandidata_whatsapp
+JWT_SECRET=voxcandidata-prod-secret-2024-x7k9m
 EXACT_SPOTTER_TOKEN=seu_token_exact_spotter_aqui
 OPENAI_API_KEY=sua_chave_openai
 TWILIO_ACCOUNT_SID=seu_account_sid
@@ -861,7 +861,7 @@ TWILIO_TWIML_APP_SID=seu_twiml_app_sid
 TWILIO_PHONE_NUMBER=+553123916801
 META_APP_ID=886462874541479
 META_APP_SECRET=sua_chave_secreta
-FRONTEND_URL=https://hub.cenatdata.online
+FRONTEND_URL=https://hub.voxcandidatadata.online
 EOF
 ```
 
@@ -875,35 +875,35 @@ python -m app.create_tables
 ### 7.11 — Criar Serviço do Backend (systemd)
 
 ```bash
-sudo tee /etc/systemd/system/cenat-backend.service << 'EOF'
+sudo tee /etc/systemd/system/voxcandidata-backend.service << 'EOF'
 [Unit]
-Description=Cenat Hub Backend
+Description=VoxCandidata Backend
 After=network.target postgresql.service
 
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/pos-plataform/backend
-ExecStart=/home/ubuntu/pos-plataform/backend/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8001
+WorkingDirectory=/home/ubuntu/voxcandidata/backend
+ExecStart=/home/ubuntu/voxcandidata/backend/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8001
 Restart=always
 RestartSec=3
-EnvironmentFile=/home/ubuntu/pos-plataform/backend/.env
+EnvironmentFile=/home/ubuntu/voxcandidata/backend/.env
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable cenat-backend
-sudo systemctl start cenat-backend
+sudo systemctl enable voxcandidata-backend
+sudo systemctl start voxcandidata-backend
 ```
 
 ### 7.12 — Configurar Frontend no Servidor
 
 ```bash
-cd /home/ubuntu/pos-plataform/frontend
+cd /home/ubuntu/voxcandidata/frontend
 
 cat > .env.production << 'EOF'
-NEXT_PUBLIC_API_URL=https://hub.cenatdata.online/api
+NEXT_PUBLIC_API_URL=https://hub.voxcandidatadata.online/api
 EOF
 
 npm install
@@ -913,36 +913,36 @@ npm run build
 ### 7.13 — Criar Serviço do Frontend (systemd)
 
 ```bash
-sudo tee /etc/systemd/system/cenat-frontend.service << 'EOF'
+sudo tee /etc/systemd/system/voxcandidata-frontend.service << 'EOF'
 [Unit]
-Description=Cenat Hub Frontend
+Description=VoxCandidata Frontend
 After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/pos-plataform/frontend
+WorkingDirectory=/home/ubuntu/voxcandidata/frontend
 ExecStart=/usr/bin/npm start -- -p 3001
 Restart=always
 RestartSec=3
 Environment=NODE_ENV=production
-Environment=NEXT_PUBLIC_API_URL=https://hub.cenatdata.online/api
+Environment=NEXT_PUBLIC_API_URL=https://hub.voxcandidatadata.online/api
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable cenat-frontend
-sudo systemctl start cenat-frontend
+sudo systemctl enable voxcandidata-frontend
+sudo systemctl start voxcandidata-frontend
 ```
 
 ### 7.14 — Configurar Nginx
 
 ```bash
-sudo tee /etc/nginx/sites-available/cenat-hub << 'EOF'
+sudo tee /etc/nginx/sites-available/voxcandidata << 'EOF'
 server {
     listen 80;
-    server_name hub.cenatdata.online;
+    server_name hub.voxcandidatadata.online;
 
     location /api/ {
         proxy_pass http://127.0.0.1:8001/api/;
@@ -973,7 +973,7 @@ server {
 }
 EOF
 
-sudo ln -sf /etc/nginx/sites-available/cenat-hub /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/voxcandidata /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl restart nginx
@@ -982,14 +982,14 @@ sudo systemctl restart nginx
 ### 7.15 — Instalar SSL (HTTPS)
 
 ```bash
-sudo certbot --nginx -d hub.cenatdata.online --non-interactive --agree-tos -m seu@email.com
+sudo certbot --nginx -d hub.voxcandidatadata.online --non-interactive --agree-tos -m seu@email.com
 ```
 
 ### 7.16 — Testar Tudo
 
 ```bash
-curl https://hub.cenatdata.online/health
-curl https://hub.cenatdata.online/api/channels
+curl https://hub.voxcandidatadata.online/health
+curl https://hub.voxcandidatadata.online/api/channels
 ```
 
 ---
@@ -1063,7 +1063,7 @@ EXACT_SPOTTER_TOKEN=seu_token_aqui
 
 ### 10.1 — Visão Geral
 
-A **Nat** é o agente de IA do Cenat Hub que qualifica leads automaticamente via WhatsApp.
+A **Nat** é o agente de IA do VoxCandidata que qualifica leads automaticamente via WhatsApp.
 
 ### 10.2 — Fluxo de Qualificação (5 Etapas)
 
@@ -1342,11 +1342,11 @@ Transformação da plataforma de single-tenant para **multi-tenant**, permitindo
 ```
 ┌──────────────────────────────────────────────────┐
 │              SUPERADMIN (Álefe)                   │
-│         superadmin@eduflow.com                    │
+│         superadmin@voxcandidata.com                    │
 │                                                   │
 │  ┌─────────────┐  ┌─────────────┐  ┌──────────┐ │
 │  │  Tenant 1   │  │  Tenant 2   │  │ Tenant N │ │
-│  │  CENAT       │  │  Focus      │  │  ...     │ │
+│  │  VoxCandidata       │  │  Focus      │  │  ...     │ │
 │  │  3 users     │  │  10 users   │  │          │ │
 │  │  25 contacts │  │  0 contacts │  │          │ │
 │  │  Plan: Pro   │  │  Plan: Pro  │  │          │ │
@@ -1991,7 +1991,7 @@ WHATSAPP_PHONE_ID=phone_number_id_principal
 WEBHOOK_VERIFY_TOKEN=string_secreta_para_webhook
 
 # Banco de Dados (obrigatório)
-DATABASE_URL=postgresql+asyncpg://usuario:senha@host:5432/cenat_whatsapp
+DATABASE_URL=postgresql+asyncpg://usuario:senha@host:5432/voxcandidata_whatsapp
 
 # Autenticação (obrigatório)
 JWT_SECRET=chave_secreta_para_tokens_jwt
@@ -2030,26 +2030,26 @@ NEXT_PUBLIC_API_URL=https://seu-dominio.com/api
 
 ```bash
 # Verificar status
-sudo systemctl status cenat-backend
-sudo systemctl status cenat-frontend
+sudo systemctl status voxcandidata-backend
+sudo systemctl status voxcandidata-frontend
 sudo systemctl status nginx
 
 # Reiniciar serviços
-sudo systemctl restart cenat-backend
-sudo systemctl restart cenat-frontend
+sudo systemctl restart voxcandidata-backend
+sudo systemctl restart voxcandidata-frontend
 sudo systemctl restart nginx
 
 # Ver logs
-sudo journalctl -u cenat-backend -n 50 --no-pager
-sudo journalctl -u cenat-frontend -n 50 --no-pager
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager
+sudo journalctl -u voxcandidata-frontend -n 50 --no-pager
 
 # Deploy
-cd /home/ubuntu/pos-plataform && git pull
-sudo systemctl restart cenat-backend
-cd frontend && npm run build && sudo systemctl restart cenat-frontend
+cd /home/ubuntu/voxcandidata && git pull
+sudo systemctl restart voxcandidata-backend
+cd frontend && npm run build && sudo systemctl restart voxcandidata-frontend
 
 # Banco de dados
-psql -U eduflow -d eduflow_db -h localhost
+psql -U voxcandidata -d voxcandidata_db -h localhost
 
 # Consultas úteis:
 # SELECT * FROM contacts ORDER BY created_at DESC LIMIT 10;
@@ -2080,21 +2080,21 @@ ngrok http 8001
 ### Backend não inicia
 
 ```bash
-sudo journalctl -u cenat-backend -n 50 --no-pager
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager
 # Erro comum: módulo não encontrado → pip install na venv
 ```
 
 ### Frontend dá 502 Bad Gateway
 
 ```bash
-sudo systemctl status cenat-frontend
+sudo systemctl status voxcandidata-frontend
 # Verificar node -v >= 20.x, rebuildar: npm run build
 ```
 
 ### Webhook não recebe mensagens
 
 ```bash
-curl https://hub.cenatdata.online/webhook?hub.mode=subscribe&hub.verify_token=cenat_webhook_2024&hub.challenge=test
+curl https://hub.voxcandidatadata.online/webhook?hub.mode=subscribe&hub.verify_token=voxcandidata_webhook_2024&hub.challenge=test
 # Deve retornar: test
 ```
 
@@ -2102,7 +2102,7 @@ curl https://hub.cenatdata.online/webhook?hub.mode=subscribe&hub.verify_token=ce
 
 ```bash
 # Verificar se a tabela activities existe
-psql -U eduflow -d eduflow_db -h localhost -c "SELECT COUNT(*) FROM activities;"
+psql -U voxcandidata -d voxcandidata_db -h localhost -c "SELECT COUNT(*) FROM activities;"
 # Se der erro, rodar a migration da ETAPA 4.2
 ```
 
@@ -2110,7 +2110,7 @@ psql -U eduflow -d eduflow_db -h localhost -c "SELECT COUNT(*) FROM activities;"
 
 ```bash
 # Verificar se a coluna assigned_to existe
-psql -U eduflow -d eduflow_db -h localhost -c "\d contacts" | grep assigned
+psql -U voxcandidata -d voxcandidata_db -h localhost -c "\d contacts" | grep assigned
 # Se não existir: ALTER TABLE contacts ADD COLUMN assigned_to INTEGER REFERENCES users(id);
 ```
 
@@ -2124,7 +2124,7 @@ psql -U eduflow -d eduflow_db -h localhost -c "\d contacts" | grep assigned
 
 ```bash
 # Testar endpoint
-curl -X POST https://hub.cenatdata.online/api/contacts/bulk-update \
+curl -X POST https://hub.voxcandidatadata.online/api/contacts/bulk-update \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN" \
   -d '{"wa_ids": ["5511999999999"], "lead_status": "em_contato"}'

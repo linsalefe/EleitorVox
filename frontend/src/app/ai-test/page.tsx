@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState, useRef } from 'react';
 import {
@@ -121,7 +121,7 @@ export default function AITestPage() {
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">Teste da Nat</h1>
+                <h1 className="text-xl font-bold text-foreground">Teste do Agente IA</h1>
                 <p className="text-[12px] text-gray-400">Simule uma conversa com a IA antes de colocar em produção</p>
               </div>
             </div>
@@ -171,9 +171,9 @@ export default function AITestPage() {
                   <Bot className="w-10 h-10 text-emerald-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">🤖 Teste da Nat</h2>
+                  <h2 className="text-lg font-bold text-foreground">🤖 Teste do Agente IA</h2>
                   <p className="text-[13px] text-gray-400 mt-1 max-w-md mx-auto">
-                    Simule uma conversa como se fosse um lead. A Nat vai responder usando o prompt e a base de conhecimento configurados.
+                    Simule uma conversa como se fosse um lead. O Agente IA vai responder usando o prompt e a base de conhecimento configurados.
                   </p>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 pt-2">
@@ -208,7 +208,7 @@ export default function AITestPage() {
                       </div>
                     )}
                     <span className="text-[10px] font-medium text-gray-400">
-                      {msg.role === 'user' ? 'Você (Lead)' : 'Nat (IA)'}
+                      {msg.role === 'user' ? 'Você (Lead)' : 'Agente IA'}
                     </span>
                     {msg.role === 'user' && (
                       <div className="w-5 h-5 rounded-md bg-blue-100 flex items-center justify-center">

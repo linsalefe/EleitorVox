@@ -1,4 +1,4 @@
-# 📞 Guia Completo: Implementação Twilio VoIP no Cenat Hub
+﻿# 📞 Guia Completo: Implementação Twilio VoIP no VoxCandidata
 
 **Documento técnico** com o passo a passo para implementar ligações VoIP via Twilio em uma aplicação FastAPI + Next.js, incluindo problemas encontrados e soluções aplicadas.
 
@@ -117,7 +117,7 @@ O TwiML App é necessário para ligações de saída (browser → PSTN):
 
 1. **Console → Develop → Voice → TwiML Apps**
 2. Clique **Create**
-3. Nome: `cenat-hub-voice`
+3. Nome: `voxcandidata-voice`
 4. Voice Request URL: `https://seu-dominio.com/api/twilio/voice`
 5. Método: `POST`
 6. Salve e copie o **Application SID** (`APxxxxxxxx`)
@@ -128,7 +128,7 @@ A API Key é usada para gerar Access Tokens:
 
 1. **Console → Account → API Keys & Tokens**
 2. Clique **Create API Key**
-3. Nome: `cenat-hub-voice`
+3. Nome: `voxcandidata-voice`
 4. Tipo: **Standard**
 5. Copie o **SID** (`SKxxxxxxxx`) e o **Secret**
 
@@ -138,7 +138,7 @@ A API Key é usada para gerar Access Tokens:
 > ```bash
 > curl -X POST "https://api.twilio.com/2010-04-01/Accounts/ACCOUNT_SID/Keys.json" \
 >   -u "ACCOUNT_SID:AUTH_TOKEN" \
->   -d "FriendlyName=cenat-hub-voice"
+>   -d "FriendlyName=voxcandidata-voice"
 > ```
 
 ### 3.5 — Variáveis de Ambiente
@@ -506,10 +506,10 @@ npm install @twilio/voice-sdk
 
 ```bash
 # Backend
-sudo systemctl restart cenat-backend
+sudo systemctl restart voxcandidata-backend
 
 # Frontend
-cd frontend && npm run build && sudo systemctl restart cenat-frontend
+cd frontend && npm run build && sudo systemctl restart voxcandidata-frontend
 ```
 
 ---
@@ -550,7 +550,7 @@ No console (**Develop → Voice → TwiML Apps → seu app**):
 
 Service Accounts não têm espaço no Google Drive. Solução:
 
-1. Crie uma pasta no seu Google Drive pessoal (ex: `Gravações CENAT`)
+1. Crie uma pasta no seu Google Drive pessoal (ex: `Gravações VoxCandidata`)
 2. Compartilhe com o email da Service Account (permissão: Editor)
 3. Use o **ID da pasta** no código (hardcoded ou variável de ambiente)
 
@@ -713,4 +713,4 @@ clean_name = unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decod
 ---
 
 **Última atualização:** 12/02/2026
-**Autor:** Equipe CENAT Hub
+**Autor:** Equipe VoxCandidata

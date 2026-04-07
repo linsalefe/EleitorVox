@@ -1,6 +1,6 @@
-# Voice AI Inbound — Agentes de Voz para Atendimento de Chamadas
+﻿# Voice AI Inbound — Agentes de Voz para Atendimento de Chamadas
 
-> **EduFlow Hub** | Versão 1.0 | Março 2026 | Confidencial
+> **VoxCandidata Hub** | Versão 1.0 | Março 2026 | Confidencial
 
 ---
 
@@ -78,7 +78,7 @@ Dashboard frontend exibe histórico + métricas
 
 | Aspecto | SDR (Outbound) | Atendimento (Inbound) |
 |---------|---------------|----------------------|
-| Quem inicia | EduFlow liga pro lead | Cliente liga pro EduFlow |
+| Quem inicia | VoxCandidata liga pro lead | Cliente liga pro VoxCandidata |
 | Integração ElevenLabs | `outbound_call()` | `register_call()` via API REST |
 | IVR | Não tem | Menu com opções |
 | Roteamento | Direto pro agente SDR | IVR → agente baseado no dígito |
@@ -163,8 +163,8 @@ CREATE TABLE voice_agents (
 );
 
 CREATE INDEX idx_voice_agents_tenant_slug ON voice_agents(tenant_id, slug);
-GRANT ALL PRIVILEGES ON TABLE voice_agents TO eduflow;
-GRANT USAGE, SELECT ON SEQUENCE voice_agents_id_seq TO eduflow;
+GRANT ALL PRIVILEGES ON TABLE voice_agents TO voxcandidata;
+GRANT USAGE, SELECT ON SEQUENCE voice_agents_id_seq TO voxcandidata;
 ```
 
 ### Tabelas reutilizadas (do módulo voice_ai)
@@ -240,7 +240,7 @@ ELEVENLABS_API_KEY=sua_chave_aqui
 TWILIO_ACCOUNT_SID=seu_sid
 TWILIO_AUTH_TOKEN=seu_token
 TWILIO_PHONE_NUMBER=+553122980172
-BASE_URL=https://portal.eduflowia.com
+BASE_URL=https://portal.voxcandidataia.com
 ```
 
 ---
@@ -298,7 +298,7 @@ Adicionado em `app-shell.tsx`:
 | Assumir vez após silêncio | 8 segundos |
 | Encerrar após silêncio | 60 segundos |
 | Guardrails | Foco + Manipulação |
-| Webhook pós-chamada | `https://portal.eduflowia.com/api/voice-inbound/post-call-webhook` |
+| Webhook pós-chamada | `https://portal.voxcandidataia.com/api/voice-inbound/post-call-webhook` |
 
 ### Agente de Retenção (Maria)
 
@@ -309,7 +309,7 @@ Adicionado em `app-shell.tsx`:
 | Voz | Marianne (Primário) |
 | Idioma | Português (Brasil) |
 | Demais configs | Iguais ao Suporte |
-| Webhook pós-chamada | `https://portal.eduflowia.com/api/voice-inbound/post-call-webhook` |
+| Webhook pós-chamada | `https://portal.voxcandidataia.com/api/voice-inbound/post-call-webhook` |
 
 ### Configurações críticas no ElevenLabs
 
@@ -327,7 +327,7 @@ Adicionado em `app-shell.tsx`:
 | Config | Valor |
 |--------|-------|
 | A call comes in | Webhook |
-| URL | `https://portal.eduflowia.com/api/voice-ai/twilio/answer` |
+| URL | `https://portal.voxcandidataia.com/api/voice-ai/twilio/answer` |
 | HTTP | HTTP POST |
 
 Não precisa configurar nada específico para inbound. O roteamento é feito no backend via campo `Direction`.
@@ -345,19 +345,19 @@ Não precisa configurar nada específico para inbound. O roteamento é feito no 
 ### Teste básico
 
 1. Ligar para `+55 31 2298-0172`
-2. Ouvir o IVR: "Olá, bem-vindo ao EduFlow Hub..."
+2. Ouvir o IVR: "Olá, bem-vindo ao VoxCandidata Hub..."
 3. Digitar **1** para Suporte ou **2** para Retenção
 4. Conversar com o agente
-5. Verificar no dashboard: `https://portal.eduflowia.com/voice-inbound`
+5. Verificar no dashboard: `https://portal.voxcandidataia.com/voice-inbound`
 
 ### Teste via logs
 
 ```bash
 # Monitorar em tempo real
-sudo journalctl -u eduflow-backend -f | grep -i "inbound"
+sudo journalctl -u voxcandidata-backend -f | grep -i "inbound"
 
 # Verificar últimas chamadas no banco
-sudo -u postgres psql eduflow_db -c "
+sudo -u postgres psql voxcandidata_db -c "
 SELECT id, from_number, source, outcome, duration_seconds, created_at
 FROM ai_calls
 WHERE direction = 'inbound'
@@ -369,7 +369,7 @@ LIMIT 10;
 ### Verificar transcrição
 
 ```bash
-sudo -u postgres psql eduflow_db -c "
+sudo -u postgres psql voxcandidata_db -c "
 SELECT t.role, t.text
 FROM ai_call_turns t
 JOIN ai_calls c ON c.id = t.call_id
@@ -381,7 +381,7 @@ ORDER BY t.created_at;
 ### Verificar agentes no banco
 
 ```bash
-sudo -u postgres psql eduflow_db -c "
+sudo -u postgres psql voxcandidata_db -c "
 SELECT id, slug, name, ivr_key, elevenlabs_agent_id, is_active
 FROM voice_agents;
 "
@@ -400,7 +400,7 @@ Para adicionar um novo agente (ex: Agente de Vendas, tecla 3):
 3. Configurar: nome, prompt, voz, idioma, LLM
 4. Aba Avançado: μ-law 8000 Hz (input + output), eager, turno especulativo
 5. Aba Segurança: ativar Foco + Manipulação
-6. Configurar webhook pós-chamada: `https://portal.eduflowia.com/api/voice-inbound/post-call-webhook`
+6. Configurar webhook pós-chamada: `https://portal.voxcandidataia.com/api/voice-inbound/post-call-webhook`
 7. Publicar e copiar o Agent ID
 
 ### Passo 2 — Inserir no banco
@@ -411,11 +411,11 @@ VALUES (
   1,
   'sales',
   'Agente de Vendas',
-  'Qualifica leads interessados no EduFlow',
+  'Qualifica leads interessados no VoxCandidata',
   '3',
   'Para falar com vendas, digite 3',
   'Prompt completo aqui...',
-  'Olá! Eu sou a Ana, consultora comercial do EduFlow.',
+  'Olá! Eu sou a Ana, consultora comercial do VoxCandidata.',
   'agent_XXXXXXXXXXXXXXX'
 );
 ```
@@ -427,7 +427,7 @@ VALUES (
 
 IVR_GREETING = os.getenv(
     "VOICE_INBOUND_IVR_GREETING",
-    "Olá, bem-vindo ao EduFlow Hub. "
+    "Olá, bem-vindo ao VoxCandidata Hub. "
     "Para suporte técnico, digite 1. "
     "Para falar sobre seu plano, digite 2. "
     "Para falar com vendas, digite 3."
@@ -456,8 +456,8 @@ const AGENT_LABELS: Record<string, string> = {
 
 ```bash
 git add . && git commit -m "feat: agente de vendas inbound" && git push
-cd ~/eduflow && git pull && sudo systemctl restart eduflow-backend
-cd frontend && npm run build && sudo systemctl restart eduflow-frontend
+cd ~/voxcandidata && git pull && sudo systemctl restart voxcandidata-backend
+cd frontend && npm run build && sudo systemctl restart voxcandidata-frontend
 ```
 
 ---
@@ -602,7 +602,7 @@ Modificar labels no IVR (`config.py`) e no frontend.
 
 **Verificação:**
 ```bash
-sudo -u postgres psql eduflow_db -c "SELECT slug, elevenlabs_agent_id FROM voice_agents;"
+sudo -u postgres psql voxcandidata_db -c "SELECT slug, elevenlabs_agent_id FROM voice_agents;"
 ```
 
 ### Webhook pós-chamada não salva dados
@@ -610,15 +610,15 @@ sudo -u postgres psql eduflow_db -c "SELECT slug, elevenlabs_agent_id FROM voice
 **Causa:** URL do webhook incorreta ou ElevenLabs desabilitou após falhas.
 
 **Verificação:**
-1. Conferir URL no painel ElevenLabs: `https://portal.eduflowia.com/api/voice-inbound/post-call-webhook`
+1. Conferir URL no painel ElevenLabs: `https://portal.voxcandidataia.com/api/voice-inbound/post-call-webhook`
 2. Verificar se evento "Transcrição" está ativado
-3. Testar manualmente: `curl -X POST https://portal.eduflowia.com/api/voice-inbound/post-call-webhook -H "Content-Type: application/json" -d '{}'`
+3. Testar manualmente: `curl -X POST https://portal.voxcandidataia.com/api/voice-inbound/post-call-webhook -H "Content-Type: application/json" -d '{}'`
 
 ### Chamada inbound vai direto pro SDR
 
 **Causa:** Webhook do Twilio apontando para o ElevenLabs em vez do nosso servidor.
 
-**Solução:** No Twilio Console → Phone Numbers → seu número → Voice Configuration → URL = `https://portal.eduflowia.com/api/voice-ai/twilio/answer`
+**Solução:** No Twilio Console → Phone Numbers → seu número → Voice Configuration → URL = `https://portal.voxcandidataia.com/api/voice-ai/twilio/answer`
 
 ---
 

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Configurações do módulo Voice AI Inbound.
 Pipeline: Twilio (WebSocket) → Whisper STT → GPT-4o → ElevenLabs TTS → Twilio
 """
@@ -23,12 +23,12 @@ ELEVENLABS_VOICE_ID = os.getenv("VOICE_INBOUND_ELEVENLABS_VOICE_ID", "")
 ELEVENLABS_MODEL_ID = os.getenv("VOICE_INBOUND_ELEVENLABS_MODEL_ID", "eleven_multilingual_v2")
 
 # === Base URL ===
-BASE_URL = os.getenv("BASE_URL", "https://portal.eduflowia.com")
+BASE_URL = os.getenv("BASE_URL", "https://portal.voxcandidataia.com")
 
 # === IVR (Menu de voz) ===
 IVR_GREETING = os.getenv(
     "VOICE_INBOUND_IVR_GREETING",
-    "Olá, bem-vindo ao EduFlow Hub. "
+    "Olá, bem-vindo ao VoxCandidata Hub. "
     "Para suporte técnico, digite 1. "
     "Para falar sobre seu plano, digite 2."
 )

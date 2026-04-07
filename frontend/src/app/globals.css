@@ -1,11 +1,11 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   EDUFLOW HUB — Design System Tokens
+   VOXCANDIDATA HUB — Design System Tokens
    Primary: #1D4ED8 (Blue-700)
    Font: Inter Variable + JetBrains Mono
    Grid base: 4px

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -106,7 +106,7 @@ export default function DashboardPage() {
             {stats.total_contacts === 0 ? (
               <EmptyState
                 icon={MessageSquare}
-                title="Bem-vindo ao EduFlow!"
+                title="Bem-vindo ao VoxCandidata!"
                 description="Para começar a receber mensagens e acompanhar seus leads, conecte seu primeiro canal do WhatsApp."
                 actionLabel="Conectar canal"
                 onAction={() => router.push('/canais')}

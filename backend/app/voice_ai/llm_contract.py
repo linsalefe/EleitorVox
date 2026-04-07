@@ -1,4 +1,4 @@
-"""
+﻿"""
 Contrato do LLM - transforma chat em produto.
 O LLM recebe input estruturado e DEVE retornar JSON com schema obrigatório.
 Isso garante controle, consistência e rastreabilidade.
@@ -119,7 +119,7 @@ def _get_state_instructions(state: State, session: CallSession) -> str:
     instructions = {
         State.OPENING: """
 INSTRUÇÕES PARA OPENING:
-- Se apresente brevemente: "Oi [nome], tudo bem? Aqui é a Nat, da [instituição]."
+- Se apresente brevemente: "Oi [nome], tudo bem? Aqui é o Agente IA, da [instituição]."
 - Peça permissão: "Vi que você se interessou pelo [curso]. Posso te contar rapidinho como funciona?"
 - Se o lead disser que não pode falar, agradeça e pergunte melhor horário.
 - Se autorizar, avance para CONTEXT.
@@ -310,7 +310,7 @@ async def generate_call_summary(session: CallSession) -> str:
                 {
                     "role": "system",
                     "content": """Gere um resumo objetivo da ligação de qualificação. Formato:
-📞 RESUMO DA LIGAÇÃO (IA Nat)
+📞 RESUMO DA LIGAÇÃO (IO Agente IA)
 📅 Data: [data]
 👤 Lead: [nome]
 🎓 Curso: [curso]

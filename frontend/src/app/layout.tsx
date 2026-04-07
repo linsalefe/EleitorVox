@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/auth-context";
@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EduFlow",
+  title: "VoxCandidata",
   description: "Central de Atendimento Integrado",
   icons: {
     icon: "/logo-icon-color.png",

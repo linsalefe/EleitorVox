@@ -1,4 +1,4 @@
-# 🧰 Comandos Úteis — CENAT Hub
+﻿# 🧰 Comandos Úteis — VoxCandidata
 
 ## Conectar ao servidor (VS Code / Terminal)
 ```bash
@@ -11,13 +11,13 @@ ssh -i ~/.ssh/lightsail-us-east-1.pem ubuntu@18.208.110.141
 
 ```bash
 # No Mac (commitar)
-cd ~/Documents/pos-plataform
+cd ~/Documents/voxcandidata
 git add -A && git commit -m "mensagem" && git push
 
 # No servidor (atualizar)
-cd ~/pos-plataform && git pull
-sudo systemctl restart cenat-backend
-cd frontend && npm run build && sudo systemctl restart cenat-frontend
+cd ~/voxcandidata && git pull
+sudo systemctl restart voxcandidata-backend
+cd frontend && npm run build && sudo systemctl restart voxcandidata-frontend
 ```
 
 ---
@@ -25,8 +25,8 @@ cd frontend && npm run build && sudo systemctl restart cenat-frontend
 ## Verificar serviços
 
 ```bash
-sudo systemctl status cenat-backend
-sudo systemctl status cenat-frontend
+sudo systemctl status voxcandidata-backend
+sudo systemctl status voxcandidata-frontend
 sudo systemctl status nginx
 sudo systemctl status postgresql
 ```
@@ -36,8 +36,8 @@ sudo systemctl status postgresql
 ## Reiniciar serviços
 
 ```bash
-sudo systemctl restart cenat-backend
-sudo systemctl restart cenat-frontend
+sudo systemctl restart voxcandidata-backend
+sudo systemctl restart voxcandidata-frontend
 sudo systemctl restart nginx
 ```
 
@@ -47,16 +47,16 @@ sudo systemctl restart nginx
 
 ```bash
 # Backend (últimas 50 linhas)
-sudo journalctl -u cenat-backend --no-pager -n 50
+sudo journalctl -u voxcandidata-backend --no-pager -n 50
 
 # Backend (tempo real)
-sudo journalctl -u cenat-backend -f
+sudo journalctl -u voxcandidata-backend -f
 
 # Backend (últimos 5 min)
-sudo journalctl -u cenat-backend --no-pager --since "5 min ago"
+sudo journalctl -u voxcandidata-backend --no-pager --since "5 min ago"
 
 # Frontend
-sudo journalctl -u cenat-frontend --no-pager -n 30
+sudo journalctl -u voxcandidata-frontend --no-pager -n 30
 
 # Nginx
 sudo tail -50 /var/log/nginx/error.log
@@ -68,14 +68,14 @@ sudo tail -50 /var/log/nginx/error.log
 
 ```bash
 # Acessar
-sudo -u postgres psql cenat_whatsapp
+sudo -u postgres psql voxcandidata_whatsapp
 
 # Consultas rápidas
-sudo -u postgres psql cenat_whatsapp -c "SELECT id, name, email, role, is_active FROM users;"
-sudo -u postgres psql cenat_whatsapp -c "SELECT id, name, is_active FROM channels;"
-sudo -u postgres psql cenat_whatsapp -c "SELECT * FROM call_logs ORDER BY id DESC LIMIT 10;"
-sudo -u postgres psql cenat_whatsapp -c "SELECT COUNT(*) FROM contacts;"
-sudo -u postgres psql cenat_whatsapp -c "SELECT COUNT(*), stage FROM exact_leads GROUP BY stage ORDER BY count DESC;"
+sudo -u postgres psql voxcandidata_whatsapp -c "SELECT id, name, email, role, is_active FROM users;"
+sudo -u postgres psql voxcandidata_whatsapp -c "SELECT id, name, is_active FROM channels;"
+sudo -u postgres psql voxcandidata_whatsapp -c "SELECT * FROM call_logs ORDER BY id DESC LIMIT 10;"
+sudo -u postgres psql voxcandidata_whatsapp -c "SELECT COUNT(*) FROM contacts;"
+sudo -u postgres psql voxcandidata_whatsapp -c "SELECT COUNT(*), stage FROM exact_leads GROUP BY stage ORDER BY count DESC;"
 ```
 
 ---
@@ -84,13 +84,13 @@ sudo -u postgres psql cenat_whatsapp -c "SELECT COUNT(*), stage FROM exact_leads
 
 ```bash
 # Filtrar logs de gravação
-sudo journalctl -u cenat-backend --no-pager -n 50 | grep -i "recording\|drive\|☁️\|❌"
+sudo journalctl -u voxcandidata-backend --no-pager -n 50 | grep -i "recording\|drive\|☁️\|❌"
 
 # Filtrar logs de chamada
-sudo journalctl -u cenat-backend --no-pager -n 50 | grep -i "call\|📞"
+sudo journalctl -u voxcandidata-backend --no-pager -n 50 | grep -i "call\|📞"
 
 # Testar proxy de gravação
-curl -I https://hub.cenatdata.online/api/twilio/recording/RE_SID_AQUI
+curl -I https://hub.voxcandidatadata.online/api/twilio/recording/RE_SID_AQUI
 ```
 
 ---
@@ -99,13 +99,13 @@ curl -I https://hub.cenatdata.online/api/twilio/recording/RE_SID_AQUI
 
 ```bash
 # Ver .env do backend
-cat ~/pos-plataform/backend/.env
+cat ~/voxcandidata/backend/.env
 
 # Editar
-nano ~/pos-plataform/backend/.env
+nano ~/voxcandidata/backend/.env
 
 # Após editar, sempre reiniciar
-sudo systemctl restart cenat-backend
+sudo systemctl restart voxcandidata-backend
 ```
 
 ---
@@ -122,7 +122,7 @@ sudo certbot renew              # renovar
 ## Sync Exact Spotter (manual)
 
 ```bash
-curl -X POST https://hub.cenatdata.online/api/exact-leads/sync
+curl -X POST https://hub.voxcandidatadata.online/api/exact-leads/sync
 ```
 
 ---
@@ -131,7 +131,7 @@ curl -X POST https://hub.cenatdata.online/api/exact-leads/sync
 
 ```bash
 df -h
-du -sh ~/pos-plataform
+du -sh ~/voxcandidata
 ```
 
 ---

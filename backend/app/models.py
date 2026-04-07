@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Text, DateTime, BigInteger, Integer, Boolean, ForeignKey, func, Table, Numeric, UniqueConstraint, JSON
+﻿from sqlalchemy import Column, String, Text, DateTime, BigInteger, Integer, Boolean, ForeignKey, func, Table, Numeric, UniqueConstraint, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Float, Text, ForeignKey, Table, Numeric
 from app.database import Base
@@ -389,7 +389,7 @@ class Tenant(Base):
     kanban_triggers = Column(JSON, default={})
     agent_messages = Column(JSON, default={
         "followup": {
-            "confirmation": "Oi {nome}! 😊 Aqui é a Nat.\n\nQue ótimo papo! Ficou confirmado o nosso bate-papo para *{data} às {hora}*.\n\nQualquer dúvida pode me chamar aqui. Até lá! 👋",
+            "confirmation": "Oi {nome}! 😊 Aqui é o Agente IA.\n\nQue ótimo papo! Ficou confirmado o nosso bate-papo para *{data} às {hora}*.\n\nQualquer dúvida pode me chamar aqui. Até lá! 👋",
             "reminder_d1": "Oi {nome}! 😊 Só passando para lembrar que amanhã temos nosso bate-papo agendado para às {hora}. Te espero lá!",
             "reminder_d0": "Oi {nome}! 🎯 Daqui a pouco temos nosso bate-papo! Esteja à vontade para tirar todas as suas dúvidas. Até já! 😊"
         },

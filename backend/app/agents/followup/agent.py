@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+﻿from datetime import datetime, timedelta
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -92,7 +92,7 @@ class FollowupAgent:
         data_str = collected_fields.get("data_agendamento") or collected_fields.get("dia_agendamento") or ""
         hora_str = collected_fields.get("hora_agendamento") or collected_fields.get("horario_agendamento") or ""
 
-        # Agendar lembretes (confirmação já é feita pela Nat no WhatsApp)
+        # Agendar lembretes (confirmação já é feita pelo Agente IA no WhatsApp)
         
         if meeting_date:
             await self._schedule_reminders(lead, meeting_date, event.tenant_id, db, templates, lead_name, hora_str)

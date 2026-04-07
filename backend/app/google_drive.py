@@ -1,4 +1,4 @@
-import os
+﻿import os
 import httpx
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -7,7 +7,7 @@ from datetime import datetime
 
 CREDENTIALS_PATH = os.path.join(os.path.dirname(__file__), "..", "google-credentials.json")
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-DRIVE_FOLDER_NAME = "Gravações CENAT"
+DRIVE_FOLDER_NAME = "Gravações VoxCandidata"
 
 _drive_service = None  # reset cache
 _folder_id = "1-xXfqt_pgwqSZwXCQO3LpTeAtXd_hmMl"
@@ -51,7 +51,7 @@ def get_or_create_folder(folder_name: str, parent_id: str = None) -> str:
 
 
 def get_root_folder_id() -> str:
-    """Retorna o ID da pasta raiz 'Gravações CENAT'."""
+    """Retorna o ID da pasta raiz 'Gravações VoxCandidata'."""
     global _folder_id
     if _folder_id:
         return _folder_id

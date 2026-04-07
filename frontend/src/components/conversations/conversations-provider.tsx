@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import {
   createContext,
@@ -298,7 +298,7 @@ export function ConversationsProvider({ children }: { children: ReactNode }) {
 
   // Atualizar título da aba com contador
   useEffect(() => {
-    document.title = unreadCount > 0 ? `(${unreadCount}) Conversas - EduFlow` : 'Conversas - EduFlow';
+    document.title = unreadCount > 0 ? `(${unreadCount}) Conversas - VoxCandidata` : 'Conversas - VoxCandidata';
   }, [unreadCount]);
 
   // Carregar dados iniciais

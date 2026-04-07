@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState, useRef } from 'react';
 import { toast } from 'sonner';
@@ -199,7 +199,7 @@ export default function ConversationsPage() {
 
   // Atualizar título da aba com contador
   useEffect(() => {
-    document.title = unreadCount > 0 ? `(${unreadCount}) Conversas - EduFlow` : 'Conversas - EduFlow';
+    document.title = unreadCount > 0 ? `(${unreadCount}) Conversas - VoxCandidata` : 'Conversas - VoxCandidata';
   }, [unreadCount]);
 
   useEffect(() => {
@@ -1240,7 +1240,7 @@ export default function ConversationsPage() {
                   <button
                     onClick={() => {
                       const phone = selectedContact?.wa_id || '';
-                      window.dispatchEvent(new CustomEvent('eduflow-call', { detail: { phone } }));
+                      window.dispatchEvent(new CustomEvent('voxcandidata-call', { detail: { phone } }));
                     }}
                     className="p-2 rounded-full hover:bg-[#2a3942] text-[#8696a0] hover:text-[#00a884] transition-all duration-200"
                     title="Ligar para o lead" aria-label="Ligar para o lead"
@@ -1804,7 +1804,7 @@ export default function ConversationsPage() {
               <div className="w-20 h-20 bg-[#2a3942] rounded-full flex items-center justify-center mb-5">
                 <MessageCircle className="w-9 h-9 text-[#8696a0]" />
               </div>
-              <p className="text-[28px] font-light text-[#e9edef]">EduFlow</p>
+              <p className="text-[28px] font-light text-[#e9edef]">VoxCandidata</p>
               <p className="text-sm mt-2 text-[#8696a0]">Selecione uma conversa para começar</p>
               <div className="mt-6 w-[500px] h-[1px] bg-[#2a3942]" />
               <p className="text-[13px] mt-4 text-[#8696a0]">🔒 Suas mensagens são gerenciadas com segurança</p>

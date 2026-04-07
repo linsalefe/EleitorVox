@@ -1,6 +1,6 @@
-# Integração Webhook — LP Externa → EduFlow
+﻿# Integração Webhook — LP Externa → VoxCandidata
 
-Guia prático para conectar qualquer landing page externa ao EduFlow, fazendo o lead cair automaticamente no WhatsApp com a IA ativa.
+Guia prático para conectar qualquer landing page externa ao VoxCandidata, fazendo o lead cair automaticamente no WhatsApp com a IA ativa.
 
 ---
 
@@ -11,7 +11,7 @@ Lead preenche formulário na LP externa
         ↓
 LP envia os dados para a URL do webhook
         ↓
-EduFlow cria o contato automaticamente
+VoxCandidata cria o contato automaticamente
         ↓
 Sistema envia mensagem de boas-vindas no WhatsApp
         ↓
@@ -22,7 +22,7 @@ IA assume o atendimento
 
 ## Passo 1 — Gerar a URL do webhook
 
-1. Acesse o EduFlow → **Automações** → aba **Webhooks LP Externa**
+1. Acesse o VoxCandidata → **Automações** → aba **Webhooks LP Externa**
 2. Clique em **Novo webhook**
 3. Preencha:
    - **Nome:** identifica a origem (ex: "Site Principal", "LP Google Ads")
@@ -32,7 +32,7 @@ IA assume o atendimento
 5. Copie a URL gerada
 
 > A URL tem este formato:
-> `https://portal.eduflowia.com/api/webhook/lead/{TOKEN}`
+> `https://portal.voxcandidataia.com/api/webhook/lead/{TOKEN}`
 
 ---
 
@@ -77,7 +77,7 @@ document.getElementById('form-lead').addEventListener('submit', async function(e
   btn.textContent = 'Enviando...';
 
   try {
-    const response = await fetch('https://portal.eduflowia.com/api/webhook/lead/SEU_TOKEN_AQUI', {
+    const response = await fetch('https://portal.voxcandidataia.com/api/webhook/lead/SEU_TOKEN_AQUI', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -108,7 +108,7 @@ document.getElementById('form-lead').addEventListener('submit', async function(e
 1. Instale o plugin **WPForms**
 2. Crie o formulário com os campos: Nome, WhatsApp, Curso
 3. Vá em **Configurações → Notificações → Webhook**
-4. Cole a URL do EduFlow
+4. Cole a URL do VoxCandidata
 5. Mapeie os campos:
    - Campo "Nome" → `name`
    - Campo "WhatsApp" → `phone`
@@ -121,7 +121,7 @@ document.getElementById('form-lead').addEventListener('submit', async function(e
 Instale o plugin **CF7 to Webhook** e configure:
 
 ```
-URL: https://portal.eduflowia.com/api/webhook/lead/SEU_TOKEN_AQUI
+URL: https://portal.voxcandidataia.com/api/webhook/lead/SEU_TOKEN_AQUI
 Método: POST
 Content-Type: application/json
 
@@ -137,7 +137,7 @@ Mapeamento:
 
 1. Edite o formulário no Elementor
 2. Vá em **Ações após envio → Webhook**
-3. Cole a URL do EduFlow
+3. Cole a URL do VoxCandidata
 4. Em **Campos personalizados**, mapeie:
    - `name` → campo Nome
    - `phone` → campo Telefone
@@ -151,7 +151,7 @@ Mapeamento:
 2. Crie uma automação com gatilho **"Conversão em formulário"**
 3. Adicione a ação **"Webhook"**
 4. Configure:
-   - URL: `https://portal.eduflowia.com/api/webhook/lead/SEU_TOKEN_AQUI`
+   - URL: `https://portal.voxcandidataia.com/api/webhook/lead/SEU_TOKEN_AQUI`
    - Método: POST
    - Campos: `name`, `phone`, `course`
 
@@ -160,7 +160,7 @@ Mapeamento:
 ### Typeform
 
 1. Vá em **Connect → Webhooks**
-2. Cole a URL do EduFlow
+2. Cole a URL do VoxCandidata
 3. Ative e teste
 
 > ⚠️ O Typeform envia os dados em formato diferente. Nesse caso, use **Zapier** ou **Make** como intermediário para mapear os campos corretamente.
@@ -174,7 +174,7 @@ Use quando a plataforma da LP não suporta webhook nativo ou quando o formato do
 **No Zapier:**
 1. Trigger: formulário da LP (Google Forms, Typeform, etc.)
 2. Action: **Webhooks by Zapier → POST**
-3. URL: `https://portal.eduflowia.com/api/webhook/lead/SEU_TOKEN_AQUI`
+3. URL: `https://portal.voxcandidataia.com/api/webhook/lead/SEU_TOKEN_AQUI`
 4. Payload Type: `JSON`
 5. Data:
    ```
@@ -190,7 +190,7 @@ Use quando a plataforma da LP não suporta webhook nativo ou quando o formato do
 Após configurar, teste com o seguinte comando no terminal:
 
 ```bash
-curl -X POST https://portal.eduflowia.com/api/webhook/lead/SEU_TOKEN_AQUI \
+curl -X POST https://portal.voxcandidataia.com/api/webhook/lead/SEU_TOKEN_AQUI \
   -H "Content-Type: application/json" \
   -d '{"name": "Lead Teste", "phone": "83988046720", "course": "Pós-graduação"}'
 ```
@@ -200,7 +200,7 @@ curl -X POST https://portal.eduflowia.com/api/webhook/lead/SEU_TOKEN_AQUI \
 {"status": "ok", "message": "Lead recebido com sucesso"}
 ```
 
-Em seguida, verifique no EduFlow → **Conversas** se o contato apareceu e se a mensagem de boas-vindas foi enviada no WhatsApp.
+Em seguida, verifique no VoxCandidata → **Conversas** se o contato apareceu e se a mensagem de boas-vindas foi enviada no WhatsApp.
 
 ---
 
@@ -214,4 +214,4 @@ Em seguida, verifique no EduFlow → **Conversas** se o contato apareceu e se a 
 
 ---
 
-*EduFlow — Documentação interna v1.0 — Março 2026*
+*VoxCandidata — Documentação interna v1.0 — Março 2026*

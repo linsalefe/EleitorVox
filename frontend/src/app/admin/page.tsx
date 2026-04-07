@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/auth-context';
@@ -53,8 +53,8 @@ interface TokenDetail {
 }
 
 const AGENT_LABELS: Record<string, string> = {
-  whatsapp: 'Nat WhatsApp',
-  voice: 'Nat Voice',
+  whatsapp: 'Agente IA WhatsApp',
+  voice: 'Agente IA Voice',
   followup: 'Follow-up',
   reactivation: 'Reativação',
   briefing: 'Briefing',
@@ -232,7 +232,7 @@ export default function AdminPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold">Painel Superadmin</h1>
-              <p className="text-xs text-gray-500">Gerenciamento de clientes EduFlow</p>
+              <p className="text-xs text-gray-500">Gerenciamento de clientes VoxCandidata</p>
             </div>
           </div>
           {activeTab === 'clientes' && (

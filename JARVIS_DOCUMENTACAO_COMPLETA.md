@@ -1,6 +1,6 @@
-# Jarvis — Assistente Executivo de Voz para CRM
+﻿# Jarvis — Assistente Executivo de Voz para CRM
 
-> **EduFlow Hub** | Versão 3.0 | Março 2026 | Confidencial
+> **VoxCandidata Hub** | Versão 3.0 | Março 2026 | Confidencial
 
 ---
 
@@ -264,7 +264,7 @@ O system prompt é montado em tempo real puxando:
 
 Inclui também:
 - Regras de resposta (direto, máximo 3 frases, português BR, sem markdown)
-- Correção de transcrição de voz ("litros" → "leads", "edu flor" → "EduFlow")
+- Correção de transcrição de voz ("litros" → "leads", "edu flor" → "VoxCandidata")
 - Regras de ações (chamar tool imediatamente, nunca responder em texto)
 
 ---
@@ -559,4 +559,4 @@ O Jarvis foi feito para CRM educacional, mas pode ser adaptado para qualquer dom
 
 ---
 
-> **EduFlow Hub — Jarvis v3 — Documento Técnico — Março 2026 — Confidencial**
+> **VoxCandidata Hub — Jarvis v3 — Documento Técnico — Março 2026 — Confidencial**

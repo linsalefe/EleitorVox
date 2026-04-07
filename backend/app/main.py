@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Query, HTTPException, Depends
+﻿from fastapi import FastAPI, Request, Query, HTTPException, Depends
 from app.ai_engine import generate_ai_response
 from app.whatsapp import send_text_message
 from app.ai_routes import router as ai_router
@@ -200,11 +200,11 @@ async def lifespan(app: FastAPI):
     campaign_task.cancel()
 
 
-app = FastAPI(title="EduFlow API", lifespan=lifespan)
+app = FastAPI(title="VoxCandidata API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://portal.eduflowia.com", "http://localhost:3000", "https://gv-sports-education.netlify.app"],
+    allow_origins=["https://portal.voxcandidataia.com", "http://localhost:3000", "https://gv-sports-education.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

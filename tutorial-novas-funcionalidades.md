@@ -1,8 +1,8 @@
-# EduFlow — Guia para Adicionar Novas Funcionalidades
+﻿# VoxCandidata — Guia para Adicionar Novas Funcionalidades
 
 ## Visão Geral
 
-Este documento é um guia prático para quando você precisar adicionar novas funcionalidades ao EduFlow. Ele cobre desde a criação de uma nova página até a integração com o sistema multi-tenant (features por cliente).
+Este documento é um guia prático para quando você precisar adicionar novas funcionalidades ao VoxCandidata. Ele cobre desde a criação de uma nova página até a integração com o sistema multi-tenant (features por cliente).
 
 ---
 
@@ -171,7 +171,7 @@ app.include_router(sua_nova_router)
 ### Passo 3 — Testar
 
 ```bash
-sudo systemctl restart eduflow-backend
+sudo systemctl restart voxcandidata-backend
 curl -s http://localhost:8001/api/sua-rota -H "Authorization: Bearer SEU_TOKEN"
 ```
 
@@ -196,7 +196,7 @@ class SeuModel(Base):
 ### Passo 2 — Criar a tabela no banco
 
 ```sql
-sudo -u postgres psql -d eduflow_db -c "
+sudo -u postgres psql -d voxcandidata_db -c "
 CREATE TABLE IF NOT EXISTS sua_tabela (
     id SERIAL PRIMARY KEY,
     tenant_id INTEGER REFERENCES tenants(id),
@@ -206,12 +206,12 @@ CREATE TABLE IF NOT EXISTS sua_tabela (
 "
 ```
 
-### Passo 3 — Dar permissão ao usuário eduflow
+### Passo 3 — Dar permissão ao usuário voxcandidata
 
 ```sql
-sudo -u postgres psql -d eduflow_db -c "
-GRANT ALL PRIVILEGES ON TABLE sua_tabela TO eduflow;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO eduflow;
+sudo -u postgres psql -d voxcandidata_db -c "
+GRANT ALL PRIVILEGES ON TABLE sua_tabela TO voxcandidata;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO voxcandidata;
 "
 ```
 
@@ -261,7 +261,7 @@ export default function SuaPagina() {
 
 ```bash
 cd frontend && npm run build
-sudo systemctl restart eduflow-frontend
+sudo systemctl restart voxcandidata-frontend
 ```
 
 ---
@@ -277,18 +277,18 @@ git commit -m "descrição da mudança"
 git push
 
 # 2. No servidor (SSH)
-cd ~/eduflow
+cd ~/voxcandidata
 git pull
 
 # 3. Se alterou o backend:
-sudo systemctl restart eduflow-backend
+sudo systemctl restart voxcandidata-backend
 
 # 4. Se alterou o frontend:
 cd frontend && npm run build
-sudo systemctl restart eduflow-frontend
+sudo systemctl restart voxcandidata-frontend
 
 # 5. Verificar se subiu sem erros:
-sudo journalctl -u eduflow-backend -n 20 --no-pager
+sudo journalctl -u voxcandidata-backend -n 20 --no-pager
 ```
 
 ---
@@ -374,29 +374,29 @@ if current_user.role not in ("admin", "superadmin"):
 
 ```bash
 # Ver logs do backend
-sudo journalctl -u eduflow-backend -n 50 --no-pager
+sudo journalctl -u voxcandidata-backend -n 50 --no-pager
 
 # Ver logs do frontend
-sudo journalctl -u eduflow-frontend -n 50 --no-pager
+sudo journalctl -u voxcandidata-frontend -n 50 --no-pager
 
 # Reiniciar tudo
-sudo systemctl restart eduflow-backend && sudo systemctl restart eduflow-frontend
+sudo systemctl restart voxcandidata-backend && sudo systemctl restart voxcandidata-frontend
 
 # Acessar banco de dados
-sudo -u postgres psql -d eduflow_db
+sudo -u postgres psql -d voxcandidata_db
 
 # Ver features de um tenant
-sudo -u postgres psql -d eduflow_db -c "SELECT id, name, features FROM tenants;"
+sudo -u postgres psql -d voxcandidata_db -c "SELECT id, name, features FROM tenants;"
 
 # Ativar feature para um tenant
-sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET features = jsonb_set(features, '{nome_feature}', 'true') WHERE id = 1;"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE tenants SET features = jsonb_set(features, '{nome_feature}', 'true') WHERE id = 1;"
 
 # Desativar feature
-sudo -u postgres psql -d eduflow_db -c "UPDATE tenants SET features = jsonb_set(features, '{nome_feature}', 'false') WHERE id = 1;"
+sudo -u postgres psql -d voxcandidata_db -c "UPDATE tenants SET features = jsonb_set(features, '{nome_feature}', 'false') WHERE id = 1;"
 
 # Dar permissão em nova tabela
-sudo -u postgres psql -d eduflow_db -c "GRANT ALL PRIVILEGES ON TABLE nova_tabela TO eduflow;"
-sudo -u postgres psql -d eduflow_db -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO eduflow;"
+sudo -u postgres psql -d voxcandidata_db -c "GRANT ALL PRIVILEGES ON TABLE nova_tabela TO voxcandidata;"
+sudo -u postgres psql -d voxcandidata_db -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO voxcandidata;"
 ```
 
 ---
@@ -409,7 +409,7 @@ Vamos supor que você quer adicionar um módulo de emissão de certificados.
 
 ```sql
 -- Criar tabela
-sudo -u postgres psql -d eduflow_db -c "
+sudo -u postgres psql -d voxcandidata_db -c "
 CREATE TABLE certificates (
     id SERIAL PRIMARY KEY,
     tenant_id INTEGER REFERENCES tenants(id),
@@ -418,12 +418,12 @@ CREATE TABLE certificates (
     issued_at TIMESTAMP DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW()
 );
-GRANT ALL PRIVILEGES ON TABLE certificates TO eduflow;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO eduflow;
+GRANT ALL PRIVILEGES ON TABLE certificates TO voxcandidata;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO voxcandidata;
 "
 
 -- Adicionar feature aos tenants
-sudo -u postgres psql -d eduflow_db -c "
+sudo -u postgres psql -d voxcandidata_db -c "
 UPDATE tenants SET features = jsonb_set(features, '{certificados}', 'false');
 "
 ```
@@ -541,9 +541,9 @@ certificados: 'Certificados',
 ```bash
 git add . && git commit -m "feat: módulo certificados" && git push
 # No servidor:
-cd ~/eduflow && git pull
-sudo systemctl restart eduflow-backend
-cd frontend && npm run build && sudo systemctl restart eduflow-frontend
+cd ~/voxcandidata && git pull
+sudo systemctl restart voxcandidata-backend
+cd frontend && npm run build && sudo systemctl restart voxcandidata-frontend
 ```
 
 ### 9.8 — Ativar para o cliente
@@ -552,4 +552,4 @@ No painel admin (`/admin`), expanda o tenant e clique no botão "Certificados" p
 
 ---
 
-*Documento criado em 03/03/2026 — EduFlow Multi-Tenant v1.0*
+*Documento criado em 03/03/2026 — VoxCandidata Multi-Tenant v1.0*

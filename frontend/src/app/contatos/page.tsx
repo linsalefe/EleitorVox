@@ -37,7 +37,7 @@ import { TableSkeleton } from '@/components/skeletons/table-skeleton';
 import ConfirmModal from '@/components/ConfirmModal';
 
 const STAGES = [
-  { key: 'novo', label: 'Novos Leads' },
+  { key: 'novo', label: 'Novos Contatos' },
   { key: 'em_contato', label: 'Em Contato' },
   { key: 'apoiador', label: 'Apoiadores' },
   { key: 'engajado', label: 'Engajados' },

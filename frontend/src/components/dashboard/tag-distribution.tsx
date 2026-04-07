@@ -61,7 +61,7 @@ export function TagDistribution({ tags, loading = false }: TagDistributionProps)
     <Card className="p-[var(--card-pad,16px)] shadow-[var(--shadow-xs)] border border-border">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="text-[var(--font-size-body)] font-semibold text-foreground">Leads por Tag</h3>
+          <h3 className="text-[var(--font-size-body)] font-semibold text-foreground">Eleitores por Tag</h3>
           <p className="text-[var(--font-size-caption)] text-muted-foreground mt-0.5">Distribuição das tags mais usadas</p>
         </div>
         <div className="h-9 w-9 bg-purple-50 rounded-lg flex items-center justify-center">

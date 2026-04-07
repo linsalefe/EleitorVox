@@ -210,10 +210,10 @@ function SidebarNavContent({
           />
           <div className="flex flex-col group-data-[collapsible=icon]:hidden">
             <span className="font-semibold text-[15px] tracking-widest uppercase leading-tight text-foreground">
-              VoxCandidata
+              EleitoVox
             </span>
             <span className="text-[10px] text-muted-foreground font-medium tracking-wide">
-              Hub
+              CRM Político
             </span>
           </div>
         </div>

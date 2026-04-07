@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import api from '@/lib/api';
 
 const STAGES = [
-  { key: 'novo', label: 'Novos Leads' },
+  { key: 'novo', label: 'Novos Contatos' },
   { key: 'em_contato', label: 'Em Contato' },
   { key: 'apoiador', label: 'Apoiadores' },
   { key: 'engajado', label: 'Engajados' },

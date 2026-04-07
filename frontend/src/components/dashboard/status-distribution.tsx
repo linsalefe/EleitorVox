@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const statusLabels: Record<string, string> = {
-  novo: 'Novos Leads',
+  novo: 'Novos Contatos',
   em_contato: 'Em Contato',
   apoiador: 'Apoiadores',
   engajado: 'Engajados',
@@ -54,7 +54,7 @@ export function StatusDistribution({ statusCounts, totalContacts, loading = fals
     <Card className="p-[var(--card-pad,16px)] shadow-[var(--shadow-xs)] border border-border">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="text-[var(--font-size-body)] font-semibold text-foreground">Funil de Vendas</h3>
+          <h3 className="text-[var(--font-size-body)] font-semibold text-foreground">Funil Eleitoral</h3>
           <p className="text-[var(--font-size-caption)] text-muted-foreground mt-0.5">
             <span className="font-semibold text-foreground">{totalContacts}</span> contatos
           </p>

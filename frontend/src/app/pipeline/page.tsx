@@ -45,7 +45,7 @@ const ICON_MAP: Record<string, any> = {
 };
 
 const DEFAULT_COLUMNS: ColumnConfig[] = [
-  { key: 'novo', label: 'Novos Leads', color: '#1D4ED8', order: 0 },
+  { key: 'novo', label: 'Novos Contatos', color: '#1D4ED8', order: 0 },
   { key: 'em_contato', label: 'Em Contato', color: '#f59e0b', order: 1 },
   { key: 'apoiador', label: 'Apoiadores', color: '#8b5cf6', order: 2 },
   { key: 'engajado', label: 'Engajados', color: '#06b6d4', order: 3 },
@@ -146,7 +146,7 @@ export default function PipelinePage() {
           <div className="flex items-start lg:items-center justify-between gap-3 flex-wrap">
             <PageHeader
               title="Pipeline"
-              description="Funil de vendas"
+              description="Funil eleitoral"
               badge={`${totalFiltered} leads`}
               className="mb-0"
             />

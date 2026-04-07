@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "VoxCandidata",
-  description: "Central de Atendimento Integrado",
+  description: "CRM Político Inteligente",
   icons: {
     icon: "/logo-icon-color.png",
   },

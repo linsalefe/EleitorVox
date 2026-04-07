@@ -157,7 +157,7 @@ export default function DashboardPage() {
                         index={1}
                       />
                       <KPICard
-                        label="Novos Leads (semana)"
+                        label="Novos Contatos (semana)"
                         value={advanced.new_this_week}
                         icon={advanced.trend_pct >= 0 ? TrendingUp : TrendingDown}
                         trend={advanced.trend_pct >= 0 ? 'up' : 'down'}

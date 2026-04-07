@@ -89,7 +89,7 @@
   --popover-foreground: #0f172a;
 
   /* --- Primary: Blue-700 (#1D4ED8) --- */
-  --primary: #1D4ED8;
+  --primary: #1a365d;
   --primary-foreground: #ffffff;
 
   /* --- Secondary --- */
@@ -108,7 +108,7 @@
   --destructive: #ef4444;
 
   /* --- Semantic status colors --- */
-  --success: #10b981;
+  --success: #16a34a;
   --success-foreground: #ffffff;
   --warning: #f59e0b;
   --warning-foreground: #ffffff;
@@ -118,7 +118,7 @@
   /* --- Borders & Inputs --- */
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #1D4ED8;
+  --ring: #1a365d;
 
   /* --- Radius (8px base — cards & dropdowns) --- */
   --radius: 0.5rem;
@@ -127,11 +127,11 @@
        Validar daltonismo: Chrome DevTools > Rendering > Emulate vision deficiency
        Pares adjacentes distinguíveis em protanopia e deuteranopia
   --- */
-  --chart-1: #1D4ED8;   /* Blue-700    — primary / brand         */
+  --chart-1: #1a365d;   /* Navy        — primary / brand         */
   --chart-2: #0d9488;   /* Teal-600    — conversão / matrícula   */
   --chart-3: #e11d48;   /* Rose-600    — urgência / churn        */
   --chart-4: #d97706;   /* Amber-600   — alertas / pendentes     */
-  --chart-5: #059669;   /* Emerald-600 — sucesso / receita       */
+  --chart-5: #16a34a;   /* Green-600   — sucesso / eleitores     */
   --chart-6: #ea580c;   /* Orange-600  — follow-up               */
   --chart-7: #7c3aed;   /* Violet-600  — IA / automação          */
   --chart-8: #4f6d91;   /* Slate Blue  — neutro / comparação     */
@@ -191,7 +191,7 @@
   --accent: #1e293b;
   --accent-foreground: #f8fafc;
   --destructive: #ef4444;
-  --success: #10b981;
+  --success: #16a34a;
   --success-foreground: #ffffff;
   --warning: #f59e0b;
   --warning-foreground: #ffffff;

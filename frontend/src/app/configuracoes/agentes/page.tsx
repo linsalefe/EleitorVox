@@ -6,7 +6,7 @@ import AppShell from "@/components/app-shell";;
 import api from '@/lib/api';
 
 const AGENTS = [
-  { key: 'whatsapp', label: 'Agente IA WhatsApp', description: 'Qualificação automática via WhatsApp' },
+  { key: 'whatsapp', label: 'Agente IA WhatsApp', description: 'Engajamento automático via WhatsApp' },
   { key: 'voice', label: 'Agente IA Voice', description: 'Ligação automática de qualificação' },
   { key: 'followup', label: 'Follow-up', description: 'Confirmação e lembretes de reunião' },
   { key: 'reactivation', label: 'Reativação', description: 'Recupera leads frios e no-shows' },

@@ -24,7 +24,7 @@ const reports = [
   {
     id: 'pipeline',
     title: 'Relatório do Pipeline',
-    description: 'Funil de vendas com uma aba para cada etapa e resumo com percentuais.',
+    description: 'Funil eleitoral com uma aba para cada etapa e resumo com percentuais.',
     icon: GitBranch,
     color: 'text-purple-600',
     bg: 'bg-purple-50',

@@ -85,6 +85,7 @@ const featureMap: Record<string, string> = {
   '/configuracoes/agentes': 'agentes_ia',
   '/eleitores': 'contatos',
   '/liderancas': 'contatos',
+  '/ranking': 'contatos',
 };
 
 /* ============================================================
@@ -111,6 +112,8 @@ const menuGroups = [
     items: [
       { href: '/liderancas', label: 'Lideranças', icon: Crown,
         color: 'text-orange-600', bg: 'bg-orange-500/10' },
+      { href: '/ranking', label: 'Ranking', icon: TrendingUp,
+        color: 'text-yellow-600', bg: 'bg-yellow-500/10' },
       { href: '/financeiro', label: 'Financeiro', icon: DollarSign,
         color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
       { href: '/agenda', label: 'Agenda', icon: Calendar,
@@ -171,6 +174,7 @@ const pageTitles: Record<string, string> = {
   '/configuracoes/agentes': 'Agentes IA',
   '/eleitores': 'Eleitores',
   '/liderancas': 'Lideranças',
+  '/ranking': 'Ranking de Lideranças',
   '/admin': 'Painel Admin',
 };
 
@@ -271,9 +275,13 @@ function SidebarNavContent({
 
         {/* Menu groups */}
         {menuGroups.map((group) => {
-          const visibleItems = group.items.filter((item) =>
-            hasFeature(featureMap[item.href] || 'dashboard')
-          );
+          const LIDERANCA_ROUTES = ['/dashboard', '/eleitores', '/ranking'];
+          const visibleItems = group.items.filter((item) => {
+            if (user?.role === 'lideranca') {
+              return LIDERANCA_ROUTES.includes(item.href);
+            }
+            return hasFeature(featureMap[item.href] || 'dashboard');
+          });
           if (visibleItems.length === 0) return null;
 
           return (

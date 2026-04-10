@@ -51,6 +51,15 @@ async def login(req: LoginRequest, db: AsyncSession = Depends(get_db)):
         "tenant_id": user.tenant_id,
     })
 
+    # Checar lideranca_id
+    lideranca_id = None
+    if user.role == "lideranca":
+        from app.models import Lideranca
+        lid_result = await db.execute(select(Lideranca).where(Lideranca.user_id == user.id))
+        lid = lid_result.scalar_one_or_none()
+        if lid:
+            lideranca_id = lid.id
+
     return {
         "access_token": token,
         "token_type": "bearer",
@@ -61,6 +70,7 @@ async def login(req: LoginRequest, db: AsyncSession = Depends(get_db)):
             "role": user.role,
             "tenant_id": user.tenant_id,
             "features": tenant_features,
+            "lideranca_id": lideranca_id,
         },
     }
 
@@ -74,6 +84,15 @@ async def me(user: User = Depends(get_current_user), db: AsyncSession = Depends(
         if tenant:
             tenant_features = tenant.features or {}
 
+    # Checar se é liderança
+    lideranca_id = None
+    if user.role == "lideranca":
+        from app.models import Lideranca
+        lid_result = await db.execute(select(Lideranca).where(Lideranca.user_id == user.id, Lideranca.tenant_id == user.tenant_id))
+        lid = lid_result.scalar_one_or_none()
+        if lid:
+            lideranca_id = lid.id
+
     return {
         "id": user.id,
         "name": user.name,
@@ -81,6 +100,7 @@ async def me(user: User = Depends(get_current_user), db: AsyncSession = Depends(
         "role": user.role,
         "tenant_id": user.tenant_id,
         "features": tenant_features,
+        "lideranca_id": lideranca_id,
     }
 
 
@@ -105,6 +125,18 @@ async def register(req: RegisterRequest, db: AsyncSession = Depends(get_db), cur
     db.add(user)
     await db.commit()
     await db.refresh(user)
+
+    # Se role = lideranca, criar registro de Lideranca vinculado
+    if user.role == "lideranca":
+        from app.models import Lideranca
+        lid = Lideranca(
+            tenant_id=user.tenant_id,
+            user_id=user.id,
+            nome=user.name,
+            tipo="cabo_eleitoral",
+        )
+        db.add(lid)
+        await db.commit()
 
     return {
         "id": user.id,
@@ -157,3 +189,69 @@ async def toggle_user(user_id: int, db: AsyncSession = Depends(get_db), current_
     user.is_active = not user.is_active
     await db.commit()
     return {"id": user.id, "is_active": user.is_active}
+
+
+class UpdateUserRequest(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+@router.put("/users/{user_id}")
+async def update_user(
+    user_id: int,
+    req: UpdateUserRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Edição completa de usuário — admin pode alterar nome, email, senha, role, is_active."""
+    if current_user.role not in ("admin", "superadmin"):
+        raise HTTPException(status_code=403, detail="Apenas administradores")
+
+    query = select(User).where(User.id == user_id)
+    if current_user.role != "superadmin":
+        query = query.where(User.tenant_id == current_user.tenant_id)
+
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    if req.name is not None:
+        user.name = req.name
+    if req.email is not None:
+        existing = await db.execute(select(User).where(User.email == req.email, User.id != user_id))
+        if existing.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="Email já em uso por outro usuário")
+        user.email = req.email
+    if req.password is not None and req.password.strip():
+        user.password_hash = hash_password(req.password)
+    if req.role is not None:
+        user.role = req.role
+    if req.is_active is not None:
+        user.is_active = req.is_active
+
+    await db.commit()
+    await db.refresh(user)
+
+    # Se role = lideranca, verificar se já existe Lideranca vinculada, senão criar
+    if user.role == "lideranca":
+        from app.models import Lideranca
+        lid_result = await db.execute(select(Lideranca).where(Lideranca.user_id == user.id))
+        lid = lid_result.scalar_one_or_none()
+        if not lid:
+            lid = Lideranca(
+                tenant_id=user.tenant_id,
+                user_id=user.id,
+                nome=user.name,
+                tipo="cabo_eleitoral",
+            )
+            db.add(lid)
+            await db.commit()
+
+    return {
+        "id": user.id, "name": user.name, "email": user.email,
+        "role": user.role, "is_active": user.is_active,
+    }

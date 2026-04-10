@@ -26,6 +26,7 @@ interface User {
   role: string;
   tenant_id?: number | null;
   features?: Features;
+  lideranca_id?: number | null;
 }
 
 interface AuthContextType {
@@ -34,6 +35,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   hasFeature: (feature: string) => boolean;
+  isLideranca: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -76,8 +78,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return user.features[feature] !== false;
   };
 
+  const isLideranca = user?.role === 'lideranca';
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, hasFeature }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, hasFeature, isLideranca }}>
       {children}
     </AuthContext.Provider>
   );

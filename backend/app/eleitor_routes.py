@@ -1,15 +1,15 @@
 """Rotas de Eleitores — CRUD + filtros + importação CSV + stats + geo"""
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func, cast, Date
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 import csv
 import io
 
 from app.database import get_db
-from app.models import Eleitor, Lideranca
+from app.models import Eleitor, Lideranca, User
 from app.auth import get_current_user, get_tenant_id
 
 router = APIRouter(prefix="/api/eleitores", tags=["eleitores"])
@@ -62,6 +62,16 @@ class EleitorUpdate(BaseModel):
     observacoes: Optional[str] = None
 
 
+# === Helper: get lideranca_id for current user ===
+
+async def _get_user_lideranca_id(user: User, db: AsyncSession) -> Optional[int]:
+    if user.role != "lideranca":
+        return None
+    lid_q = await db.execute(select(Lideranca).where(Lideranca.user_id == user.id))
+    lid = lid_q.scalar_one_or_none()
+    return lid.id if lid else None
+
+
 # === Endpoints ===
 
 @router.post("")
@@ -69,6 +79,7 @@ async def criar_eleitor(
     body: EleitorCreate,
     db: AsyncSession = Depends(get_db),
     tenant_id: int = Depends(get_tenant_id),
+    user: User = Depends(get_current_user),
 ):
     data = body.model_dump(exclude_none=True)
     if "data_nascimento" in data:
@@ -77,6 +88,13 @@ async def criar_eleitor(
         except ValueError:
             del data["data_nascimento"]
     eleitor = Eleitor(tenant_id=tenant_id, **data)
+
+    # Se é liderança, vincular automaticamente
+    if user.role == "lideranca":
+        lid_id = await _get_user_lideranca_id(user, db)
+        if lid_id:
+            eleitor.lideranca_id = lid_id
+
     db.add(eleitor)
     await db.commit()
     await db.refresh(eleitor)
@@ -87,6 +105,7 @@ async def criar_eleitor(
 async def listar_eleitores(
     db: AsyncSession = Depends(get_db),
     tenant_id: int = Depends(get_tenant_id),
+    user: User = Depends(get_current_user),
     bairro: Optional[str] = None,
     zona_eleitoral: Optional[str] = None,
     nivel_apoio: Optional[int] = None,
@@ -97,6 +116,15 @@ async def listar_eleitores(
     limit: int = Query(50, ge=1, le=200),
 ):
     query = select(Eleitor).where(Eleitor.tenant_id == tenant_id)
+
+    # Se é liderança, só vê seus eleitores
+    if user.role == "lideranca":
+        lid_id = await _get_user_lideranca_id(user, db)
+        if lid_id:
+            query = query.where(Eleitor.lideranca_id == lid_id)
+        else:
+            query = query.where(Eleitor.id == -1)  # Não mostra nada
+
     if bairro:
         query = query.where(Eleitor.bairro == bairro)
     if zona_eleitoral:
@@ -133,33 +161,110 @@ async def listar_eleitores(
 async def stats_eleitores(
     db: AsyncSession = Depends(get_db),
     tenant_id: int = Depends(get_tenant_id),
+    user: User = Depends(get_current_user),
 ):
-    total = (await db.execute(select(func.count()).where(Eleitor.tenant_id == tenant_id))).scalar()
+    base_filter = [Eleitor.tenant_id == tenant_id]
+    if user.role == "lideranca":
+        lid_id = await _get_user_lideranca_id(user, db)
+        if lid_id:
+            base_filter.append(Eleitor.lideranca_id == lid_id)
+        else:
+            return {"total": 0, "por_nivel": {}, "por_bairro": [], "por_zona": [], "por_origem": []}
+
+    total = (await db.execute(select(func.count()).where(*base_filter))).scalar()
 
     nivel_q = await db.execute(
-        select(Eleitor.nivel_apoio, func.count()).where(Eleitor.tenant_id == tenant_id).group_by(Eleitor.nivel_apoio)
+        select(Eleitor.nivel_apoio, func.count()).where(*base_filter).group_by(Eleitor.nivel_apoio)
     )
     por_nivel = {str(r[0]): r[1] for r in nivel_q.all()}
 
     bairro_q = await db.execute(
-        select(Eleitor.bairro, func.count()).where(Eleitor.tenant_id == tenant_id, Eleitor.bairro.isnot(None))
+        select(Eleitor.bairro, func.count()).where(*base_filter, Eleitor.bairro.isnot(None))
         .group_by(Eleitor.bairro).order_by(func.count().desc()).limit(15)
     )
     por_bairro = [{"bairro": r[0], "total": r[1]} for r in bairro_q.all()]
 
     zona_q = await db.execute(
-        select(Eleitor.zona_eleitoral, func.count()).where(Eleitor.tenant_id == tenant_id, Eleitor.zona_eleitoral.isnot(None))
+        select(Eleitor.zona_eleitoral, func.count()).where(*base_filter, Eleitor.zona_eleitoral.isnot(None))
         .group_by(Eleitor.zona_eleitoral).order_by(func.count().desc())
     )
     por_zona = [{"zona": r[0], "total": r[1]} for r in zona_q.all()]
 
     origem_q = await db.execute(
-        select(Eleitor.origem, func.count()).where(Eleitor.tenant_id == tenant_id, Eleitor.origem.isnot(None))
+        select(Eleitor.origem, func.count()).where(*base_filter, Eleitor.origem.isnot(None))
         .group_by(Eleitor.origem).order_by(func.count().desc())
     )
     por_origem = [{"origem": r[0], "total": r[1]} for r in origem_q.all()]
 
     return {"total": total, "por_nivel": por_nivel, "por_bairro": por_bairro, "por_zona": por_zona, "por_origem": por_origem}
+
+
+@router.get("/dashboard/stats")
+async def dashboard_eleitoral(
+    db: AsyncSession = Depends(get_db),
+    tenant_id: int = Depends(get_tenant_id),
+    user: User = Depends(get_current_user),
+):
+    """Stats eleitorais para o dashboard — total, por nível, por bairro, cadastros recentes."""
+    base_filter = [Eleitor.tenant_id == tenant_id]
+    if user.role == "lideranca":
+        lid_id = await _get_user_lideranca_id(user, db)
+        if lid_id:
+            base_filter.append(Eleitor.lideranca_id == lid_id)
+        else:
+            return {"total": 0, "esta_semana": 0, "semana_passada": 0, "trend_pct": 0, "por_nivel": {}, "por_bairro": [], "evolucao_semanal": []}
+
+    # Total
+    total = (await db.execute(select(func.count()).where(*base_filter))).scalar()
+
+    # Cadastros esta semana
+    week_ago = datetime.utcnow() - timedelta(days=7)
+    esta_semana = (await db.execute(
+        select(func.count()).where(*base_filter, Eleitor.created_at >= week_ago)
+    )).scalar()
+
+    # Semana passada (para trend)
+    two_weeks = datetime.utcnow() - timedelta(days=14)
+    semana_passada = (await db.execute(
+        select(func.count()).where(*base_filter, Eleitor.created_at >= two_weeks, Eleitor.created_at < week_ago)
+    )).scalar()
+
+    # Por nível
+    nivel_q = await db.execute(
+        select(Eleitor.nivel_apoio, func.count()).where(*base_filter).group_by(Eleitor.nivel_apoio)
+    )
+    por_nivel = {str(r[0]): r[1] for r in nivel_q.all()}
+
+    # Top 10 bairros
+    bairro_q = await db.execute(
+        select(Eleitor.bairro, func.count()).where(*base_filter, Eleitor.bairro.isnot(None))
+        .group_by(Eleitor.bairro).order_by(func.count().desc()).limit(10)
+    )
+    por_bairro = [{"bairro": r[0], "total": r[1]} for r in bairro_q.all()]
+
+    # Evolução diária (últimos 30 dias)
+    thirty_days = datetime.utcnow() - timedelta(days=30)
+    evo_q = await db.execute(
+        select(cast(Eleitor.created_at, Date), func.count())
+        .where(*base_filter, Eleitor.created_at >= thirty_days)
+        .group_by(cast(Eleitor.created_at, Date))
+        .order_by(cast(Eleitor.created_at, Date))
+    )
+    evolucao = [{"date": r[0].isoformat(), "count": r[1]} for r in evo_q.all()]
+
+    trend_pct = 0
+    if semana_passada > 0:
+        trend_pct = round(((esta_semana - semana_passada) / semana_passada) * 100, 1)
+
+    return {
+        "total": total,
+        "esta_semana": esta_semana,
+        "semana_passada": semana_passada,
+        "trend_pct": trend_pct,
+        "por_nivel": por_nivel,
+        "por_bairro": por_bairro,
+        "evolucao_semanal": evolucao,
+    }
 
 
 @router.get("/geo/markers")

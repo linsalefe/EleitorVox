@@ -547,3 +547,65 @@ class TokenUsage(Base):
     completion_tokens = Column(Integer, default=0)
     total_tokens = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Lideranca(Base):
+    __tablename__ = "liderancas"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+
+    nome = Column(String(255), nullable=False)
+    telefone = Column(String(20), nullable=True)
+    email = Column(String(255), nullable=True)
+    tipo = Column(String(30), nullable=False, default="cabo_eleitoral")
+    regiao = Column(String(100), nullable=True)
+    lideranca_pai_id = Column(BigInteger, ForeignKey("liderancas.id"), nullable=True)
+
+    meta_eleitores = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    eleitores = relationship("Eleitor", back_populates="lideranca")
+    lideranca_pai = relationship("Lideranca", remote_side=[id], backref="subliderancas")
+    user = relationship("User")
+
+
+class Eleitor(Base):
+    __tablename__ = "eleitores"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False)
+    contact_id = Column(BigInteger, ForeignKey("contacts.id"), nullable=True)
+
+    nome_completo = Column(String(255), nullable=False)
+    cpf = Column(String(14), nullable=True)
+    data_nascimento = Column(DateTime, nullable=True)
+    telefone = Column(String(20), nullable=True)
+    email = Column(String(255), nullable=True)
+    foto_url = Column(String, nullable=True)
+
+    titulo_eleitor = Column(String(20), nullable=True)
+    zona_eleitoral = Column(String(10), nullable=True)
+    secao_eleitoral = Column(String(10), nullable=True)
+
+    endereco = Column(String(500), nullable=True)
+    bairro = Column(String(100), nullable=True)
+    cidade = Column(String(100), nullable=True)
+    estado = Column(String(2), default="PB")
+    cep = Column(String(10), nullable=True)
+    latitude = Column(Numeric(10, 7), nullable=True)
+    longitude = Column(Numeric(10, 7), nullable=True)
+
+    nivel_apoio = Column(Integer, default=0)  # 0=desconhecido, 1=contrário, 2=indeciso, 3=simpatizante, 4=apoiador, 5=multiplicador
+    origem = Column(String(50), nullable=True)  # corpo-a-corpo, whatsapp, landing-page, indicação, evento
+    lideranca_id = Column(BigInteger, ForeignKey("liderancas.id"), nullable=True)
+
+    observacoes = Column(Text, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    contact = relationship("Contact")
+    lideranca = relationship("Lideranca", back_populates="eleitores")

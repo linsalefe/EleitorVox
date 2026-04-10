@@ -33,6 +33,9 @@ import {
   PanelLeftOpen,
   Moon,
   Sun,
+  MapPin,
+  Crown,
+  Vote,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -80,6 +83,8 @@ const featureMap: Record<string, string> = {
   '/agenda': 'agenda',
   '/canais': 'conversas',
   '/configuracoes/agentes': 'agentes_ia',
+  '/eleitores': 'contatos',
+  '/liderancas': 'contatos',
 };
 
 /* ============================================================
@@ -91,14 +96,27 @@ const menuGroups = [
     items: [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard,
         color: 'text-blue-600', bg: 'bg-blue-500/10' },
+      { href: '/eleitores', label: 'Eleitores', icon: Vote,
+        color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
       { href: '/conversations', label: 'Conversas', icon: MessageCircle, hasBadge: true,
         color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
       { href: '/pipeline', label: 'Pipeline', icon: GitBranch,
         color: 'text-violet-600', bg: 'bg-violet-500/10' },
       { href: '/contatos', label: 'Contatos', icon: Users,
         color: 'text-amber-600', bg: 'bg-amber-500/10' },
+    ],
+  },
+  {
+    label: 'Campanha',
+    items: [
+      { href: '/liderancas', label: 'Lideranças', icon: Crown,
+        color: 'text-orange-600', bg: 'bg-orange-500/10' },
       { href: '/financeiro', label: 'Financeiro', icon: DollarSign,
         color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
+      { href: '/agenda', label: 'Agenda', icon: Calendar,
+        color: 'text-teal-600', bg: 'bg-teal-500/10' },
+      { href: '/tarefas', label: 'Tarefas', icon: Target, hasTaskBadge: true,
+        color: 'text-orange-600', bg: 'bg-orange-500/10' },
     ],
   },
   {
@@ -119,16 +137,6 @@ const menuGroups = [
         color: 'text-gray-600', bg: 'bg-gray-500/10' },
       { href: '/automacoes', label: 'Automações', icon: Zap,
         color: 'text-amber-600', bg: 'bg-amber-500/10' },
-      { href: '/tarefas', label: 'Tarefas', icon: Target, hasTaskBadge: true,
-        color: 'text-orange-600', bg: 'bg-orange-500/10' },
-      { href: '/configuracoes/metas', label: 'Metas', icon: TrendingUp,
-        color: 'text-primary', bg: 'bg-primary/10' },
-      { href: '/voice-ai', label: 'Voice AI', icon: PhoneCall,
-        color: 'text-indigo-600', bg: 'bg-indigo-500/10' },
-      { href: '/voice-inbound', label: 'Atendimento IA', icon: PhoneIncoming,
-        color: 'text-emerald-600', bg: 'bg-emerald-500/10' },  
-      { href: '/agenda', label: 'Agenda', icon: Calendar,
-        color: 'text-teal-600', bg: 'bg-teal-500/10' },
       { href: '/canais', label: 'Canais', icon: Radio,
         color: 'text-cyan-600', bg: 'bg-cyan-500/10' },
       { href: '/ai-config', label: 'Config. IA', icon: Sparkles,
@@ -161,6 +169,8 @@ const pageTitles: Record<string, string> = {
   '/canais': 'Canais',
   '/ai-config': 'Config. IA',
   '/configuracoes/agentes': 'Agentes IA',
+  '/eleitores': 'Eleitores',
+  '/liderancas': 'Lideranças',
   '/admin': 'Painel Admin',
 };
 

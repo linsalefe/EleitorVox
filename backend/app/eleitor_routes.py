@@ -1,7 +1,7 @@
 """Rotas de Eleitores — CRUD + filtros + importação CSV + stats + geo"""
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, cast, Date
+from sqlalchemy import select, func
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, timedelta
@@ -205,66 +205,69 @@ async def dashboard_eleitoral(
     tenant_id: int = Depends(get_tenant_id),
     user: User = Depends(get_current_user),
 ):
-    """Stats eleitorais para o dashboard — total, por nível, por bairro, cadastros recentes."""
-    base_filter = [Eleitor.tenant_id == tenant_id]
-    if user.role == "lideranca":
-        lid_id = await _get_user_lideranca_id(user, db)
-        if lid_id:
-            base_filter.append(Eleitor.lideranca_id == lid_id)
-        else:
-            return {"total": 0, "esta_semana": 0, "semana_passada": 0, "trend_pct": 0, "por_nivel": {}, "por_bairro": [], "evolucao_semanal": []}
+    """Stats eleitorais para o dashboard."""
+    empty = {"total": 0, "esta_semana": 0, "semana_passada": 0, "trend_pct": 0, "por_nivel": {}, "por_bairro": [], "evolucao_semanal": []}
+    try:
+        base_filter = [Eleitor.tenant_id == tenant_id]
+        if user.role == "lideranca":
+            lid_id = await _get_user_lideranca_id(user, db)
+            if lid_id:
+                base_filter.append(Eleitor.lideranca_id == lid_id)
+            else:
+                return empty
 
-    # Total
-    total = (await db.execute(select(func.count()).where(*base_filter))).scalar()
+        total = (await db.execute(select(func.count()).where(*base_filter))).scalar() or 0
 
-    # Cadastros esta semana
-    week_ago = datetime.utcnow() - timedelta(days=7)
-    esta_semana = (await db.execute(
-        select(func.count()).where(*base_filter, Eleitor.created_at >= week_ago)
-    )).scalar()
+        week_ago = datetime.utcnow() - timedelta(days=7)
+        esta_semana = (await db.execute(
+            select(func.count()).where(*base_filter, Eleitor.created_at >= week_ago)
+        )).scalar() or 0
 
-    # Semana passada (para trend)
-    two_weeks = datetime.utcnow() - timedelta(days=14)
-    semana_passada = (await db.execute(
-        select(func.count()).where(*base_filter, Eleitor.created_at >= two_weeks, Eleitor.created_at < week_ago)
-    )).scalar()
+        two_weeks = datetime.utcnow() - timedelta(days=14)
+        semana_passada = (await db.execute(
+            select(func.count()).where(*base_filter, Eleitor.created_at >= two_weeks, Eleitor.created_at < week_ago)
+        )).scalar() or 0
 
-    # Por nível
-    nivel_q = await db.execute(
-        select(Eleitor.nivel_apoio, func.count()).where(*base_filter).group_by(Eleitor.nivel_apoio)
-    )
-    por_nivel = {str(r[0]): r[1] for r in nivel_q.all()}
+        nivel_q = await db.execute(
+            select(Eleitor.nivel_apoio, func.count()).where(*base_filter).group_by(Eleitor.nivel_apoio)
+        )
+        por_nivel = {str(r[0]): r[1] for r in nivel_q.all()}
 
-    # Top 10 bairros
-    bairro_q = await db.execute(
-        select(Eleitor.bairro, func.count()).where(*base_filter, Eleitor.bairro.isnot(None))
-        .group_by(Eleitor.bairro).order_by(func.count().desc()).limit(10)
-    )
-    por_bairro = [{"bairro": r[0], "total": r[1]} for r in bairro_q.all()]
+        bairro_q = await db.execute(
+            select(Eleitor.bairro, func.count()).where(*base_filter, Eleitor.bairro.isnot(None))
+            .group_by(Eleitor.bairro).order_by(func.count().desc()).limit(10)
+        )
+        por_bairro = [{"bairro": r[0], "total": r[1]} for r in bairro_q.all()]
 
-    # Evolução diária (últimos 30 dias)
-    thirty_days = datetime.utcnow() - timedelta(days=30)
-    evo_q = await db.execute(
-        select(cast(Eleitor.created_at, Date), func.count())
-        .where(*base_filter, Eleitor.created_at >= thirty_days)
-        .group_by(cast(Eleitor.created_at, Date))
-        .order_by(cast(Eleitor.created_at, Date))
-    )
-    evolucao = [{"date": r[0].isoformat(), "count": r[1]} for r in evo_q.all()]
+        thirty_days = datetime.utcnow() - timedelta(days=30)
+        try:
+            evo_q = await db.execute(
+                select(func.date_trunc('day', Eleitor.created_at).label('dia'), func.count())
+                .where(*base_filter, Eleitor.created_at >= thirty_days)
+                .group_by('dia')
+                .order_by('dia')
+            )
+            evolucao = [{"date": str(r[0])[:10], "count": r[1]} for r in evo_q.all()]
+        except Exception:
+            evolucao = []
 
-    trend_pct = 0
-    if semana_passada > 0:
-        trend_pct = round(((esta_semana - semana_passada) / semana_passada) * 100, 1)
+        trend_pct = 0
+        if semana_passada > 0:
+            trend_pct = round(((esta_semana - semana_passada) / semana_passada) * 100, 1)
 
-    return {
-        "total": total,
-        "esta_semana": esta_semana,
-        "semana_passada": semana_passada,
-        "trend_pct": trend_pct,
-        "por_nivel": por_nivel,
-        "por_bairro": por_bairro,
-        "evolucao_semanal": evolucao,
-    }
+        return {
+            "total": total,
+            "esta_semana": esta_semana,
+            "semana_passada": semana_passada,
+            "trend_pct": trend_pct,
+            "por_nivel": por_nivel,
+            "por_bairro": por_bairro,
+            "evolucao_semanal": evolucao,
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return empty
 
 
 @router.get("/geo/markers")

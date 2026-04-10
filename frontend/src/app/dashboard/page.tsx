@@ -63,16 +63,30 @@ export default function DashboardPage() {
 
   const loadData = async () => {
     try {
-      const [statsRes, geoRes, rankRes] = await Promise.all([
+      const [statsRes, geoRes, rankRes] = await Promise.allSettled([
         api.get('/eleitores/dashboard/stats'),
         api.get('/eleitores/geo/markers'),
-        api.get('/liderancas/ranking').catch(() => ({ data: [] })),
+        api.get('/liderancas/ranking'),
       ]);
-      setStats(statsRes.data);
-      setMarkers(geoRes.data);
-      setRanking(rankRes.data.slice(0, 5));
-    } catch {
-      toast.error('Erro ao carregar dashboard');
+
+      if (statsRes.status === 'fulfilled') {
+        setStats(statsRes.value.data);
+      } else {
+        console.error('Erro stats:', statsRes.reason);
+        setStats({ total: 0, esta_semana: 0, semana_passada: 0, trend_pct: 0, por_nivel: {}, por_bairro: [], evolucao_semanal: [] });
+      }
+
+      if (geoRes.status === 'fulfilled') {
+        setMarkers(geoRes.value.data || []);
+      }
+
+      if (rankRes.status === 'fulfilled') {
+        const data = rankRes.value.data;
+        setRanking(Array.isArray(data) ? data.slice(0, 5) : []);
+      }
+    } catch (err) {
+      console.error('Erro geral dashboard:', err);
+      setStats({ total: 0, esta_semana: 0, semana_passada: 0, trend_pct: 0, por_nivel: {}, por_bairro: [], evolucao_semanal: [] });
     } finally {
       setLoading(false);
     }
@@ -163,7 +177,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Mapa de Calor */}
-            <Card>
+            <Card className="relative overflow-hidden">
               <CardContent className="p-0">
                 <div className="flex items-center justify-between p-4 pb-0">
                   <div>
@@ -172,10 +186,14 @@ export default function DashboardPage() {
                   </div>
                   <MapPin className="h-5 w-5 text-muted-foreground" />
                 </div>
-                <div ref={mapRef} className="w-full h-[400px] mt-3 rounded-b-xl" />
-                {markers.length === 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted/50 rounded-xl">
-                    <p className="text-sm text-muted-foreground">Cadastre eleitores com CEP/endereço para visualizar no mapa</p>
+                {markers.length > 0 ? (
+                  <div ref={mapRef} className="w-full h-[400px] mt-3 rounded-b-xl" />
+                ) : (
+                  <div className="w-full h-[300px] mt-3 rounded-b-xl bg-muted/30 flex flex-col items-center justify-center gap-2">
+                    <MapPin className="h-10 w-10 text-muted-foreground/30" />
+                    <p className="text-sm text-muted-foreground text-center px-4">
+                      Cadastre eleitores com CEP/endereço para visualizar no mapa
+                    </p>
                   </div>
                 )}
               </CardContent>

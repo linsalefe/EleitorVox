@@ -11,6 +11,8 @@ import io
 from app.database import get_db
 from app.models import Eleitor, Lideranca, User
 from app.auth import get_current_user, get_tenant_id
+import httpx
+import os
 
 router = APIRouter(prefix="/api/eleitores", tags=["eleitores"])
 
@@ -62,6 +64,64 @@ class EleitorUpdate(BaseModel):
     observacoes: Optional[str] = None
 
 
+# === Helper: geocoding ===
+
+async def _geocode(endereco: str = None, bairro: str = None, cidade: str = None, estado: str = None, cep: str = None):
+    """Converte endereço/CEP em lat/lng usando Google Geocoding API."""
+    api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+    if not api_key:
+        return None, None
+
+    # Montar string de endereço
+    parts = []
+    if endereco:
+        parts.append(endereco)
+    if bairro:
+        parts.append(bairro)
+    if cidade:
+        parts.append(cidade)
+    if estado:
+        parts.append(estado)
+    if cep:
+        parts.append(cep)
+    parts.append("Brasil")
+
+    address = ", ".join(parts)
+    if len(parts) <= 1:
+        return None, None
+
+    try:
+        async with httpx.AsyncClient(timeout=5) as client:
+            res = await client.get(
+                "https://maps.googleapis.com/maps/api/geocode/json",
+                params={"address": address, "key": api_key},
+            )
+            data = res.json()
+            if data.get("status") == "OK" and data.get("results"):
+                loc = data["results"][0]["geometry"]["location"]
+                return loc["lat"], loc["lng"]
+    except Exception as e:
+        print(f"⚠️ Geocoding erro: {e}")
+
+    return None, None
+
+
+async def _apply_geocoding(eleitor):
+    """Aplica geocoding ao eleitor se não tem lat/lng."""
+    if eleitor.latitude and eleitor.longitude:
+        return
+    lat, lng = await _geocode(
+        endereco=eleitor.endereco,
+        bairro=eleitor.bairro,
+        cidade=eleitor.cidade,
+        estado=eleitor.estado,
+        cep=eleitor.cep,
+    )
+    if lat and lng:
+        eleitor.latitude = lat
+        eleitor.longitude = lng
+
+
 # === Helper: get lideranca_id for current user ===
 
 async def _get_user_lideranca_id(user: User, db: AsyncSession) -> Optional[int]:
@@ -95,6 +155,7 @@ async def criar_eleitor(
         if lid_id:
             eleitor.lideranca_id = lid_id
 
+    await _apply_geocoding(eleitor)
     db.add(eleitor)
     await db.commit()
     await db.refresh(eleitor)
@@ -316,6 +377,11 @@ async def atualizar_eleitor(eleitor_id: int, body: EleitorUpdate, db: AsyncSessi
             del data["data_nascimento"]
     for k, v in data.items():
         setattr(eleitor, k, v)
+    # Re-geocode se endereço mudou
+    if any(k in data for k in ("endereco", "bairro", "cidade", "estado", "cep")):
+        eleitor.latitude = None
+        eleitor.longitude = None
+        await _apply_geocoding(eleitor)
     await db.commit()
     await db.refresh(eleitor)
     return _serialize(eleitor)
@@ -369,6 +435,29 @@ async def importar_csv(file: UploadFile = File(...), db: AsyncSession = Depends(
         created += 1
     await db.commit()
     return {"importados": created, "erros": errors}
+
+
+@router.post("/geocode-all")
+async def geocode_todos(
+    db: AsyncSession = Depends(get_db),
+    tenant_id: int = Depends(get_tenant_id),
+):
+    """Geocodifica todos os eleitores que têm endereço mas não têm lat/lng."""
+    result = await db.execute(
+        select(Eleitor).where(
+            Eleitor.tenant_id == tenant_id,
+            Eleitor.latitude.is_(None),
+            (Eleitor.cep.isnot(None)) | (Eleitor.bairro.isnot(None)),
+        )
+    )
+    eleitores = result.scalars().all()
+    updated = 0
+    for e in eleitores:
+        await _apply_geocoding(e)
+        if e.latitude and e.longitude:
+            updated += 1
+    await db.commit()
+    return {"total": len(eleitores), "geocoded": updated}
 
 
 def _serialize(e: Eleitor) -> dict:
